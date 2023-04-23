@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Question from "@/components/Question";
 import Answer from "@/components/Answer";
 const library = [
@@ -20,11 +21,19 @@ const library = [
 ];
 console.log(library);
 export default function HomePage() {
-  function handleNextQuestion() {}
+  const [currentCard, setCurrentCard] = useState(library[0]);
+  function handleNextQuestion() {
+    console.log(library.length);
+    const nextCard = Math.floor(Math.random() * library.length);
+    setCurrentCard(library[nextCard]);
+  }
   return (
     <div>
-      <Question question={library[0].question} />
-      <Answer answer={library[0].answer} />
+      <Question question={currentCard.question} />
+      <Answer
+        answer={currentCard.answer}
+        handleNextQuestion={handleNextQuestion}
+      />
     </div>
   );
 }

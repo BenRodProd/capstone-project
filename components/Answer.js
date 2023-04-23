@@ -6,6 +6,7 @@ const InputFieldLayout = styled.div`
 `;
 const StyledInput = styled.input`
   width: 1rem;
+  padding: 1rem;
 `;
 export default function Answer({ answer, handleNextQuestion }) {
   const inputRef = useRef([]);
@@ -13,15 +14,19 @@ export default function Answer({ answer, handleNextQuestion }) {
   const [guessedLetters, setGuessedLetters] = useState(
     new Array(answerArray.length).fill("")
   );
+
   useEffect(() => {
     if (answerArray.join("") === guessedLetters.join("")) {
       handleNextQuestion();
+      console.log(answerArray);
+      setGuessedLetters(new Array(answerArray.length).fill(""));
+      inputRef.current[0].focus();
     }
   }, [guessedLetters, answerArray, handleNextQuestion]);
   function handleLetterGuess(event, index) {
     const letter = event.target.value;
     const newGuessedLetters = [...guessedLetters];
-    console.log(letter, index);
+
     newGuessedLetters[index] = letter;
     setGuessedLetters(newGuessedLetters);
     console.log(newGuessedLetters);
@@ -31,10 +36,12 @@ export default function Answer({ answer, handleNextQuestion }) {
         inputRef.current[index + 1].focus();
       }
     } else {
+      console.log("wrong letter!");
+      newGuessedLetters[index] = "";
+      setGuessedLetters(newGuessedLetters);
     }
   }
 
-  console.log(answerArray);
   return (
     <>
       <h1>ANSWER:</h1>
@@ -46,7 +53,8 @@ export default function Answer({ answer, handleNextQuestion }) {
             key={index}
             maxLength="1"
             type="text"
-            readonly={guessedLetters[index] !== ""}
+            readOnly={guessedLetters[index] !== ""}
+            value={guessedLetters[index]}
           ></StyledInput>
         ))}
       </InputFieldLayout>

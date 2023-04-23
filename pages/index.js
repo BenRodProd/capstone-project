@@ -20,10 +20,11 @@ const library = [
 ];
 console.log(library);
 export default function HomePage() {
+  function handleNextQuestion() {}
   return (
     <div>
       <Question question={library[0].question} />
-      <Answer answer={library[2].answer} />
+      <Answer answer={library[0].answer} />
     </div>
   );
 }

@@ -5,40 +5,89 @@ const InputFieldLayout = styled.div`
   justify-content: center;
 `;
 const StyledInput = styled.input`
-  width: 1rem;
-  padding: 1rem;
+  caret-color: transparent;
+  text-align: center;
+  font-size: 1rem;
+  width: 2rem;
+  height: 2rem;
+  color: white;
+  background-color: ${(props) =>
+    props.isRight ? "green" : props.isWrong ? "red" : "transparent"};
+
+  animation: ${(props) => (props.isWrong ? "shake 0.5s" : "none")};
+  transform-origin: center;
+
+  @keyframes shake {
+    0% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-10px);
+    }
+    50% {
+      transform: translateX(10px);
+    }
+    75% {
+      transform: translateX(-10px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
 `;
 export default function Answer({ answer, handleNextQuestion }) {
-  const inputRef = useRef([]);
-  const answerArray = answer.split("");
-  const [guessedLetters, setGuessedLetters] = useState(
-    new Array(answerArray.length).fill("")
-  );
+  const [wrongIndex, setWrongIndex] = useState(-1);
 
+  const inputRef = useRef([]);
+  const [answerArray, setAnswerArray] = useState(answer.split(""));
+  const [guessedWordArray, setguessedWordArray] = useState(
+    answerArray.map(() => "")
+  );
+  // ########### Focus on first letter when new answer i rendered #############
   useEffect(() => {
-    if (answerArray.join("") === guessedLetters.join("")) {
-      handleNextQuestion();
-      console.log(answerArray);
-      setGuessedLetters(new Array(answerArray.length).fill(""));
-      inputRef.current[0].focus();
+    setAnswerArray(answer.split(""));
+  }, [answer]);
+  useEffect(() => {
+    inputRef.current[0].focus();
+  }, []);
+  useEffect(() => {
+    setguessedWordArray(answerArray.map(() => ""));
+    inputRef.current[0].focus();
+  }, [answerArray]);
+  // ############## Right word ###########################
+  useEffect(() => {
+    if (answerArray.join("") === guessedWordArray.join("")) {
+      setTimeout(() => {
+        handleNextQuestion();
+        console.log("answerarray", answerArray);
+        setguessedWordArray(answerArray.map(() => ""));
+        inputRef.current[0].focus();
+      }, 800);
     }
-  }, [guessedLetters, answerArray, handleNextQuestion]);
+  }, [guessedWordArray, answerArray, handleNextQuestion]);
   function handleLetterGuess(event, index) {
     const letter = event.target.value;
-    const newGuessedLetters = [...guessedLetters];
+    const newguessedWordArray = [...guessedWordArray];
 
-    newGuessedLetters[index] = letter;
-    setGuessedLetters(newGuessedLetters);
-    console.log(newGuessedLetters);
+    newguessedWordArray[index] = letter;
+
+    setguessedWordArray(newguessedWordArray);
+    console.log("newguessedWordArray", newguessedWordArray[index]);
     if (letter === answerArray[index]) {
       console.log("right letter!");
       if (index < answerArray.length - 1) {
         inputRef.current[index + 1].focus();
+      } else {
       }
     } else {
       console.log("wrong letter!");
-      newGuessedLetters[index] = "";
-      setGuessedLetters(newGuessedLetters);
+      setWrongIndex(index);
+      setTimeout(() => {
+        setWrongIndex(-1);
+      }, 800);
+
+      newguessedWordArray[index] = "";
+      setguessedWordArray(newguessedWordArray);
     }
   }
 
@@ -53,8 +102,9 @@ export default function Answer({ answer, handleNextQuestion }) {
             key={index}
             maxLength="1"
             type="text"
-            readOnly={guessedLetters[index] !== ""}
-            value={guessedLetters[index]}
+            isRight={guessedWordArray[index] === answerArray[index]}
+            value={guessedWordArray[index] || ""}
+            isWrong={index === wrongIndex}
           ></StyledInput>
         ))}
       </InputFieldLayout>

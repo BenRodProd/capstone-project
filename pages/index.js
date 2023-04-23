@@ -19,13 +19,16 @@ const library = [
     answer: "bicycle",
   },
 ];
-console.log(library);
+
 export default function HomePage() {
   const [currentCard, setCurrentCard] = useState(library[0]);
-  function handleNextQuestion() {
+  async function handleNextQuestion() {
     console.log(library.length);
-    const nextCard = Math.floor(Math.random() * library.length);
-    setCurrentCard(library[nextCard]);
+    let nextCardIndex = Math.floor(Math.random() * library.length);
+    while (currentCard.question === library[nextCardIndex].question) {
+      nextCardIndex = Math.floor(Math.random() * library.length);
+    }
+    setCurrentCard(library[nextCardIndex]);
   }
   return (
     <div>

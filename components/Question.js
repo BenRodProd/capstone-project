@@ -11,7 +11,7 @@ const StyledQuestion = styled.div`
 export default function Question({ question }) {
   return (
     <>
-      <h1>Question</h1>
+      <h1>TRANSLATE:</h1>
       <StyledQuestion>{question}</StyledQuestion>
     </>
   );

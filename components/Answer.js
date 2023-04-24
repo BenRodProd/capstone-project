@@ -73,7 +73,6 @@ export default function Answer({ answer, handleNextQuestion }) {
       console.log("right letter!");
       if (index < answerArray.length - 1) {
         inputRef.current[index + 1].focus();
-      } else {
       }
     } else {
       console.log("wrong letter!");

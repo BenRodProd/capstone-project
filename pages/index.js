@@ -45,6 +45,22 @@ const library = [
       "Javascript array method that changes the contents of an array by removing or replacing existing elements and/or adding new elements in place.",
     answer: "splice",
   },
+  {
+    question: "What is a group of flamingos called?",
+    answer: "flamboyance",
+  },
+  {
+    question: "What is the nests of flamingos made of?",
+    answer: "mud",
+  },
+  {
+    question: "How large (in cm) can the largest flamingos in the world grow?",
+    answer: "187",
+  },
+  {
+    question: "how many eggs do flamingos lay in a year?",
+    answer: "one",
+  },
 ];
 const userData = {
   health: 90,

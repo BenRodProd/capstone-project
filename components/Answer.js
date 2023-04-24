@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 const InputFieldLayout = styled.div`
   display: flexbox;
   justify-content: center;
+  width: 100vw;
 `;
 const StyledInput = styled.input`
   caret-color: transparent;
@@ -41,6 +42,7 @@ export default function Answer({
   answer,
   handleNextQuestion,
   handleWrongAnswer,
+  handleRightAnswer,
 }) {
   const [wrongIndex, setWrongIndex] = useState(-1);
 
@@ -77,6 +79,7 @@ export default function Answer({
     setguessedWordArray(newguessedWordArray);
     // ############ right letter ################
     if (letter === answerArray[index]) {
+      handleRightAnswer(5);
       if (index < answerArray.length - 1) {
         inputRef.current[index + 1].focus();
       }

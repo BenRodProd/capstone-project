@@ -8,6 +8,9 @@ const StyledQuestion = styled.div`
   width: 100%;
   background-color: yellow;
   padding: 2rem;
+  color: black;
+  font-size: 2rem;
+  font-weight: bold;
   margin-bottom: 2rem;
 `;
 

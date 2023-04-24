@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
+
 const InputFieldLayout = styled.div`
   display: flexbox;
   justify-content: center;
@@ -35,6 +36,7 @@ const StyledInput = styled.input`
     }
   }
 `;
+
 export default function Answer({ answer, handleNextQuestion }) {
   const [wrongIndex, setWrongIndex] = useState(-1);
 

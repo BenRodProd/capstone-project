@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 const StyledQuestion = styled.div`
   display: flexbox;
   border-radius: 5%;
@@ -8,6 +9,7 @@ const StyledQuestion = styled.div`
   background-color: yellow;
   padding: 2rem;
 `;
+
 export default function Question({ question }) {
   return (
     <>

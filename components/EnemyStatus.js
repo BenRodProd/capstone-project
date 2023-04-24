@@ -9,10 +9,8 @@ const StyledEnemyStats = styled.div`
 `;
 export default function EnemyStatus({ enemyHealth }) {
   return (
-    <>
-      <StyledEnemyStats>
-        <HealthProgress value={enemyHealth} max="100" />
-      </StyledEnemyStats>
-    </>
+    <StyledEnemyStats>
+      <HealthProgress value={enemyHealth} max="100" />
+    </StyledEnemyStats>
   );
 }

@@ -11,19 +11,19 @@ import { levelLibrary } from "@/library/levelLibrary";
 // ############## Dummy Data #######################
 const library = [
   {
-    question: "Huhn",
+    question: "translate to english: Huhn",
     answer: "chicken",
   },
   {
-    question: "Gurke",
+    question: "translate to english: Gurke",
     answer: "cucumber",
   },
   {
-    question: "Auto",
+    question: "translate to english: Auto",
     answer: "car",
   },
   {
-    question: "Fahrrad",
+    question: "translate to english: Fahrrad",
     answer: "bicycle",
   },
   {
@@ -42,7 +42,7 @@ const library = [
   },
   {
     question:
-      "changes the contents of an array by removing or replacing existing elements and/or adding new elements in place.",
+      "Javascript array method that changes the contents of an array by removing or replacing existing elements and/or adding new elements in place.",
     answer: "splice",
   },
 ];

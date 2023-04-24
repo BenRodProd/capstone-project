@@ -47,7 +47,10 @@ export default function Answer({ answer, handleNextQuestion }) {
   useEffect(() => {
     setAnswerArray(answer.split(""));
   }, [answer]);
-
+  // ############# Focus first LetterInput when loaded #############
+  useEffect(() => {
+    inputRef.current[0].focus();
+  }, []);
   // ############## Right word ###########################
   useEffect(() => {
     if (answerArray.join("") === guessedWordArray.join("")) {

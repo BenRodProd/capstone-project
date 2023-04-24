@@ -23,6 +23,7 @@ const library = [
 
 export default function HomePage() {
   const [currentCard, setCurrentCard] = useState(library[0]);
+
   function handleNextQuestion() {
     let nextCardIndex = Math.floor(Math.random() * library.length);
     while (currentCard.question === library[nextCardIndex].question) {
@@ -30,6 +31,7 @@ export default function HomePage() {
     }
     setCurrentCard(library[nextCardIndex]);
   }
+
   return (
     <div>
       <Question question={currentCard.question} />

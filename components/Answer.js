@@ -63,6 +63,7 @@ export default function Answer({ answer, handleNextQuestion }) {
       }, 800);
     }
   }, [guessedWordArray, answerArray, handleNextQuestion]);
+
   function handleLetterGuess(event, index) {
     const letter = event.target.value;
     const newguessedWordArray = [...guessedWordArray];
@@ -70,14 +71,13 @@ export default function Answer({ answer, handleNextQuestion }) {
     newguessedWordArray[index] = letter;
 
     setguessedWordArray(newguessedWordArray);
-
+    // ############ right letter ################
     if (letter === answerArray[index]) {
-      console.log("right letter!");
       if (index < answerArray.length - 1) {
         inputRef.current[index + 1].focus();
       }
     } else {
-      console.log("wrong letter!");
+      // ############# wrong letter ###############
       setWrongIndex(index);
       setTimeout(() => {
         setWrongIndex(-1);

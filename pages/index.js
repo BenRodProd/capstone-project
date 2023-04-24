@@ -5,6 +5,8 @@ import AvatarStatus from "@/components/AvatarStatus";
 import { enemyLibrary } from "@/library/enemyLibrary";
 import EnemyAvatar from "@/components/EnemyAvatar";
 import EnemyStatus from "@/components/EnemyStatus";
+import LevelBackgroundImage from "@/components/LevelBackgroundImage";
+import { levelLibrary } from "@/library/levelLibrary";
 
 // ############## Dummy Data #######################
 const library = [
@@ -24,6 +26,25 @@ const library = [
     question: "Fahrrad",
     answer: "bicycle",
   },
+  {
+    question: "Eine Flasche Wasser",
+    answer: "a bottle of water",
+  },
+  {
+    question:
+      "Javascript array method that returns a new array iterator object that contains the key/value pairs for each index in the array.",
+    answer: "entries",
+  },
+  {
+    question:
+      "Javascript array method that applies a function against an accumulator and each value of the array (from right-to-left) to reduce it to a single value.",
+    answer: "reduceright",
+  },
+  {
+    question:
+      "changes the contents of an array by removing or replacing existing elements and/or adding new elements in place.",
+    answer: "splice",
+  },
 ];
 const userData = {
   health: 90,
@@ -32,6 +53,8 @@ const userData = {
 
 export default function HomePage() {
   const [currentEnemyIndex, setcurrentEnemyIndex] = useState(0);
+  const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
+  const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [currentEnemy, setcurrentEnemy] = useState(
     enemyLibrary[currentEnemyIndex]
   );
@@ -57,6 +80,13 @@ export default function HomePage() {
       setEnemyHealth((prevEnemyHealth) => prevEnemyHealth - damage);
     } else {
       setcurrentEnemyIndex((prevEnemyIndex) => prevEnemyIndex + 1);
+      setCurrentLevelIndex((prevLevelIndex) => prevLevelIndex + 1);
+      if (levelLibrary[currentLevelIndex]) {
+        setCurrentLevel(levelLibrary[currentLevelIndex]);
+      } else {
+        setCurrentLevelIndex(0);
+        setCurrentLevel(levelLibrary[0]);
+      }
       if (enemyLibrary[currentEnemyIndex]) {
         setcurrentEnemy(enemyLibrary[currentEnemyIndex]);
       } else {
@@ -75,6 +105,7 @@ export default function HomePage() {
   }
   return (
     <div>
+      <LevelBackgroundImage level={currentLevel} />
       <Question question={currentCard.question} />
       <EnemyAvatar currentEnemy={currentEnemy} />
       <EnemyStatus enemyHealth={enemyHealth} />

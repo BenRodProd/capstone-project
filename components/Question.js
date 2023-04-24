@@ -1,23 +1,33 @@
 import styled from "styled-components";
 
 const StyledQuestion = styled.div`
+  top: 20%;
+  left: 10%;
+
   display: flexbox;
-  border-radius: 5%;
+  position: absolute;
+  border: 4px solid #2651a6;
+  margin: 0 auto;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
   justify-content: center;
-  height: 300px;
-  width: 100%;
-  background-color: yellow;
-  padding: 2rem;
+  height: fit-content;
+  width: fit-content;
+  background-color: rgba(225, 235, 0, 0.9);
+  padding: 0.5rem;
   color: black;
-  font-size: 2rem;
+  font-size: 1rem;
   font-weight: bold;
   margin-bottom: 2rem;
+  &:after {
+    object-fit: cover;
+  }
 `;
 
 export default function Question({ question }) {
   return (
     <>
-      <h1>TRANSLATE:</h1>
       <StyledQuestion>{question}</StyledQuestion>
     </>
   );

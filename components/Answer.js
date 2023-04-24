@@ -71,7 +71,7 @@ export default function Answer({
   }, [guessedWordArray, answerArray, handleNextQuestion]);
 
   function handleLetterGuess(event, index) {
-    const letter = event.target.value;
+    const letter = event.target.value.toLowerCase();
     const newguessedWordArray = [...guessedWordArray];
 
     newguessedWordArray[index] = letter;

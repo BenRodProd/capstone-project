@@ -37,7 +37,11 @@ const StyledInput = styled.input`
   }
 `;
 
-export default function Answer({ answer, handleNextQuestion }) {
+export default function Answer({
+  answer,
+  handleNextQuestion,
+  handleWrongAnswer,
+}) {
   const [wrongIndex, setWrongIndex] = useState(-1);
 
   const inputRef = useRef([]);
@@ -78,6 +82,7 @@ export default function Answer({ answer, handleNextQuestion }) {
       }
     } else {
       // ############# wrong letter ###############
+      handleWrongAnswer(5);
       setWrongIndex(index);
       setTimeout(() => {
         setWrongIndex(-1);

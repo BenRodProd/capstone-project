@@ -43,23 +43,16 @@ export default function Answer({ answer, handleNextQuestion }) {
   const [guessedWordArray, setguessedWordArray] = useState(
     answerArray.map(() => "")
   );
-  // ########### Focus on first letter when new answer i rendered #############
+  // ############## Split Answer in Array when new Answer received ##################
   useEffect(() => {
     setAnswerArray(answer.split(""));
   }, [answer]);
-  useEffect(() => {
-    inputRef.current[0].focus();
-  }, []);
-  useEffect(() => {
-    setguessedWordArray(answerArray.map(() => ""));
-    inputRef.current[0].focus();
-  }, [answerArray]);
+
   // ############## Right word ###########################
   useEffect(() => {
     if (answerArray.join("") === guessedWordArray.join("")) {
       setTimeout(() => {
         handleNextQuestion();
-        console.log("answerarray", answerArray);
         setguessedWordArray(answerArray.map(() => ""));
         inputRef.current[0].focus();
       }, 800);
@@ -72,7 +65,7 @@ export default function Answer({ answer, handleNextQuestion }) {
     newguessedWordArray[index] = letter;
 
     setguessedWordArray(newguessedWordArray);
-    console.log("newguessedWordArray", newguessedWordArray[index]);
+
     if (letter === answerArray[index]) {
       console.log("right letter!");
       if (index < answerArray.length - 1) {

@@ -8,6 +8,7 @@ export default function App({ Component, pageProps }) {
         <title>Journey of Wisdom</title>
       </Head>
       <GlobalStyle />
+
       <Component {...pageProps} />
     </>
   );

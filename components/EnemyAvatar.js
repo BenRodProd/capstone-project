@@ -4,7 +4,7 @@ import styled from "styled-components";
 const StyledAvatar = styled(Image)`
   position: absolute;
   object-fit: contain;
-  top: 10rem;
+  top: 15rem;
   left: 5rem;
 `;
 
@@ -17,7 +17,6 @@ export default function EnemyAvatar({ currentEnemy }) {
         width="200"
         height="200"
       />
-      <p>{currentEnemy.name}</p>
     </>
   );
 }

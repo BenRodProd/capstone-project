@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 
 const InputFieldLayout = styled.div`
   display: flexbox;
+  margin-top: 1rem;
   justify-content: center;
   width: 100vw;
 `;
@@ -98,7 +99,6 @@ export default function Answer({
 
   return (
     <>
-      <h1>ANSWER:</h1>
       <InputFieldLayout>
         {answerArray.map((letter, index) => (
           <StyledInput

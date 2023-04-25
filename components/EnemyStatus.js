@@ -5,7 +5,7 @@ import { HealthProgress } from "./StyledProgress";
 const StyledEnemyStats = styled.div`
   position: absolute;
   left: 7rem;
-  top: 28rem;
+  top: 27.5rem;
 `;
 export default function EnemyStatus({ enemyHealth }) {
   return (

@@ -14,11 +14,19 @@ const StyledStatusBox = styled.div`
   width: fit-content;
   margin-left: auto;
 `;
-
-export default function AvatarStatus({ health, armor }) {
+const StyledLegend = styled.legend`
+  position: absolute;
+  top: 29rem;
+  left: 15rem;
+  color: white;
+  z-index: 5;
+  filter: drop-shadow(0px 0px 0.75rem black);
+`;
+export default function AvatarStatus({ health, armor, level }) {
   return (
     <>
-      <StyledStatusBox>
+      <StyledLegend htmlFor="statusBox">LEVEL: {level}</StyledLegend>
+      <StyledStatusBox id="statusBox">
         <label htmlFor="health">Health:</label>
         <HealthProgress id="health" max="100" value={health}></HealthProgress>
         <label htmlFor="armor">Armor:</label>

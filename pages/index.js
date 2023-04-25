@@ -60,14 +60,14 @@ const library = [
   },
   {
     question: "how many eggs do flamingos lay in a year?",
-    answer: "one",
+    answer: "1",
   },
 ];
 const userData = {
   health: 90,
   armor: 80,
   avatar: {
-    knight: 1,
+    knight: 400,
     dragon: 0,
     wizard: 0,
     thieve: 0,
@@ -84,6 +84,7 @@ export default function HomePage() {
     enemyLibrary[currentEnemyIndex]
   );
   const [userHealth, setUserHealth] = useState(userData.health);
+  const [userXP, setUserXP] = useState(user.avatar[user.chosenAvatar]);
   const [userArmor, setUserArmor] = useState(userData.armor);
   const [enemyHealth, setEnemyHealth] = useState(currentEnemy.health);
   const [currentCard, setCurrentCard] = useState(library[0]);
@@ -104,8 +105,10 @@ export default function HomePage() {
     if (enemyHealth > damage) {
       setEnemyHealth((prevEnemyHealth) => prevEnemyHealth - damage);
     } else {
+      setUserXP((prevXP) => prevXP + currentEnemy.xp);
       setcurrentEnemyIndex((prevEnemyIndex) => prevEnemyIndex + 1);
       setCurrentLevelIndex((prevLevelIndex) => prevLevelIndex + 1);
+
       if (levelLibrary[currentLevelIndex]) {
         setCurrentLevel(levelLibrary[currentLevelIndex]);
       } else {
@@ -129,9 +132,10 @@ export default function HomePage() {
     }
   }
 
-  const userAvatarImage = `/assets/avatars/${user.chosenAvatar}${
-    user.avatar[user.chosenAvatar]
-  }.png`;
+  const userAvatarImage = `/assets/avatars/${user.chosenAvatar}${Math.floor(
+    userXP / 500
+  )}.png`;
+  const userLevel = Math.floor(userXP / 500);
 
   return (
     <div>
@@ -139,8 +143,12 @@ export default function HomePage() {
       <Question question={currentCard.question} />
       <EnemyAvatar currentEnemy={currentEnemy} />
       <EnemyStatus enemyHealth={enemyHealth} />
-      <UserAvatar imageSrc={userAvatarImage} />
-      <AvatarStatus health={userHealth} armor={userArmor} />
+      <UserAvatar
+        imageSrc={userAvatarImage}
+        userXP={userXP}
+        level={userLevel}
+      />
+      <AvatarStatus health={userHealth} armor={userArmor} level={userLevel} />
       <Answer
         answer={currentCard.answer}
         handleNextQuestion={handleNextQuestion}

@@ -76,6 +76,7 @@ const userData = {
 };
 
 export default function HomePage() {
+  const [user, setUser] = useState(userData);
   const [currentEnemyIndex, setcurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
@@ -86,9 +87,7 @@ export default function HomePage() {
   const [userArmor, setUserArmor] = useState(userData.armor);
   const [enemyHealth, setEnemyHealth] = useState(currentEnemy.health);
   const [currentCard, setCurrentCard] = useState(library[0]);
-  const [currentUserAvatarImage, setcurrentUserAvatarImage] = useState(
-    "/assets/avatars/" + userData.chosenAvatar + userData.avatar.knight + ".png"
-  );
+
   useEffect(() => {
     setEnemyHealth(currentEnemy.health);
   }, [currentEnemy]);
@@ -129,13 +128,18 @@ export default function HomePage() {
       setUserHealth((prevUserHealth) => prevUserHealth - damage);
     }
   }
+
+  const userAvatarImage = `/assets/avatars/${user.chosenAvatar}${
+    user.avatar[user.chosenAvatar]
+  }.png`;
+
   return (
     <div>
       <LevelBackgroundImage level={currentLevel} />
       <Question question={currentCard.question} />
       <EnemyAvatar currentEnemy={currentEnemy} />
       <EnemyStatus enemyHealth={enemyHealth} />
-      <UserAvatar imageSrc={currentUserAvatarImage} />
+      <UserAvatar imageSrc={userAvatarImage} />
       <AvatarStatus health={userHealth} armor={userArmor} />
       <Answer
         answer={currentCard.answer}

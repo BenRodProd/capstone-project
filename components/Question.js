@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 const StyledQuestion = styled.div`
-  top: 20%;
-  left: 10%;
+  top: 8rem;
+  left: 2rem;
 
   display: flexbox;
   position: absolute;

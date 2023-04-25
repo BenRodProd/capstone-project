@@ -7,6 +7,7 @@ import EnemyAvatar from "@/components/EnemyAvatar";
 import EnemyStatus from "@/components/EnemyStatus";
 import LevelBackgroundImage from "@/components/LevelBackgroundImage";
 import { levelLibrary } from "@/library/levelLibrary";
+import UserAvatar from "@/components/UserAvatar";
 
 // ############## Dummy Data #######################
 const library = [
@@ -65,9 +66,17 @@ const library = [
 const userData = {
   health: 90,
   armor: 80,
+  avatar: {
+    knight: 1,
+    dragon: 0,
+    wizard: 0,
+    thieve: 0,
+  },
+  chosenAvatar: "knight",
 };
 
 export default function HomePage() {
+  const [user, setUser] = useState(userData);
   const [currentEnemyIndex, setcurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
@@ -119,12 +128,18 @@ export default function HomePage() {
       setUserHealth((prevUserHealth) => prevUserHealth - damage);
     }
   }
+
+  const userAvatarImage = `/assets/avatars/${user.chosenAvatar}${
+    user.avatar[user.chosenAvatar]
+  }.png`;
+
   return (
     <div>
       <LevelBackgroundImage level={currentLevel} />
       <Question question={currentCard.question} />
       <EnemyAvatar currentEnemy={currentEnemy} />
       <EnemyStatus enemyHealth={enemyHealth} />
+      <UserAvatar imageSrc={userAvatarImage} />
       <AvatarStatus health={userHealth} armor={userArmor} />
       <Answer
         answer={currentCard.answer}

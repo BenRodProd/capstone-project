@@ -7,6 +7,7 @@ import EnemyAvatar from "@/components/EnemyAvatar";
 import EnemyStatus from "@/components/EnemyStatus";
 import LevelBackgroundImage from "@/components/LevelBackgroundImage";
 import { levelLibrary } from "@/library/levelLibrary";
+import UserAvatar from "@/components/UserAvatar";
 
 // ############## Dummy Data #######################
 const library = [
@@ -65,6 +66,13 @@ const library = [
 const userData = {
   health: 90,
   armor: 80,
+  avatar: {
+    knight: 1,
+    dragon: 0,
+    wizard: 0,
+    thieve: 0,
+  },
+  chosenAvatar: "knight",
 };
 
 export default function HomePage() {
@@ -78,7 +86,9 @@ export default function HomePage() {
   const [userArmor, setUserArmor] = useState(userData.armor);
   const [enemyHealth, setEnemyHealth] = useState(currentEnemy.health);
   const [currentCard, setCurrentCard] = useState(library[0]);
-
+  const [currentUserAvatarImage, setcurrentUserAvatarImage] = useState(
+    "/assets/avatars/" + userData.chosenAvatar + userData.avatar.knight + ".png"
+  );
   useEffect(() => {
     setEnemyHealth(currentEnemy.health);
   }, [currentEnemy]);
@@ -125,6 +135,7 @@ export default function HomePage() {
       <Question question={currentCard.question} />
       <EnemyAvatar currentEnemy={currentEnemy} />
       <EnemyStatus enemyHealth={enemyHealth} />
+      <UserAvatar imageSrc={currentUserAvatarImage} />
       <AvatarStatus health={userHealth} armor={userArmor} />
       <Answer
         answer={currentCard.answer}

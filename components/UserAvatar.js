@@ -9,13 +9,11 @@ const StyledAvatarImage = styled(Image)`
 
 export default function UserAvatar({ imageSrc }) {
   return (
-    <>
-      <StyledAvatarImage
-        src={imageSrc}
-        alt="User Avatar"
-        width="80"
-        height="80"
-      />
-    </>
+    <StyledAvatarImage
+      src={imageSrc}
+      alt="User Avatar"
+      width="80"
+      height="80"
+    />
   );
 }

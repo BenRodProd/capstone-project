@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const StyledImage = styled(Image)`
   position: absolute;
-  top: 0rem;
+  top: 0;
   left: 0;
   object-fit: contain;
   opacity: 0.7;

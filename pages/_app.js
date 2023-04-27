@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }) {
     setInsideLibrary(!insideLibrary);
     ("toggle");
   }
-  console.log("app_js", insideLibrary);
+
   return (
     <>
       <Head>

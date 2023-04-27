@@ -14,7 +14,6 @@ const StyledImage = styled(Image)`
 `;
 
 export default function EnterLibrary({ insideLibrary, toggleInsideLibrary }) {
-  console.log(insideLibrary);
   return (
     <>
       {insideLibrary ? (

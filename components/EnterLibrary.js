@@ -13,7 +13,10 @@ const StyledImage = styled(Image)`
   }
 `;
 
-export default function EnterLibrary({ insideLibrary, toggleInsideLibrary }) {
+export default function LibraryNavigation({
+  insideLibrary,
+  toggleInsideLibrary,
+}) {
   return (
     <>
       {insideLibrary ? (
@@ -27,7 +30,7 @@ export default function EnterLibrary({ insideLibrary, toggleInsideLibrary }) {
           ></StyledImage>
         </Link>
       ) : (
-        <Link href="/Library/">
+        <Link href="/library/">
           <StyledImage
             onClick={toggleInsideLibrary}
             src="/assets/bookicon.png"

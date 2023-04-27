@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
@@ -24,7 +23,7 @@ const StyledInput = styled.input`
   background-color: transparent;
 `;
 const StyledButton = styled.button`
-  display: flexbox;
+  display: flex;
   position: absolute;
   margin-top: 2rem;
   top: 23rem;
@@ -68,7 +67,7 @@ const BackgroundImage = styled(Image)`
 export default function AddWisdom({ handleNewWisdomSubmit }) {
   const inputRef = useRef(null);
   const [popupActive, setPopupActive] = useState(false);
-  const router = useRouter();
+
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -99,7 +98,7 @@ export default function AddWisdom({ handleNewWisdomSubmit }) {
         width="1080"
         height="1920"
       />
-      <StyledForm onSubmit={(event) => handleSubmit(event)}>
+      <StyledForm onSubmit={handleSubmit}>
         <StyledLabel htmlFor="question">Enter Question:</StyledLabel>
         <StyledInput
           ref={inputRef}
@@ -124,7 +123,7 @@ export default function AddWisdom({ handleNewWisdomSubmit }) {
         </StyledSelect>
         <StyledButton type="submit">SUBMIT</StyledButton>
       </StyledForm>
-      {popupActive ? <StyledPopup>Wisdom Added</StyledPopup> : null}
+      {popupActive && <StyledPopup>Wisdom Added</StyledPopup>}
     </>
   );
 }

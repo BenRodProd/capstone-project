@@ -2,7 +2,7 @@ import { useState } from "react";
 import GlobalStyle from "../styles";
 import Head from "next/head";
 import { library } from "@/library/library";
-import EnterLibrary from "@/components/EnterLibrary";
+import LibraryNavigation from "@/components/EnterLibrary";
 
 export default function App({ Component, pageProps }) {
   const [currentLibrary, setCurrentLibrary] = useState(library);
@@ -13,7 +13,6 @@ export default function App({ Component, pageProps }) {
 
   function toggleInsideLibrary() {
     setInsideLibrary(!insideLibrary);
-    ("toggle");
   }
 
   return (
@@ -28,7 +27,7 @@ export default function App({ Component, pageProps }) {
         handleNewWisdomSubmit={handleNewWisdomSubmit}
       />
 
-      <EnterLibrary
+      <LibraryNavigation
         insideLibrary={insideLibrary}
         toggleInsideLibrary={toggleInsideLibrary}
       />

@@ -26,7 +26,7 @@ export default function LibraryNavigation({ insideLibrary }) {
           ></StyledImage>
         </Link>
       ) : (
-        <Link href="/library/">
+        <Link href="/library">
           <StyledImage
             src="/assets/bookicon.png"
             alt="Library Icon"

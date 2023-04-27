@@ -15,7 +15,7 @@ export default createGlobalStyle`
 
     margin: 0;
     font-family: system-ui;
-    display:flexbox;
+    display: flex;
     justify-content:center;
     text-align: center;
     background-color: black;

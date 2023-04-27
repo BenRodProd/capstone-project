@@ -3,17 +3,18 @@ import GlobalStyle from "../styles";
 import Head from "next/head";
 import { library } from "@/library/library";
 import LibraryNavigation from "@/components/EnterLibrary";
+import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }) {
   const [currentLibrary, setCurrentLibrary] = useState(library);
-  const [insideLibrary, setInsideLibrary] = useState(false);
+  // const [insideLibrary, setInsideLibrary] = useState(false);
   function handleNewWisdomSubmit(wisdom) {
     setCurrentLibrary([...currentLibrary, wisdom]);
   }
 
-  function toggleInsideLibrary() {
-    setInsideLibrary(!insideLibrary);
-  }
+  const router = useRouter();
+
+  const insideLibrary = router.route.includes("/library");
 
   return (
     <>
@@ -27,10 +28,7 @@ export default function App({ Component, pageProps }) {
         handleNewWisdomSubmit={handleNewWisdomSubmit}
       />
 
-      <LibraryNavigation
-        insideLibrary={insideLibrary}
-        toggleInsideLibrary={toggleInsideLibrary}
-      />
+      <LibraryNavigation insideLibrary={insideLibrary} />
     </>
   );
 }

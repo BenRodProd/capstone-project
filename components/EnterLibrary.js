@@ -13,16 +13,12 @@ const StyledImage = styled(Image)`
   }
 `;
 
-export default function LibraryNavigation({
-  insideLibrary,
-  toggleInsideLibrary,
-}) {
+export default function LibraryNavigation({ insideLibrary }) {
   return (
     <>
       {insideLibrary ? (
         <Link href="/">
           <StyledImage
-            onClick={toggleInsideLibrary}
             src="/assets/journey.png"
             alt="Library Icon"
             height="80"
@@ -32,7 +28,6 @@ export default function LibraryNavigation({
       ) : (
         <Link href="/library/">
           <StyledImage
-            onClick={toggleInsideLibrary}
             src="/assets/bookicon.png"
             alt="Library Icon"
             height="80"

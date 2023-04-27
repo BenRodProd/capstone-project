@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }) {
   const [currentLibrary, setCurrentLibrary] = useState(library);
-  // const [insideLibrary, setInsideLibrary] = useState(false);
   function handleNewWisdomSubmit(wisdom) {
     setCurrentLibrary([...currentLibrary, wisdom]);
   }

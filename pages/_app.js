@@ -1,26 +1,21 @@
 import { useState } from "react";
-import Link from "next/link";
-import styled from "styled-components";
 import GlobalStyle from "../styles";
 import Head from "next/head";
 import { library } from "@/library/library";
-
-const StyledLink = styled(Link)`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background-color: white;
-  color: black;
-  text-decoration: none;
-  width: 100%;
-`;
+import EnterLibrary from "@/components/EnterLibrary";
 
 export default function App({ Component, pageProps }) {
   const [currentLibrary, setCurrentLibrary] = useState(library);
+  const [insideLibrary, setInsideLibrary] = useState(false);
   function handleNewWisdomSubmit(wisdom) {
     setCurrentLibrary([...currentLibrary, wisdom]);
   }
 
+  function toggleInsideLibrary() {
+    setInsideLibrary(!insideLibrary);
+    ("toggle");
+  }
+  console.log("app_js", insideLibrary);
   return (
     <>
       <Head>
@@ -32,7 +27,11 @@ export default function App({ Component, pageProps }) {
         library={currentLibrary}
         handleNewWisdomSubmit={handleNewWisdomSubmit}
       />
-      <StyledLink href="/Library/">Add New Wisdom</StyledLink>
+
+      <EnterLibrary
+        insideLibrary={insideLibrary}
+        toggleInsideLibrary={toggleInsideLibrary}
+      />
     </>
   );
 }

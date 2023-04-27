@@ -1,25 +1,19 @@
 import { useState } from "react";
-import Link from "next/link";
-import styled from "styled-components";
 import GlobalStyle from "../styles";
 import Head from "next/head";
 import { library } from "@/library/library";
-
-const StyledLink = styled(Link)`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background-color: white;
-  color: black;
-  text-decoration: none;
-  width: 100%;
-`;
+import LibraryNavigation from "@/components/EnterLibrary";
+import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }) {
   const [currentLibrary, setCurrentLibrary] = useState(library);
   function handleNewWisdomSubmit(wisdom) {
     setCurrentLibrary([...currentLibrary, wisdom]);
   }
+
+  const router = useRouter();
+
+  const insideLibrary = router.route.includes("/library");
 
   return (
     <>
@@ -32,7 +26,8 @@ export default function App({ Component, pageProps }) {
         library={currentLibrary}
         handleNewWisdomSubmit={handleNewWisdomSubmit}
       />
-      <StyledLink href="/Library/">Add New Wisdom</StyledLink>
+
+      <LibraryNavigation insideLibrary={insideLibrary} />
     </>
   );
 }

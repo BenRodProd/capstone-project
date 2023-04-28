@@ -73,7 +73,7 @@ export default function ViewBook({ library }) {
         <BookPageImage>
           {categories.map((cat, index) => {
             return (
-              <BookPageStyle key={uuidv4()}>
+              <BookPageStyle key={cat}>
                 <li>
                   <h1>
                     Chapter {index + 1}: {cat}

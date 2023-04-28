@@ -24,6 +24,7 @@ const StyledLabel = styled.label`
 const StyledInput = styled.input`
   background-color: transparent;
 `;
+
 const StyledButton = styled.button`
   display: flex;
   position: absolute;
@@ -35,9 +36,11 @@ const StyledButton = styled.button`
   font-family: Georgia, "Times New Roman", Times, serif;
   font-weight: bold;
 `;
+
 const StyledSelect = styled.select`
   background-color: transparent;
 `;
+
 const StyledPopup = styled.div`
   position: absolute;
   border: 2px solid white;
@@ -56,10 +59,12 @@ const StyledBook = styled(Image)`
   height: 100%;
   z-index: -2;
 `;
+
 const StyledBackToBookImage = styled(Image)`
   position: relative;
   margin-top: 10rem;
 `;
+
 const BackgroundImage = styled(Image)`
   position: absolute;
   top: 0;
@@ -80,9 +85,7 @@ export default function AddWisdom({ handleNewWisdomSubmit }) {
     const wisdomData = Object.fromEntries(formData);
     handleNewWisdomSubmit({ ...wisdomData, answeredRight: 0, id: uuidv4() });
     setPopupActive(true);
-    setTimeout(() => {
-      setPopupActive(false);
-    }, 1500);
+    setTimeout(() => setPopupActive(false), 1500);
     event.target.reset();
     inputRef.current.focus();
   }
@@ -120,7 +123,7 @@ export default function AddWisdom({ handleNewWisdomSubmit }) {
           <option value="Basics">Basics</option>
           <option value="Javascript">Javascript</option>
         </StyledSelect>
-        <StyledLabel htmlFor="benfit">Pick a Benefit</StyledLabel>
+        <StyledLabel htmlFor="benefit">Pick a Benefit</StyledLabel>
         <StyledSelect name="benefit">
           <option value="health">Health</option>
           <option value="armor">Armor</option>

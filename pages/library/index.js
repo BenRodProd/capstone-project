@@ -65,8 +65,7 @@ export default function ViewBook({ library }) {
   const categories = library
     .map((wisdom) => wisdom.category)
     .filter((value, index, self) => self.indexOf(value) === index);
-  console.log(categories);
-  console.log(library);
+
   return (
     <>
       <BookPageContainer>

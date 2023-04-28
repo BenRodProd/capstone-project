@@ -85,9 +85,9 @@ export default function ViewBook({ library, currentBook }) {
       <BookPageContainer>
         <BookPageImage>
           <BookTitle>
-            <p>____________</p>
+            <div className="seperator">_________</div>
             {currentBook}
-            <p>____________</p>
+            <div className="seperator">_________</div>
           </BookTitle>
 
           {categories.map((cat, index) => {
@@ -97,7 +97,9 @@ export default function ViewBook({ library, currentBook }) {
                   <h1>
                     Chapter {index + 1}: {cat}
                   </h1>
-                  <p>______________________________</p>
+                  <div className="seperator">
+                    ______________________________
+                  </div>
                 </li>
 
                 {library
@@ -111,7 +113,9 @@ export default function ViewBook({ library, currentBook }) {
                       <h2>Answer:</h2>
                       <p>{wisdom.answer}</p>
 
-                      <p>_____________________________</p>
+                      <div className="seperator">
+                        _____________________________
+                      </div>
                     </StyledWisdom>
                   ))}
               </BookPageStyle>

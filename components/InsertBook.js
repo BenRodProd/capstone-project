@@ -70,7 +70,7 @@ const BookSpine = styled.div`
     filter: saturate(0);
   }
 `;
-const BookTitle = styled.p`
+const BookTitle = styled.h1`
   padding-top: 2rem;
   padding-left: 2rem;
   display: flex;

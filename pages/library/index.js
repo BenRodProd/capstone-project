@@ -33,6 +33,7 @@ const BookPageContainer = styled.div`
 `;
 const FeatherLink = styled(Link)`
   position: fixed;
+  bottom: 0;
 `;
 const StyledWisdom = styled.li`
   position: relative;
@@ -101,10 +102,11 @@ export default function ViewBook({ library }) {
         <Image
           src="/assets/feather.png"
           alt="feather"
-          width="200"
-          height="70"
+          width="150"
+          height="40"
         ></Image>
       </FeatherLink>
+      <p>You have {library.length} wisdoms in your book</p>
     </>
   );
 }

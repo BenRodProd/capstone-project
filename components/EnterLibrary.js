@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 
 const StyledImage = styled(Image)`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   object-fit: contain;

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { v4 as uuidv4 } from "uuid";
 
 const StyledForm = styled.form`
   display: grid;
@@ -77,7 +78,7 @@ export default function AddWisdom({ handleNewWisdomSubmit }) {
 
     const formData = new FormData(event.target);
     const wisdomData = Object.fromEntries(formData);
-    handleNewWisdomSubmit({ ...wisdomData, answeredRight: 0 });
+    handleNewWisdomSubmit({ ...wisdomData, answeredRight: 0, id: uuidv4() });
     setPopupActive(true);
     setTimeout(() => {
       setPopupActive(false);

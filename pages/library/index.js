@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
 
 const BookPageStyle = styled.ul`
   position: relative;
@@ -54,33 +55,35 @@ const BookPageImage = styled.div`
     bottom: 0;
     left: 0;
     background-image: url("/assets/bookpage.png");
-    background-repeat: repeat-y;
+
     background-size: cover;
     opacity: 0.7;
     z-index: -1;
   }
 `;
-
 export default function ViewBook({ library }) {
   const categories = library
     .map((wisdom) => wisdom.category)
     .filter((value, index, self) => self.indexOf(value) === index);
   console.log(categories);
+  console.log(library);
   return (
     <>
       <BookPageContainer>
         <BookPageImage>
           {categories.map((cat, index) => {
             return (
-              <BookPageStyle key={index}>
-                <h1>
-                  Chapter {index + 1}: {cat}
-                </h1>
+              <BookPageStyle key={uuidv4()}>
+                <li>
+                  <h1>
+                    Chapter {index + 1}: {cat}
+                  </h1>
+                </li>
 
                 {library
                   .filter((wisdom) => wisdom.category === cat)
-                  .map((wisdom, index) => (
-                    <StyledWisdom key={index}>
+                  .map((wisdom) => (
+                    <StyledWisdom key={wisdom.id}>
                       <li>
                         <h2>Question:</h2>
                         <p>{wisdom.question}</p>

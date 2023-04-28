@@ -6,8 +6,7 @@ export default createGlobalStyle`
   *::after {
   
     box-sizing: border-box;
-    max-width: 400px;
-    max-height: 720px;
+    
     
   }
 
@@ -22,4 +21,6 @@ export default createGlobalStyle`
     color: white;
     
   }
+
+
 `;

@@ -34,7 +34,7 @@ const BookPageContainer = styled.div`
 const FeatherLink = styled(Link)`
   position: fixed;
 `;
-const StyledWisdom = styled.div`
+const StyledWisdom = styled.li`
   position: relative;
 
   li {
@@ -84,14 +84,12 @@ export default function ViewBook({ library }) {
                   .filter((wisdom) => wisdom.category === cat)
                   .map((wisdom) => (
                     <StyledWisdom key={wisdom.id}>
-                      <li>
-                        <h2>Question:</h2>
-                        <p>{wisdom.question}</p>
-                      </li>
-                      <li>
-                        <h2>Answer:</h2>
-                        <p>{wisdom.answer}</p>
-                      </li>
+                      <h2>Question:</h2>
+                      <p>{wisdom.question}</p>
+
+                      <h2>Answer:</h2>
+                      <p>{wisdom.answer}</p>
+
                       <p>_____________________________</p>
                     </StyledWisdom>
                   ))}

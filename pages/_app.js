@@ -17,6 +17,7 @@ const MainStyled = styled.div`
 `;
 
 export default function App({ Component, pageProps }) {
+  const router = useRouter();
   const [currentLibrary, setCurrentLibrary] = useState(library);
   const [currentBook, setCurrentBook] = useState("");
   function handleNewWisdomSubmit(wisdom) {
@@ -26,7 +27,6 @@ export default function App({ Component, pageProps }) {
     const arrayToKeep = currentLibrary.filter((elem) => elem.id !== wisdom.id);
     setCurrentLibrary([...arrayToKeep, wisdom]);
   }
-  const router = useRouter();
 
   const insideLibrary = router.route.includes("/library");
 

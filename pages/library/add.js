@@ -74,7 +74,7 @@ const BackgroundImage = styled(Image)`
   object-fit: cover;
 `;
 
-export default function AddWisdom({ handleNewWisdomSubmit }) {
+export default function AddWisdom({ handleNewWisdomSubmit, currentBook }) {
   const inputRef = useRef(null);
   const [popupActive, setPopupActive] = useState(false);
 
@@ -83,7 +83,12 @@ export default function AddWisdom({ handleNewWisdomSubmit }) {
 
     const formData = new FormData(event.target);
     const wisdomData = Object.fromEntries(formData);
-    handleNewWisdomSubmit({ ...wisdomData, answeredRight: 0, id: uuidv4() });
+    handleNewWisdomSubmit({
+      ...wisdomData,
+      answeredRight: 0,
+      id: uuidv4(),
+      book: currentBook,
+    });
     setPopupActive(true);
     setTimeout(() => setPopupActive(false), 1500);
     event.target.reset();
@@ -132,7 +137,7 @@ export default function AddWisdom({ handleNewWisdomSubmit }) {
         <StyledButton type="submit">SUBMIT</StyledButton>
       </StyledForm>
       {popupActive && <StyledPopup>Wisdom Added</StyledPopup>}
-      <Link href="/library">
+      <Link href="/library/viewBook">
         <StyledBackToBookImage
           src="/assets/bookicon.png"
           alt="Back to Book"

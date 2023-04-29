@@ -18,6 +18,7 @@ const MainStyled = styled.div`
 
 export default function App({ Component, pageProps }) {
   const [currentLibrary, setCurrentLibrary] = useState(library);
+  const [currentBook, setCurrentBook] = useState("");
   function handleNewWisdomSubmit(wisdom) {
     setCurrentLibrary([...currentLibrary, wisdom]);
   }
@@ -37,6 +38,8 @@ export default function App({ Component, pageProps }) {
           {...pageProps}
           library={currentLibrary}
           handleNewWisdomSubmit={handleNewWisdomSubmit}
+          currentBook={currentBook}
+          setCurrentBook={setCurrentBook}
         />
 
         <LibraryNavigation insideLibrary={insideLibrary} />

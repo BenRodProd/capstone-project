@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -41,15 +41,6 @@ const StyledSelect = styled.select`
   background-color: transparent;
 `;
 
-const StyledPopup = styled.div`
-  position: absolute;
-  border: 2px solid white;
-  top: 30rem;
-  left: 0;
-  text-align: center;
-  width: 100%;
-`;
-
 const StyledBook = styled(Image)`
   position: absolute;
   top: 0;
@@ -80,7 +71,6 @@ export default function EditWisdom({
   currentBook,
 }) {
   const inputRef = useRef(null);
-  const [popupActive, setPopupActive] = useState(false);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -101,7 +91,6 @@ export default function EditWisdom({
   const router = useRouter();
   const { id } = router.query;
   const wisdom = library.filter((wisdom) => wisdom.id === id)[0];
-  console.log(wisdom);
 
   return (
     <>
@@ -140,11 +129,11 @@ export default function EditWisdom({
           <option value="Basics">Basics</option>
           <option value="Javascript">Javascript</option>
         </StyledSelect>
-        <StyledLabel htmlFor="benefit">Pick a Benefit</StyledLabel>
+        <StyledLabel htmlFor="benefit">Benefit:</StyledLabel>
         <p id="benefit">{wisdom.benefit}</p>
         <StyledButton type="submit">SUBMIT</StyledButton>
       </StyledForm>
-      {popupActive && <StyledPopup>Wisdom Added</StyledPopup>}
+
       <Link href="/library/viewBook">
         <StyledBackToBookImage
           src="/assets/bookicon.png"

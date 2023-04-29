@@ -70,6 +70,8 @@ export default function EditWisdom({
   handleEditWisdomSubmit,
   currentBook,
 }) {
+  const router = useRouter();
+  const { id } = router.query;
   const inputRef = useRef(null);
 
   function handleSubmit(event) {
@@ -85,15 +87,16 @@ export default function EditWisdom({
     });
     router.push("/library/viewBook");
   }
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
-  const router = useRouter();
-  const { id } = router.query;
+
   const wisdom = library.filter((wisdom) => wisdom.id === id)[0];
   if (!id) {
     return <div>loading...</div>;
   }
+
   return (
     <>
       <BackgroundImage

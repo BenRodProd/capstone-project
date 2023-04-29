@@ -23,7 +23,7 @@ export default function App({ Component, pageProps }) {
     setCurrentLibrary([...currentLibrary, wisdom]);
   }
   function handleEditWisdomSubmit(wisdom) {
-    const arrayToKeep = currentLibrary.filter((elem) => elem.id != wisdom.id);
+    const arrayToKeep = currentLibrary.filter((elem) => elem.id !== wisdom.id);
     setCurrentLibrary([...arrayToKeep, wisdom]);
   }
   const router = useRouter();

@@ -22,7 +22,10 @@ export default function App({ Component, pageProps }) {
   function handleNewWisdomSubmit(wisdom) {
     setCurrentLibrary([...currentLibrary, wisdom]);
   }
-
+  function handleEditWisdomSubmit(wisdom) {
+    const arrayToKeep = currentLibrary.filter((elem) => elem.id != wisdom.id);
+    setCurrentLibrary([...arrayToKeep, wisdom]);
+  }
   const router = useRouter();
 
   const insideLibrary = router.route.includes("/library");
@@ -38,6 +41,7 @@ export default function App({ Component, pageProps }) {
           {...pageProps}
           library={currentLibrary}
           handleNewWisdomSubmit={handleNewWisdomSubmit}
+          handleEditWisdomSubmit={handleEditWisdomSubmit}
           currentBook={currentBook}
           setCurrentBook={setCurrentBook}
         />

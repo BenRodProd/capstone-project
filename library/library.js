@@ -5,6 +5,7 @@ export const library = [
     category: "Food",
     id: "asdfasdfassg134124",
     book: "Basic English",
+    benefit: "health",
   },
   {
     question: "translate to english: Gurke",
@@ -12,6 +13,7 @@ export const library = [
     category: "Food",
     id: "gverigno23525",
     book: "Basic English",
+    benefit: "health",
   },
   {
     question: "translate to english: Auto",
@@ -19,6 +21,7 @@ export const library = [
     category: "Vehicles",
     id: "verinoj0982345",
     book: "Basic English",
+    benefit: "health",
   },
   {
     question: "translate to english: Fahrrad",
@@ -26,6 +29,7 @@ export const library = [
     category: "Vehicles",
     id: "perigj0923852039",
     book: "Basic English",
+    benefit: "health",
   },
   {
     question: "Eine Flasche Wasser",
@@ -33,6 +37,7 @@ export const library = [
     category: "Food",
     id: "pegjfpojg0832059ufij",
     book: "Basic English",
+    benefit: "health",
   },
   {
     question:
@@ -41,6 +46,7 @@ export const library = [
     category: "Javascript",
     id: "epwgoj3084203948",
     book: "Basic English",
+    benefit: "health",
   },
   {
     question:
@@ -49,6 +55,7 @@ export const library = [
     category: "Javascript",
     id: "sdlfkj234234lksdjf",
     book: "General Knowledge",
+    benefit: "health",
   },
   {
     question:
@@ -57,6 +64,7 @@ export const library = [
     category: "Javascript",
     id: "wpwoejf234234",
     book: "General Knowledge",
+    benefit: "health",
   },
   {
     question: "What is a group of flamingos called?",
@@ -64,6 +72,7 @@ export const library = [
     category: "Flamingo Facts",
     id: "wpij2p3523potg2",
     book: "General Knowledge",
+    benefit: "health",
   },
   {
     question: "What is the nests of flamingos made of?",
@@ -71,6 +80,7 @@ export const library = [
     category: "Flamingo Facts",
     id: "wifj2p35j2p35ijfwe",
     book: "General Knowledge",
+    benefit: "health",
   },
   {
     question: "How large (in cm) can the largest flamingos in the world grow?",
@@ -78,6 +88,7 @@ export const library = [
     category: "Flamingo Facts",
     id: "wfj2342308ß9fujwpoejf",
     book: "General Knowledge",
+    benefit: "health",
   },
   {
     question: "how many eggs do flamingos lay in a year?",
@@ -85,5 +96,6 @@ export const library = [
     category: "Flamingo Facts",
     id: "elkfj3jr2p3or",
     book: "General Knowledge",
+    benefit: "health",
   },
 ];

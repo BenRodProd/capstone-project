@@ -91,7 +91,9 @@ export default function EditWisdom({
   const router = useRouter();
   const { id } = router.query;
   const wisdom = library.filter((wisdom) => wisdom.id === id)[0];
-
+  if (!id) {
+    return <div>loading...</div>;
+  }
   return (
     <>
       <BackgroundImage

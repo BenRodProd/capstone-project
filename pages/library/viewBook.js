@@ -9,7 +9,7 @@ const BookPageStyle = styled.ul`
   list-style: none;
 
   padding-left: 0;
-  margin-top: 5rem;
+  margin-top: 1rem;
   margin-bottom: 5rem;
   margin-left: 3rem;
   margin-right: 3rem;
@@ -27,11 +27,13 @@ const BookPageStyle = styled.ul`
 `;
 
 const BookTitle = styled.h1`
-  margin-top: 5rem;
+  position: relative;
+  margin-top: 3rem;
   margin-bottom: 5rem;
   font-family: "Franklin Gothic Medium";
   color: black;
   font-size: 3.5rem;
+  z-index: 1;
 `;
 
 const BookPageContainer = styled.div`
@@ -54,9 +56,17 @@ const StyledWisdom = styled.li`
   }
 `;
 
+const StyledLink = styled(Link)`
+  position: relative;
+  cursor: pointer;
+  z-index: 5;
+  text-decoration: none;
+  color: black;
+`;
+
 const BookPageImage = styled.div`
   position: relative;
-  z-index: -2;
+
   height: 100%;
 
   &::before {
@@ -70,7 +80,6 @@ const BookPageImage = styled.div`
 
     background-size: cover;
     opacity: 0.7;
-    z-index: -1;
   }
 `;
 
@@ -107,11 +116,15 @@ export default function ViewBook({ library, currentBook }) {
                   .filter((wisdom) => wisdom.category === cat)
                   .map((wisdom) => (
                     <StyledWisdom key={wisdom.id}>
-                      <h2>Question:</h2>
-                      <p>{wisdom.question}</p>
+                      <StyledLink href={`/library/${wisdom.id}`}>
+                        <div>
+                          <h2>Question:</h2>
+                          <p>{wisdom.question}</p>
 
-                      <h2>Answer:</h2>
-                      <p>{wisdom.answer}</p>
+                          <h2>Answer:</h2>
+                          <p>{wisdom.answer}</p>
+                        </div>
+                      </StyledLink>
 
                       <div className="seperator">
                         _____________________________
@@ -123,7 +136,7 @@ export default function ViewBook({ library, currentBook }) {
           })}
         </BookPageImage>
       </BookPageContainer>
-      <FeatherLink href="/library/add" passHref legacyBehavior>
+      <FeatherLink href="/library/add">
         <Image
           src="/assets/feather.png"
           alt="feather"

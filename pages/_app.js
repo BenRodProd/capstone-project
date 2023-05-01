@@ -17,13 +17,16 @@ const MainStyled = styled.div`
 `;
 
 export default function App({ Component, pageProps }) {
+  const router = useRouter();
   const [currentLibrary, setCurrentLibrary] = useState(library);
   const [currentBook, setCurrentBook] = useState("");
   function handleNewWisdomSubmit(wisdom) {
     setCurrentLibrary([...currentLibrary, wisdom]);
   }
-
-  const router = useRouter();
+  function handleEditWisdomSubmit(wisdom) {
+    const arrayToKeep = currentLibrary.filter((elem) => elem.id !== wisdom.id);
+    setCurrentLibrary([...arrayToKeep, wisdom]);
+  }
 
   const insideLibrary = router.route.includes("/library");
 
@@ -38,6 +41,7 @@ export default function App({ Component, pageProps }) {
           {...pageProps}
           library={currentLibrary}
           handleNewWisdomSubmit={handleNewWisdomSubmit}
+          handleEditWisdomSubmit={handleEditWisdomSubmit}
           currentBook={currentBook}
           setCurrentBook={setCurrentBook}
         />

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import Question from "@/components/Question";
 import Answer from "@/components/Answer";
 import AvatarStatus from "@/components/AvatarStatus";
@@ -12,6 +13,7 @@ import UserAvatar from "@/components/UserAvatar";
 // ############## Dummy Data #######################
 
 const userData = {
+  name: "testor",
   health: 90,
   armor: 80,
   avatar: {
@@ -84,7 +86,7 @@ export default function HomePage({ library }) {
     userXP / 500
   )}.png`;
   const userLevel = Math.floor(userXP / 500);
-
+  console.log(library);
   return (
     <div>
       <LevelBackgroundImage level={currentLevel} />

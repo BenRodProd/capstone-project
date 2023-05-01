@@ -2,10 +2,18 @@ import { useState } from "react";
 import GlobalStyle from "../styles";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { SWRConfig } from "swr";
+import useSWR from "swr";
 import styled from "styled-components";
-import { library } from "@/library/library";
+// import { library } from "@/library/library";
 import LibraryNavigation from "@/components/EnterLibrary";
-
+const fetcher = async (...args) => {
+  const response = await fetch(...args);
+  if (!response.ok) {
+    throw new Error(`Request with ${JSON.stringify(args)} failed.`);
+  }
+  return await response.json();
+};
 const MainStyled = styled.div`
   @media only screen and (min-width: 768px) {
     .container {
@@ -17,7 +25,13 @@ const MainStyled = styled.div`
 `;
 
 export default function App({ Component, pageProps }) {
+  const { library } = useSWR("/api/library", fetcher);
+  if (!library) {
+    return <div>loading...</div>;
+  }
+  console.log(library);
   const router = useRouter();
+
   const [currentLibrary, setCurrentLibrary] = useState(library);
   const [currentBook, setCurrentBook] = useState("");
   function handleNewWisdomSubmit(wisdom) {
@@ -32,22 +46,34 @@ export default function App({ Component, pageProps }) {
 
   return (
     <>
-      <Head>
-        <title>Journey of Wisdom</title>
-      </Head>
-      <GlobalStyle />
-      <MainStyled>
-        <Component
-          {...pageProps}
-          library={currentLibrary}
-          handleNewWisdomSubmit={handleNewWisdomSubmit}
-          handleEditWisdomSubmit={handleEditWisdomSubmit}
-          currentBook={currentBook}
-          setCurrentBook={setCurrentBook}
-        />
+      <SWRConfig
+        value={{
+          fetcher: async (...args) => {
+            const response = await fetch(...args);
+            if (!response.ok) {
+              throw new Error(`Request with ${JSON.stringify(args)} failed.`);
+            }
+            return await response.json();
+          },
+        }}
+      >
+        <Head>
+          <title>Journey of Wisdom</title>
+        </Head>
+        <GlobalStyle />
+        <MainStyled>
+          <Component
+            {...pageProps}
+            library={currentLibrary}
+            handleNewWisdomSubmit={handleNewWisdomSubmit}
+            handleEditWisdomSubmit={handleEditWisdomSubmit}
+            currentBook={currentBook}
+            setCurrentBook={setCurrentBook}
+          />
 
-        <LibraryNavigation insideLibrary={insideLibrary} />
-      </MainStyled>
+          <LibraryNavigation insideLibrary={insideLibrary} />
+        </MainStyled>
+      </SWRConfig>
     </>
   );
 }

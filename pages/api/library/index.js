@@ -7,7 +7,7 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     const wisdom = await Wisdom.findById(id);
-
+    console.log(wisdom);
     if (!wisdom) {
       return response.status(404).json({ status: "Not Found" });
     }

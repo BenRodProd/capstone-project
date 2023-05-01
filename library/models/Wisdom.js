@@ -9,6 +9,7 @@ const wisdomSchema = new Schema({
   benefit: { type: String, required: true },
   category: { type: String, required: true },
   book: { type: String, required: true },
+  right: { type: Number, required: true },
 });
 
 const Wisdom = mongoose.models.Wisdom || mongoose.model("Wisdom", wisdomSchema);

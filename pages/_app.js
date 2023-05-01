@@ -25,7 +25,7 @@ const MainStyled = styled.div`
 `;
 
 export default function App({ Component, pageProps }) {
-  const { library } = useSWR("/api/library", fetcher);
+  const { library } = useSWR("/api/library/", fetcher);
   if (!library) {
     return <div>loading...</div>;
   }

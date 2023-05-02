@@ -15,6 +15,7 @@ export default function LevelBackgroundImage({ level }) {
     <>
       <h1>{level.name}</h1>
       <StyledBackground
+        priority
         src={level.img}
         alt="Level Image"
         width="400"

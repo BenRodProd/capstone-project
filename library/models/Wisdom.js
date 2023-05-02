@@ -3,13 +3,13 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const wisdomSchema = new Schema({
-  owner: { type: String, required: false },
-  question: { type: String, required: false },
-  answer: { type: String, required: false },
-  benefit: { type: String, required: false },
-  category: { type: String, required: false },
-  book: { type: String, required: false },
-  right: { type: Number, required: false },
+  owner: { type: String, required: true },
+  question: { type: String, required: true },
+  answer: { type: String, required: true },
+  benefit: { type: String, required: true },
+  category: { type: String, required: true },
+  book: { type: String, required: true },
+  right: { type: String, required: true },
 });
 
 const Wisdom = mongoose.models.Wisdom || mongoose.model("Wisdom", wisdomSchema);

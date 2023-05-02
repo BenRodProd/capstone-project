@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { SWRConfig } from "swr";
 import useSWR from "swr";
 import styled from "styled-components";
-// import { library } from "@/library/library";
+import { library } from "@/library/library";
 import LibraryNavigation from "@/components/EnterLibrary";
 const fetcher = async (...args) => {
   const response = await fetch(...args);
@@ -16,22 +16,15 @@ const fetcher = async (...args) => {
 };
 const MainStyled = styled.div`
   @media only screen and (min-width: 768px) {
-    .container {
-      max-width: 375px;
-      max-height: 667px;
-      margin: 0 auto;
-    }
+    width: 475px;
+    height: 667px;
+    margin: 0 auto;
   }
 `;
 
 export default function App({ Component, pageProps }) {
-  const { library } = useSWR("/api/library/", fetcher);
-  if (!library) {
-    return <div>loading...</div>;
-  }
-  console.log(library);
+  const { dblibrary, error, isLoading } = useSWR("/api/library", fetcher);
   const router = useRouter();
-
   const [currentLibrary, setCurrentLibrary] = useState(library);
   const [currentBook, setCurrentBook] = useState("");
   function handleNewWisdomSubmit(wisdom) {
@@ -43,18 +36,18 @@ export default function App({ Component, pageProps }) {
   }
 
   const insideLibrary = router.route.includes("/library");
-
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
+  if (error) {
+    return <div>error</div>;
+  }
+  console.log("app.js, library", dblibrary);
   return (
     <>
       <SWRConfig
         value={{
-          fetcher: async (...args) => {
-            const response = await fetch(...args);
-            if (!response.ok) {
-              throw new Error(`Request with ${JSON.stringify(args)} failed.`);
-            }
-            return await response.json();
-          },
+          fetcher: fetcher,
         }}
       >
         <Head>

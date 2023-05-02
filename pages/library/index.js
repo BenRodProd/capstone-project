@@ -66,7 +66,11 @@ export default function ViewLibrary({ library, setCurrentBook }) {
       {inputPopupActive && (
         <form onSubmit={handleNewBookSubmit}>
           <label htmlFor="title">Enter Title</label>
-          <AddNewBookTitleInput required name="title"></AddNewBookTitleInput>
+          <AddNewBookTitleInput
+            maxLength="20"
+            required
+            name="title"
+          ></AddNewBookTitleInput>
           <AddNewBookButton type="submit">Submit</AddNewBookButton>
         </form>
       )}

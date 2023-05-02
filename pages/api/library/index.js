@@ -6,7 +6,8 @@ export default async function handler(request, response) {
   console.log("connected");
   if (request.method === "GET") {
     const library = await Wisdom.find();
-    console.log(library);
+    console.log("api/library, library", library);
+
     return response.status(200).json(library);
   }
 

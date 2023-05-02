@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import Image from "next/image";
 
+import React from "react";
+
 const StyledAvatarImage = styled(Image)`
   position: absolute;
   left: 2rem;
   top: 30rem;
 `;
+
 const StyledXPProgress = styled.progress`
   position: absolute;
   left: 2rem;
@@ -21,7 +24,7 @@ const StyledXPProgress = styled.progress`
         rgba(0, 0, 0, 0.1) 66%,
         transparent 66%
       ),
-      -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.25)),
+      -webkit-linear-gradient(top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.25)),
       -webkit-linear-gradient(left, #616161, #90a4ae);
 
     border-radius: 2px;

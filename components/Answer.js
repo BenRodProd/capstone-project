@@ -3,7 +3,9 @@ import { useState, useEffect, useRef } from "react";
 
 const InputFieldLayout = styled.div`
   display: flexbox;
-  margin-top: 1rem;
+  position: relative;
+  margin-top: 33.5rem;
+  margin-bottom: 1rem;
   justify-content: center;
   width: 100%;
 `;
@@ -62,7 +64,10 @@ export default function Answer({
   }, []);
   // ############## Right word ###########################
   useEffect(() => {
-    if (answerArray.join("") === guessedWordArray.join("")) {
+    if (
+      answerArray.join("").toLowerCase() ===
+      guessedWordArray.join("").toLowerCase()
+    ) {
       setTimeout(() => {
         handleNextQuestion();
         setguessedWordArray(answerArray.map(() => ""));
@@ -79,7 +84,7 @@ export default function Answer({
 
     setguessedWordArray(newguessedWordArray);
     // ############ right letter ################
-    if (letter === answerArray[index]) {
+    if (letter === answerArray[index].toLowerCase()) {
       handleRightAnswer(5);
       if (index < answerArray.length - 1) {
         inputRef.current[index + 1].focus();

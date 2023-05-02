@@ -15,10 +15,9 @@ const MainStyled = styled.div`
 
     scale: 1.5;
     width: 150%;
-    max-width: 375px; /* width of iPhone SE */
-    max-height: 667px; /* height of iPhone SE in portrait orientation */
+    max-width: 375px;
     margin: 100% auto;
-    overflow: auto;
+    overflow-y: auto;
   }
 `;
 const fetcher = async (...args) => {

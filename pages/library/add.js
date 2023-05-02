@@ -82,8 +82,12 @@ export default function AddWisdom({ handleNewWisdomSubmit, currentBook }) {
 
     const formData = new FormData(event.target);
     const wisdomData = Object.fromEntries(formData);
+    const lowercaseWisdomData = {};
+    for (const [key, value] of Object.entries(wisdomData)) {
+      lowercaseWisdomData[key.toLowerCase()] = value.toLowerCase();
+    }
     handleNewWisdomSubmit({
-      ...wisdomData,
+      ...lowercaseWisdomData,
       right: "0",
       owner: "Testor",
       book: currentBook,

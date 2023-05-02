@@ -87,7 +87,7 @@ export default function HomePage({ library }) {
     userXP / 500
   )}.png`;
   const userLevel = Math.floor(userXP / 500);
-  console.log(library);
+
   return (
     <div>
       <LevelBackgroundImage level={currentLevel} />

@@ -34,22 +34,8 @@ async function sendRequest(url, { arg }) {
   });
 
   const { status } = await response.json();
-  console.log(status);
 }
-async function editRequest(url, { arg }) {
-  // here we set the request method
-  const response = await fetch(url, {
-    method: "PUT",
-    body: JSON.stringify(arg),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
 
-  if (!response.ok) {
-    console.error(`Error: ${response.status}`);
-  }
-}
 export default function App({ Component, pageProps }) {
   const { data, error, isLoading } = useSWR("/api/library", fetcher);
   const { trigger } = useSWRMutation("/api/library", sendRequest);
@@ -59,7 +45,6 @@ export default function App({ Component, pageProps }) {
   const [currentBook, setCurrentBook] = useState("");
   useEffect(() => {
     setCurrentLibrary(data);
-    console.log(data);
   }, [data]);
   function handleNewWisdomSubmit(wisdom) {
     setCurrentLibrary([...currentLibrary, wisdom]);
@@ -71,7 +56,7 @@ export default function App({ Component, pageProps }) {
     await fetch(`/api/library/${wisdom._id}`, {
       method: "DELETE",
     });
-    console.log(wisdom);
+
     trigger(wisdom);
   }
 
@@ -83,7 +68,6 @@ export default function App({ Component, pageProps }) {
     return <div>error</div>;
   }
 
-  console.log(data);
   return (
     <>
       <SWRConfig

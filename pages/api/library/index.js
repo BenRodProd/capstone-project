@@ -3,10 +3,9 @@ import Wisdom from "../../../library/models/Wisdom";
 
 export default async function handler(request, response) {
   await dbConnect();
-  console.log("connected");
+
   if (request.method === "GET") {
     const library = await Wisdom.find();
-    console.log("api/library, library", library);
 
     return response.status(200).json(library);
   }
@@ -18,7 +17,6 @@ export default async function handler(request, response) {
 
       response.status(201).json({ status: "Wisdom created" });
     } catch (error) {
-      console.log(error);
       response.status(400).json({ error: error.message });
     }
   }

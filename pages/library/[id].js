@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -99,8 +99,8 @@ export default function EditWisdom({
     setPopupActive(true);
     setTimeout(() => {
       setPopupActive(false);
+      router.push("/library/viewBook");
     }, 1500);
-    router.push("/library/viewBook");
   }
 
   // useEffect(() => {

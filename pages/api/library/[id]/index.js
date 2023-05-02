@@ -8,7 +8,7 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     const wisdom = await Wisdom.findById(id);
-    console.log(wisdom);
+
     if (!wisdom) {
       return response.status(404).json({ status: "Not Found" });
     }
@@ -23,7 +23,6 @@ export default async function handler(request, response) {
 
       response.status(201).json({ status: "Wisdom created" });
     } catch (error) {
-      console.log(error);
       response.status(400).json({ error: error.message });
     }
   }

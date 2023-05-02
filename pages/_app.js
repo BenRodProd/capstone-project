@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GlobalStyle from "../styles";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -23,10 +23,14 @@ const MainStyled = styled.div`
 `;
 
 export default function App({ Component, pageProps }) {
-  const { dblibrary, error, isLoading } = useSWR("/api/library", fetcher);
+  const { data, error, isLoading } = useSWR("/api/library", fetcher);
   const router = useRouter();
   const [currentLibrary, setCurrentLibrary] = useState(library);
   const [currentBook, setCurrentBook] = useState("");
+  useEffect(() => {
+    setCurrentLibrary(data);
+    console.log(data);
+  }, [data]);
   function handleNewWisdomSubmit(wisdom) {
     setCurrentLibrary([...currentLibrary, wisdom]);
   }
@@ -42,7 +46,7 @@ export default function App({ Component, pageProps }) {
   if (error) {
     return <div>error</div>;
   }
-  console.log("app.js, library", dblibrary);
+  console.log(data);
   return (
     <>
       <SWRConfig

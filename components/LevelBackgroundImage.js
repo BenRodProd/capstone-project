@@ -6,7 +6,7 @@ const StyledBackground = styled(Image)`
   z-index: -2;
   top: 4rem;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: auto;
   object-fit: cover;
 `;

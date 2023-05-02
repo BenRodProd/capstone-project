@@ -5,7 +5,7 @@ const InputFieldLayout = styled.div`
   display: flexbox;
   margin-top: 1rem;
   justify-content: center;
-  width: 100vw;
+  width: 100%;
 `;
 const StyledInput = styled.input`
   caret-color: transparent;

@@ -11,9 +11,14 @@ import LibraryNavigation from "@/components/EnterLibrary";
 
 const MainStyled = styled.div`
   @media only screen and (min-width: 768px) {
-    width: 475px;
-    height: 667px;
-    margin: 0 auto;
+    position: relative;
+
+    scale: 1.5;
+    width: 150%;
+    max-width: 375px; /* width of iPhone SE */
+    max-height: 667px; /* height of iPhone SE in portrait orientation */
+    margin: 100% auto;
+    overflow: auto;
   }
 `;
 const fetcher = async (...args) => {

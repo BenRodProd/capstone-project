@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { useEffect } from "react";
+import { useState } from "react";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -65,6 +65,15 @@ const BackgroundImage = styled(Image)`
   object-fit: cover;
 `;
 
+const StyledPopup = styled.div`
+  position: absolute;
+  border: 2px solid white;
+  top: 30rem;
+  left: 0;
+  text-align: center;
+  width: 100%;
+`;
+
 export default function EditWisdom({
   library,
   handleEditWisdomSubmit,
@@ -73,7 +82,7 @@ export default function EditWisdom({
   const router = useRouter();
   const { id } = router.query;
   const inputRef = useRef(null);
-
+  const [popupActive, setPopupActive] = useState(false);
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -81,22 +90,30 @@ export default function EditWisdom({
     const wisdomData = Object.fromEntries(formData);
     handleEditWisdomSubmit({
       ...wisdomData,
-      answeredRight: 0,
-      id: wisdom.id,
+      _id: wisdom._id,
       book: currentBook,
+      right: wisdom.right,
+      benefit: wisdom.benefit,
+      owner: "Testor",
     });
-    router.push("/library/viewBook");
+    setPopupActive(true);
+    setTimeout(() => {
+      setPopupActive(false);
+      router.push("/library/viewBook");
+    }, 1500);
   }
 
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+  // useEffect(() => {
+  //   inputRef.current.focus();
+  // }, []);
 
-  const wisdom = library.filter((wisdom) => wisdom.id === id)[0];
+  const wisdom = library.filter((wisdom) => wisdom._id === id)[0];
   if (!id) {
     return <div>loading...</div>;
   }
-
+  if (!wisdom) {
+    return <div>loading...</div>;
+  }
   return (
     <>
       <BackgroundImage
@@ -138,7 +155,7 @@ export default function EditWisdom({
         <p id="benefit">{wisdom.benefit}</p>
         <StyledButton type="submit">SUBMIT</StyledButton>
       </StyledForm>
-
+      {popupActive && <StyledPopup>Wisdom Edited</StyledPopup>}
       <Link href="/library/viewBook">
         <StyledBackToBookImage
           src="/assets/bookicon.png"

@@ -72,7 +72,7 @@ const BookSpine = styled.div`
 `;
 const BookTitle = styled.h1`
   padding-top: 2rem;
-  padding-left: 2rem;
+  padding-left: 6rem;
   display: flex;
   word-wrap: break-word;
   font-family: Georgia, "Times New Roman", Times, serif;

@@ -115,8 +115,8 @@ export default function ViewBook({ library, currentBook }) {
                   .filter((entry) => entry.book === currentBook)
                   .filter((wisdom) => wisdom.category === cat)
                   .map((wisdom) => (
-                    <StyledWisdom key={wisdom.id}>
-                      <StyledLink href={`/library/${wisdom.id}`}>
+                    <StyledWisdom key={wisdom._id}>
+                      <StyledLink href={`/library/${wisdom._id}`}>
                         <div>
                           <h2>Question:</h2>
                           <p>{wisdom.question}</p>

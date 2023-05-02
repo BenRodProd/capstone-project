@@ -85,8 +85,8 @@ export default function AddWisdom({ handleNewWisdomSubmit, currentBook }) {
     const wisdomData = Object.fromEntries(formData);
     handleNewWisdomSubmit({
       ...wisdomData,
-      answeredRight: 0,
-      id: uuidv4(),
+      right: "0",
+      owner: "Testor",
       book: currentBook,
     });
     setPopupActive(true);

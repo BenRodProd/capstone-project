@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -88,8 +88,12 @@ export default function EditWisdom({
 
     const formData = new FormData(event.target);
     const wisdomData = Object.fromEntries(formData);
+    const lowercaseWisdomData = {};
+    for (const [key, value] of Object.entries(wisdomData)) {
+      lowercaseWisdomData[key.toLowerCase()] = value.toLowerCase();
+    }
     handleEditWisdomSubmit({
-      ...wisdomData,
+      ...lowercaseWisdomData,
       _id: wisdom._id,
       book: currentBook,
       right: wisdom.right,
@@ -103,9 +107,9 @@ export default function EditWisdom({
     }, 1500);
   }
 
-  // useEffect(() => {
-  //   inputRef.current.focus();
-  // }, []);
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const wisdom = library.filter((wisdom) => wisdom._id === id)[0];
   if (!id) {

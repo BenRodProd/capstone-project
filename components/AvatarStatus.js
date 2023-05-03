@@ -1,31 +1,43 @@
 import styled from "styled-components";
 import { HealthProgress, ArmorProgress } from "./StyledProgress";
-
+import { useState, useEffect } from "react";
 const StyledStatusBox = styled.div`
   display: flex;
-  position: relative;
+  position: absolute;
   margin-top: 26rem;
-
+  right: 2px;
   flex-direction: column;
   align-items: center;
-  border: 3px solid grey;
-  background-color: lightgrey;
+  border: 2px solid grey;
+  background-color: rgba(77, 72, 74, 0.4);
   padding: 0.5rem;
   width: fit-content;
-  margin-left: auto;
+  margin-right: 0.2;
 `;
 const StyledLegend = styled.legend`
   position: absolute;
-  top: 29rem;
-  left: 15rem;
-  color: white;
+  top: 30rem;
+  right: 4rem;
+
+  color: cyan;
   z-index: 5;
-  filter: drop-shadow(0px 0px 0.75rem black);
+  font-size: ${(props) => props.size};
+
+  transform-origin: 0 0;
 `;
 export default function AvatarStatus({ health, armor, level }) {
+  const [levelSize, setLevelSize] = useState("1rem");
+  useEffect(() => {
+    setLevelSize("1.5rem");
+    setTimeout(() => {
+      setLevelSize("1rem");
+    }, 1500);
+  }, [level]);
   return (
     <>
-      <StyledLegend htmlFor="statusBox">LEVEL: {level}</StyledLegend>
+      <StyledLegend size={levelSize} htmlFor="statusBox">
+        LEVEL: {level}
+      </StyledLegend>
       <StyledStatusBox id="statusBox">
         <label htmlFor="health">Health:</label>
         <HealthProgress id="health" max="100" value={health}></HealthProgress>

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 
 const InputFieldLayout = styled.div`
-  display: flexbox;
+  display: flex;
   position: relative;
   margin-top: 33.5rem;
   margin-bottom: 1rem;

@@ -4,7 +4,7 @@ const StyledQuestion = styled.div`
   top: 8rem;
   left: 2rem;
 
-  display: flexbox;
+  display: flex;
   position: absolute;
   border: 4px solid #2651a6;
   margin: 0 auto;

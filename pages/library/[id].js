@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useRef } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 import ShowVerifyBurnWisdomPopup from "@/components/ShowVerifyBurnWisdomPopup";
@@ -90,7 +90,7 @@ export default function EditWisdom({
 }) {
   const router = useRouter();
   const { id } = router.query;
-  const inputRef = useRef(null);
+
   const [burnActive, setBurnActive] = useState(false);
   const [popupActive, setPopupActive] = useState(false);
 
@@ -124,9 +124,6 @@ export default function EditWisdom({
   } else {
     torchColors = 0;
   }
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
 
   const wisdom = library.filter((wisdom) => wisdom._id === id)[0];
   if (!id) {
@@ -152,8 +149,8 @@ export default function EditWisdom({
       <StyledForm onSubmit={handleSubmit}>
         <StyledLabel htmlFor="question">Enter Question:</StyledLabel>
         <StyledInput
+          autoFocus
           defaultValue={wisdom.question}
-          ref={inputRef}
           required
           name="question"
           type="text"

@@ -26,9 +26,7 @@ export default function ShowVerifyPopup({
   function handleClickYes() {
     setPopUp(false);
     handleBurnBook(bookName);
-    setTimeout(() => {
-      setBurnActive(false);
-    }, 500);
+    setTimeout(() => setBurnActive(false), 500);
   }
   return (
     <>

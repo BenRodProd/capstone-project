@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useRef } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -74,7 +74,6 @@ const BackgroundImage = styled(Image)`
 `;
 
 export default function AddWisdom({ handleNewWisdomSubmit, currentBook }) {
-  const inputRef = useRef(null);
   const [popupActive, setPopupActive] = useState(false);
 
   function handleSubmit(event) {
@@ -95,11 +94,8 @@ export default function AddWisdom({ handleNewWisdomSubmit, currentBook }) {
     setPopupActive(true);
     setTimeout(() => setPopupActive(false), 1500);
     event.target.reset();
-    inputRef.current.focus();
   }
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+
   return (
     <>
       <BackgroundImage
@@ -117,10 +113,10 @@ export default function AddWisdom({ handleNewWisdomSubmit, currentBook }) {
       <StyledForm onSubmit={handleSubmit}>
         <StyledLabel htmlFor="question">Enter Question:</StyledLabel>
         <StyledInput
-          ref={inputRef}
           required
           name="question"
           type="text"
+          autoFocus
         ></StyledInput>
         <StyledLabel htmlFor="answer">Enter Answer:</StyledLabel>
         <StyledInput required name="answer" type="text"></StyledInput>

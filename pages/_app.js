@@ -64,13 +64,13 @@ export default function App({ Component, pageProps }) {
     trigger(wisdom);
   }
   async function handleBurnBook(book) {
-    const wisdomsToDelete = currentLibrary.filter((el) => {
-      console.log(el.book, "book:", book);
-      return el.book === book;
+    const wisdomsToDelete = currentLibrary.filter((element) => {
+      console.log(element.book, "book:", book);
+      return element.book === book;
     });
     console.log("book to burn", wisdomsToDelete);
-    await wisdomsToDelete.map((el) => {
-      fetch(`/api/library/${el._id}`, {
+    wisdomsToDelete.map((element) => {
+      fetch(`/api/library/${element._id}`, {
         method: "DELETE",
       });
       setCurrentLibrary(

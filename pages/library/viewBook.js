@@ -1,8 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
-import { useEffect } from "react";
-import useSWR from "swr";
 
 const BookPageStyle = styled.ul`
   position: relative;

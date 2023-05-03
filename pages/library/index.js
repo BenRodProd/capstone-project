@@ -39,7 +39,7 @@ export default function ViewLibrary({
 }) {
   const [inputPopupActive, setInputPopupActive] = useState(false);
   const [burnActive, setBurnActive] = useState(false);
-  useEffect(() => {}, [library]);
+
   let torchColors = 0;
   const router = useRouter();
   function handleNewBookSubmit(event) {
@@ -97,6 +97,7 @@ export default function ViewLibrary({
         <form onSubmit={handleNewBookSubmit}>
           <label htmlFor="title">Enter Title</label>
           <AddNewBookTitleInput
+            autoFocus
             maxLength="20"
             required
             name="title"

@@ -41,11 +41,13 @@ export default function App({ Component, pageProps }) {
       return element.book === book;
     });
 
-    wisdomsToDelete.map((element) => {
-      fetch(`/api/library/${element._id}`, {
-        method: "DELETE",
-      });
-    });
+    await Promise.all(
+      wisdomsToDelete.map((element) => {
+        fetch(`/api/library/${element._id}`, {
+          method: "DELETE",
+        });
+      })
+    );
     mutate();
   }
 

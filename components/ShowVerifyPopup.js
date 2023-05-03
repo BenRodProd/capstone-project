@@ -30,16 +30,14 @@ export default function ShowVerifyPopup({
     setTimeout(() => setBurnActive(false), 500);
   }
   return (
-    <>
-      <VerifyBox>
-        <p>DO YOU REALLY WANT TO BURN THIS BOOK?</p>
-        <button onClick={handleClickYes} type="button">
-          YES
-        </button>
-        <button onClick={handleClickNo} type="button">
-          NO
-        </button>
-      </VerifyBox>
-    </>
+    <VerifyBox>
+      <p>DO YOU REALLY WANT TO BURN THIS BOOK?</p>
+      <button onClick={handleClickYes} type="button">
+        YES
+      </button>
+      <button onClick={handleClickNo} type="button">
+        NO
+      </button>
+    </VerifyBox>
   );
 }

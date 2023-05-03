@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
+import { useState } from "react";
 import styled from "styled-components";
-
+import ShowVerifyPopup from "./ShowVerifyPopup";
 const BookSpine = styled.div`
   &.Book0 {
     background-image: url("/assets/book1.png");
@@ -84,11 +85,23 @@ const BookTitle = styled.h1`
   place-content: center;
   font-size: 2.5rem;
 `;
-export default function InsertBook({ bookName, index, setCurrentBook }) {
+export default function InsertBook({
+  burnActive,
+  setBurnActive,
+  bookName,
+  index,
+  setCurrentBook,
+  handleBurnBook,
+}) {
+  const [popUp, setPopUp] = useState(false);
   const router = useRouter();
   function handleOnBookClick(book) {
-    setCurrentBook(book);
-    router.push("/library/viewBook");
+    if (!burnActive) {
+      setCurrentBook(book);
+      router.push("/library/viewBook");
+    } else {
+      setPopUp(true);
+    }
   }
   return (
     <>
@@ -99,6 +112,14 @@ export default function InsertBook({ bookName, index, setCurrentBook }) {
       >
         <BookTitle>{bookName}</BookTitle>
       </BookSpine>
+      {popUp ? (
+        <ShowVerifyPopup
+          handleBurnBook={handleBurnBook}
+          setPopUp={setPopUp}
+          bookName={bookName}
+          setBurnActive={setBurnActive}
+        />
+      ) : null}
     </>
   );
 }

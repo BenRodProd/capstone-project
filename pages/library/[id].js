@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
+import ShowVerifyBurnWisdomPopup from "@/components/ShowVerifyBurnWisdomPopup";
 const StyledForm = styled.form`
   display: grid;
   gap: 0.2rem;
@@ -74,15 +74,28 @@ const StyledPopup = styled.div`
   width: 100%;
 `;
 
+const BurnWisdom = styled(Image)`
+  position: absolute;
+  top: 34rem;
+  right: 1rem;
+  z-index: 3;
+  filter: saturate(${(props) => props.saturation});
+`;
+
 export default function EditWisdom({
   library,
   handleEditWisdomSubmit,
   currentBook,
+  handleBurnWisdom,
 }) {
   const router = useRouter();
   const { id } = router.query;
   const inputRef = useRef(null);
+  const [burnActive, setBurnActive] = useState(false);
   const [popupActive, setPopupActive] = useState(false);
+
+  let torchColors = 0;
+
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -106,7 +119,11 @@ export default function EditWisdom({
       router.push("/library/viewBook");
     }, 1500);
   }
-
+  if (burnActive) {
+    torchColors = 1;
+  } else {
+    torchColors = 0;
+  }
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -160,6 +177,21 @@ export default function EditWisdom({
         <StyledButton type="submit">SUBMIT</StyledButton>
       </StyledForm>
       {popupActive && <StyledPopup>Wisdom Edited</StyledPopup>}
+      <BurnWisdom
+        width="80"
+        height="100"
+        alt="delete book"
+        src="/assets/torch.png"
+        onClick={() => setBurnActive(!burnActive)}
+        saturation={torchColors}
+      ></BurnWisdom>
+      {burnActive ? (
+        <ShowVerifyBurnWisdomPopup
+          handleBurnWisdom={handleBurnWisdom}
+          wisdomId={wisdom._id}
+          setBurnActive={setBurnActive}
+        />
+      ) : null}
       <Link href="/library/viewBook">
         <StyledBackToBookImage
           src="/assets/bookicon.png"

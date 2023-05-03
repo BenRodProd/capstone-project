@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import InsertBook from "@/components/InsertBook";
@@ -25,9 +25,22 @@ const AddNewBookTitleInput = styled.input`
   left: 6.7rem;
 `;
 
-export default function ViewLibrary({ library, setCurrentBook }) {
+const BurnBook = styled(Image)`
+  position: absolute;
+  top: 34rem;
+  right: 1rem;
+  z-index: 3;
+  filter: saturate(${(props) => props.saturation});
+`;
+export default function ViewLibrary({
+  library,
+  setCurrentBook,
+  handleBurnBook,
+}) {
   const [inputPopupActive, setInputPopupActive] = useState(false);
+  const [burnActive, setBurnActive] = useState(false);
 
+  let torchColors = 0;
   const router = useRouter();
   function handleNewBookSubmit(event) {
     event.preventDefault();
@@ -39,6 +52,11 @@ export default function ViewLibrary({ library, setCurrentBook }) {
     .map((wisdom) => wisdom.book)
     .filter((value, index, self) => self.indexOf(value) === index);
 
+  if (burnActive) {
+    torchColors = 1;
+  } else {
+    torchColors = 0;
+  }
   return (
     <>
       <BookShelfImage
@@ -49,10 +67,13 @@ export default function ViewLibrary({ library, setCurrentBook }) {
       ></BookShelfImage>
       {books.map((book, index) => (
         <InsertBook
+          burnActive={burnActive}
+          setBurnActive={setBurnActive}
           key={book}
           setCurrentBook={setCurrentBook}
           bookName={book}
           index={index}
+          handleBurnBook={handleBurnBook}
         ></InsertBook>
       ))}
       {books.length <= 6 ? (
@@ -63,6 +84,15 @@ export default function ViewLibrary({ library, setCurrentBook }) {
           Add new Book
         </AddNewBookButton>
       ) : null}
+      <BurnBook
+        width="80"
+        height="100"
+        alt="delete book"
+        src="/assets/torch.png"
+        onClick={() => setBurnActive(!burnActive)}
+        saturation={torchColors}
+      ></BurnBook>
+
       {inputPopupActive && (
         <form onSubmit={handleNewBookSubmit}>
           <label htmlFor="title">Enter Title</label>

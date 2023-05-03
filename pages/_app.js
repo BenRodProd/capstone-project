@@ -63,6 +63,29 @@ export default function App({ Component, pageProps }) {
 
     trigger(wisdom);
   }
+  async function handleBurnBook(book) {
+    const wisdomsToDelete = currentLibrary.filter((el) => {
+      console.log(el.book, "book:", book);
+      return el.book === book;
+    });
+    console.log("book to burn", wisdomsToDelete);
+    await wisdomsToDelete.map((el) => {
+      fetch(`/api/library/${el._id}`, {
+        method: "DELETE",
+      });
+      setCurrentLibrary(
+        currentLibrary.filter(
+          (book) => !wisdomsToDelete.some((wisdom) => wisdom._id === book._id)
+        )
+      );
+    });
+  }
+  async function handleBurnWisdom(wisdomId) {
+    await fetch(`/api/library/${wisdomId}`, {
+      method: "DELETE",
+    });
+    setCurrentLibrary(currentLibrary.filter((el) => el._id !== wisdomId));
+  }
 
   const insideLibrary = router.route.includes("/library");
   if (isLoading || !currentLibrary) {
@@ -91,6 +114,8 @@ export default function App({ Component, pageProps }) {
             handleEditWisdomSubmit={handleEditWisdomSubmit}
             currentBook={currentBook}
             setCurrentBook={setCurrentBook}
+            handleBurnBook={handleBurnBook}
+            handleBurnWisdom={handleBurnWisdom}
           />
 
           <LibraryNavigation insideLibrary={insideLibrary} />

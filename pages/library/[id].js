@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-
+import useSWRMutation from "swr/mutation";
 import Image from "next/image";
 import Link from "next/link";
 import ShowVerifyBurnWisdomPopup from "@/components/ShowVerifyBurnWisdomPopup";
@@ -82,9 +82,23 @@ const BurnWisdom = styled(Image)`
   filter: saturate(${(props) => props.saturation});
 `;
 
+async function sendRequest(url, { arg }) {
+  // here we set the request method
+  const response = await fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(arg),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    console.error(`Error: ${response.status}`);
+  }
+}
+
 export default function EditWisdom({
   library,
-  handleEditWisdomSubmit,
+
   currentBook,
   handleBurnWisdom,
 }) {
@@ -93,10 +107,10 @@ export default function EditWisdom({
 
   const [burnActive, setBurnActive] = useState(false);
   const [popupActive, setPopupActive] = useState(false);
-
+  const { trigger } = useSWRMutation(`/api/library/${id}`, sendRequest);
   let torchColors = 0;
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
@@ -105,7 +119,7 @@ export default function EditWisdom({
     for (const [key, value] of Object.entries(wisdomData)) {
       lowercaseWisdomData[key.toLowerCase()] = value.toLowerCase();
     }
-    handleEditWisdomSubmit({
+    await trigger({
       ...lowercaseWisdomData,
       _id: wisdom._id,
       book: currentBook,
@@ -113,11 +127,12 @@ export default function EditWisdom({
       benefit: wisdom.benefit,
       owner: "Testor",
     });
+
     setPopupActive(true);
     setTimeout(() => {
       setPopupActive(false);
       router.push("/library/viewBook");
-    }, 1500);
+    }, 1000);
   }
   if (burnActive) {
     torchColors = 1;

@@ -39,7 +39,7 @@ export default function ViewLibrary({
 }) {
   const [inputPopupActive, setInputPopupActive] = useState(false);
   const [burnActive, setBurnActive] = useState(false);
-
+  useEffect(() => {}, [library]);
   let torchColors = 0;
   const router = useRouter();
   function handleNewBookSubmit(event) {

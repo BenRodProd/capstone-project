@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { useRouter } from "next/router";
 const VerifyBox = styled.div`
   position: absolute;
   z-index: 4;
@@ -19,6 +19,7 @@ export default function ShowVerifyPopup({
   handleBurnBook,
   bookName,
 }) {
+  const router = useRouter();
   function handleClickNo() {
     setPopUp(false);
     setBurnActive(false);

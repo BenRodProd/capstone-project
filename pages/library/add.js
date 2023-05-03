@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-
+import useSWRMutation from "swr/mutation";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -73,10 +73,21 @@ const BackgroundImage = styled(Image)`
   object-fit: cover;
 `;
 
-export default function AddWisdom({ handleNewWisdomSubmit, currentBook }) {
-  const [popupActive, setPopupActive] = useState(false);
+async function sendRequest(url, { arg }) {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(arg),
+  });
+  const { status } = await response.json();
+}
 
-  function handleSubmit(event) {
+export default function AddWisdom({ currentBook }) {
+  const [popupActive, setPopupActive] = useState(false);
+  const { trigger } = useSWRMutation("/api/library", sendRequest);
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
@@ -85,12 +96,13 @@ export default function AddWisdom({ handleNewWisdomSubmit, currentBook }) {
     for (const [key, value] of Object.entries(wisdomData)) {
       lowercaseWisdomData[key.toLowerCase()] = value.toLowerCase();
     }
-    handleNewWisdomSubmit({
+    trigger({
       ...lowercaseWisdomData,
       right: "0",
       owner: "Testor",
       book: currentBook,
     });
+
     setPopupActive(true);
     setTimeout(() => setPopupActive(false), 1500);
     event.target.reset();

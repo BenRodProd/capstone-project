@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useRef } from "react";
+import useSWRMutation from "swr/mutation";
 import Image from "next/image";
 import Link from "next/link";
-
+import ShowVerifyBurnWisdomPopup from "@/components/ShowVerifyBurnWisdomPopup";
 const StyledForm = styled.form`
   display: grid;
   gap: 0.2rem;
@@ -74,16 +74,43 @@ const StyledPopup = styled.div`
   width: 100%;
 `;
 
+const BurnWisdom = styled(Image)`
+  position: absolute;
+  top: 34rem;
+  right: 1rem;
+  z-index: 3;
+  filter: saturate(${(props) => props.saturation});
+`;
+
+async function sendRequest(url, { arg }) {
+  // here we set the request method
+  const response = await fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(arg),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    console.error(`Error: ${response.status}`);
+  }
+}
+
 export default function EditWisdom({
   library,
-  handleEditWisdomSubmit,
+
   currentBook,
+  handleBurnWisdom,
 }) {
   const router = useRouter();
   const { id } = router.query;
-  const inputRef = useRef(null);
+
+  const [burnActive, setBurnActive] = useState(false);
   const [popupActive, setPopupActive] = useState(false);
-  function handleSubmit(event) {
+  const { trigger } = useSWRMutation(`/api/library/${id}`, sendRequest);
+  let torchColors = 0;
+
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
@@ -92,7 +119,7 @@ export default function EditWisdom({
     for (const [key, value] of Object.entries(wisdomData)) {
       lowercaseWisdomData[key.toLowerCase()] = value.toLowerCase();
     }
-    handleEditWisdomSubmit({
+    await trigger({
       ...lowercaseWisdomData,
       _id: wisdom._id,
       book: currentBook,
@@ -100,16 +127,18 @@ export default function EditWisdom({
       benefit: wisdom.benefit,
       owner: "Testor",
     });
+
     setPopupActive(true);
     setTimeout(() => {
       setPopupActive(false);
       router.push("/library/viewBook");
-    }, 1500);
+    }, 1000);
   }
-
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+  if (burnActive) {
+    torchColors = 1;
+  } else {
+    torchColors = 0;
+  }
 
   const wisdom = library.filter((wisdom) => wisdom._id === id)[0];
   if (!id) {
@@ -135,8 +164,8 @@ export default function EditWisdom({
       <StyledForm onSubmit={handleSubmit}>
         <StyledLabel htmlFor="question">Enter Question:</StyledLabel>
         <StyledInput
+          autoFocus
           defaultValue={wisdom.question}
-          ref={inputRef}
           required
           name="question"
           type="text"
@@ -160,6 +189,21 @@ export default function EditWisdom({
         <StyledButton type="submit">SUBMIT</StyledButton>
       </StyledForm>
       {popupActive && <StyledPopup>Wisdom Edited</StyledPopup>}
+      <BurnWisdom
+        width="80"
+        height="100"
+        alt="delete book"
+        src="/assets/torch.png"
+        onClick={() => setBurnActive(!burnActive)}
+        saturation={torchColors}
+      ></BurnWisdom>
+      {burnActive ? (
+        <ShowVerifyBurnWisdomPopup
+          handleBurnWisdom={handleBurnWisdom}
+          wisdomId={wisdom._id}
+          setBurnActive={setBurnActive}
+        />
+      ) : null}
       <Link href="/library/viewBook">
         <StyledBackToBookImage
           src="/assets/bookicon.png"

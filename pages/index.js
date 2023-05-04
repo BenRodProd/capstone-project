@@ -9,6 +9,7 @@ import LevelBackgroundImage from "@/components/LevelBackgroundImage";
 import { levelLibrary } from "@/library/levelLibrary";
 import UserAvatar from "@/components/UserAvatar";
 import ShowDamage from "@/components/ShowDamage";
+import styled from "styled-components";
 
 // ############## Dummy Data #######################
 
@@ -118,6 +119,7 @@ export default function HomePage({ library }) {
         handleWrongAnswer={handleWrongAnswer}
         handleRightAnswer={handleRightAnswer}
       />
+
       {damageDone ? (
         <ShowDamage
           x={damageDisplay.x}

@@ -4,7 +4,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { SWRConfig } from "swr";
 import useSWR from "swr";
-import useSWRMutation from "swr/mutation";
 import styled from "styled-components";
 
 import LibraryNavigation from "@/components/EnterLibrary";

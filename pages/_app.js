@@ -9,7 +9,7 @@ import styled from "styled-components";
 import LibraryNavigation from "@/components/EnterLibrary";
 
 const MainStyled = styled.div`
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 600px) {
     position: relative;
     scale: 1.5;
     width: 150%;

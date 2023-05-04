@@ -6,6 +6,7 @@ const StyledLetterChoice = styled.span`
   border: 2px solid white;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+  width: 1.8rem;
   margin: 5px 5px;
   align-items: center;
   text-align: center;
@@ -18,6 +19,7 @@ const StyledLetterBox = styled.div`
   width: 100%;
   bottom: -2rem;
   left: 0;
+  cursor: default;
 `;
 export default function ChooseLetter({
   setChosenLetter,

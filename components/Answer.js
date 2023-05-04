@@ -112,6 +112,7 @@ export default function Answer({
       // ############# wrong letter ###############
       handleWrongAnswer(5);
       setWrongIndex(index);
+      window.navigator.vibrate([300]);
       setTimeout(() => {
         setWrongIndex(-1);
       }, 800);

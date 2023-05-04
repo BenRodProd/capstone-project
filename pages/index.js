@@ -9,34 +9,17 @@ import LevelBackgroundImage from "@/components/LevelBackgroundImage";
 import { levelLibrary } from "@/library/levelLibrary";
 import UserAvatar from "@/components/UserAvatar";
 import ShowDamage from "@/components/ShowDamage";
-import styled from "styled-components";
 
-// ############## Dummy Data #######################
-
-const userData = {
-  name: "Testor",
-  health: 90,
-  armor: 80,
-  avatar: {
-    knight: 400,
-    dragon: 0,
-    wizard: 0,
-    thieve: 0,
-  },
-  chosenAvatar: "knight",
-};
-
-export default function HomePage({ library }) {
-  const [user, setUser] = useState(userData);
+export default function HomePage({ library, userData }) {
   const [currentEnemyIndex, setcurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [currentEnemy, setcurrentEnemy] = useState(
     enemyLibrary[currentEnemyIndex]
   );
-  const [userHealth, setUserHealth] = useState(userData.health);
-  const [userXP, setUserXP] = useState(user.avatar[user.chosenAvatar]);
-  const [userArmor, setUserArmor] = useState(userData.armor);
+  const [userHealth, setUserHealth] = useState(userData[0].books[0].health);
+  const [userXP, setUserXP] = useState(userData[0].books[0].xp);
+  const [userArmor, setUserArmor] = useState(userData[0].books[0].armor);
   const [enemyHealth, setEnemyHealth] = useState(currentEnemy.health);
   const [damageDone, setDamageDone] = useState(false);
   const [currentCard, setCurrentCard] = useState(library[0]);
@@ -96,9 +79,9 @@ export default function HomePage({ library }) {
     }, 400);
   }
 
-  const userAvatarImage = `/assets/avatars/${user.chosenAvatar}${Math.floor(
-    userXP / 500
-  )}.png`;
+  const userAvatarImage = `/assets/avatars/${
+    userData[0].books[0].avatar
+  }${Math.floor(userXP / 500)}.png`;
   const userLevel = Math.floor(userXP / 500);
 
   return (

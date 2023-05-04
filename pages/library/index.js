@@ -57,6 +57,7 @@ export default function ViewLibrary({
   } else {
     torchColors = 0;
   }
+
   return (
     <>
       <BookShelfImage

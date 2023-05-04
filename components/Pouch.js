@@ -21,6 +21,7 @@ export default function Pouch({
   return (
     <>
       <StyledPouch
+        className="clickable"
         width="50"
         height="50"
         alt="pouch"

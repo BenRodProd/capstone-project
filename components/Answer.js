@@ -60,6 +60,9 @@ export default function Answer({
     answerArray.map(() => "")
   );
   const [activeIndex, setActiveIndex] = useState(0);
+  const vibrate = () => {
+    window.navigator.vibrate([500]);
+  };
   // ############## Split Answer in Array when new Answer received ##################
 
   // ############# Focus first LetterInput when loaded #############
@@ -112,7 +115,7 @@ export default function Answer({
       // ############# wrong letter ###############
       handleWrongAnswer(5);
       setWrongIndex(index);
-      window.navigator.vibrate([300]);
+      vibrate();
       setTimeout(() => {
         setWrongIndex(-1);
       }, 800);

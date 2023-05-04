@@ -30,7 +30,10 @@ export default function ChooseLetter({
   // Get 8 random letters
   while (choices.length < 8) {
     const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
-    if (!choices.includes(randomLetter)) {
+    if (
+      !choices.includes(randomLetter) &
+      (randomLetter !== answerArray[activeIndex])
+    ) {
       choices.push(randomLetter);
     }
   }

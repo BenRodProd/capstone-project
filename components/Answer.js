@@ -54,15 +54,14 @@ export default function Answer({
 
   const inputRef = useRef([]);
   const [chosenLetter, setChosenLetter] = useState("");
-  const [answerArray, setAnswerArray] = useState(answer.split(""));
-  const [guessedWordArray, setguessedWordArray] = useState(
+  const answerArray = answer.split("");
+
+  const [guessedWordArray, setGuessedWordArray] = useState(
     answerArray.map(() => "")
   );
   const [activeIndex, setActiveIndex] = useState(0);
   // ############## Split Answer in Array when new Answer received ##################
-  useEffect(() => {
-    setAnswerArray(answer.split(""));
-  }, [answer]);
+
   // ############# Focus first LetterInput when loaded #############
   useEffect(() => {
     inputRef.current[0].focus();
@@ -72,7 +71,7 @@ export default function Answer({
     if (answerArray.join("") === guessedWordArray.join("")) {
       setTimeout(() => {
         handleNextQuestion();
-        setguessedWordArray(answerArray.map(() => ""));
+        setGuessedWordArray(answerArray.map(() => ""));
         inputRef.current[0].focus();
         setChosenLetter("");
         setActiveIndex(0);
@@ -80,16 +79,26 @@ export default function Answer({
     }
   }, [guessedWordArray, answerArray, handleNextQuestion]);
 
+  useEffect(() => {
+    inputRef.current[activeIndex].value = chosenLetter;
+
+    inputRef.current[activeIndex].dispatchEvent(
+      new Event("input", { bubbles: true })
+    );
+
+    setChosenLetter("");
+  }, [chosenLetter, activeIndex]);
+
   function handleLetterGuess(event, index) {
     if (event.target.value === "") {
       return;
     }
     const letter = event.target.value;
-    const newguessedWordArray = [...guessedWordArray];
+    const newGuessedWordArray = [...guessedWordArray];
 
-    newguessedWordArray[index] = letter;
+    newGuessedWordArray[index] = letter;
 
-    setguessedWordArray(newguessedWordArray);
+    setGuessedWordArray(newGuessedWordArray);
 
     // ############ right letter ################
     if (letter === answerArray[index].toLowerCase()) {
@@ -107,19 +116,10 @@ export default function Answer({
         setWrongIndex(-1);
       }, 800);
 
-      newguessedWordArray[index] = "";
-      setguessedWordArray(newguessedWordArray);
+      newGuessedWordArray[index] = "";
+      setGuessedWordArray(newGuessedWordArray);
     }
   }
-  useEffect(() => {
-    inputRef.current[activeIndex].value = chosenLetter;
-
-    inputRef.current[activeIndex].dispatchEvent(
-      new Event("input", { bubbles: true })
-    );
-
-    setChosenLetter("");
-  }, [chosenLetter, activeIndex]);
 
   return (
     <InputFieldLayout>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { alphabet } from "@/library/alphabet";
 const StyledLetterChoice = styled.span`
   font-family: monospace;
   font-size: 1rem;
@@ -24,7 +24,6 @@ export default function ChooseLetter({
   activeIndex,
   answerArray,
 }) {
-  const alphabet = "abcdefghijklmnopqrstuvwxyzäöüéèêáàâúùûóòôíÌî1234567890"; // Add other special characters as needed
   const choices = [];
 
   // Get 8 random letters

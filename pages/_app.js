@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { SWRConfig } from "swr";
 import useSWR from "swr";
 import styled from "styled-components";
-import FetchUser from "@/components/fetchUsers";
+import FetchUser from "@/components/FetchUsers";
 import LibraryNavigation from "@/components/EnterLibrary";
 
 const MainStyled = styled.div`

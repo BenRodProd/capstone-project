@@ -61,7 +61,7 @@ export default function Answer({
   );
   const [activeIndex, setActiveIndex] = useState(0);
   const vibrate = () => {
-    window.navigator.vibrate([500]);
+    navigator.vibrate([500]);
   };
   // ############## Split Answer in Array when new Answer received ##################
 

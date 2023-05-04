@@ -18,6 +18,7 @@ const StyledInput = styled.input`
   width: 2rem;
   height: 2rem;
   color: white;
+  border-color: ${(props) => (props.isActive ? "orange" : "white")};
   background-color: ${(props) =>
     props.isRight ? "green" : props.isWrong ? "red" : "transparent"};
 
@@ -133,6 +134,7 @@ export default function Answer({
           value={guessedWordArray[index] || ""}
           isWrong={index === wrongIndex}
           readOnly
+          isActive={index === activeIndex}
         ></StyledInput>
       ))}
       <ChooseLetter

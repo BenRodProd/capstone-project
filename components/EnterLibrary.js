@@ -19,6 +19,7 @@ export default function LibraryNavigation({ insideLibrary }) {
       {insideLibrary ? (
         <Link href="/">
           <StyledImage
+            className="clickable"
             src="/assets/journey.png"
             alt="Library Icon"
             height="80"
@@ -28,6 +29,7 @@ export default function LibraryNavigation({ insideLibrary }) {
       ) : (
         <Link href="/library">
           <StyledImage
+            className="clickable"
             src="/assets/bookicon.png"
             alt="Library Icon"
             height="80"

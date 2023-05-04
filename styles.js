@@ -21,6 +21,21 @@ export default createGlobalStyle`
     color: white;
     
   }
-
+.clickable {
+  filter: drop-shadow(0px 0px 16px #FFFFFF);
+  animation: blink 3s linear 2s infinite alternate;
+}
+@keyframes blink {
+  0%{
+    filter: drop-shadow(0px 0px 0px #FFFFFF);
+  }
+  50%{
+    filter: drop-shadow(0px 0px 16px #FFFFFF);
+  }
+  100%{
+    filter: drop-shadow(0px 0px 0px #FFFFFF);
+  }
+  
+}
 
 `;

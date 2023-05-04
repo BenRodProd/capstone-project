@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
+import ChooseLetter from "./ChooseLetter";
 
 const InputFieldLayout = styled.div`
   display: flex;
@@ -9,6 +10,7 @@ const InputFieldLayout = styled.div`
   justify-content: center;
   width: 100%;
 `;
+
 const StyledInput = styled.input`
   caret-color: transparent;
   text-align: center;
@@ -16,6 +18,7 @@ const StyledInput = styled.input`
   width: 2rem;
   height: 2rem;
   color: white;
+  border-color: ${(props) => (props.isActive ? "orange" : "white")};
   background-color: ${(props) =>
     props.isRight ? "green" : props.isWrong ? "red" : "transparent"};
 
@@ -50,74 +53,99 @@ export default function Answer({
   const [wrongIndex, setWrongIndex] = useState(-1);
 
   const inputRef = useRef([]);
-  const [answerArray, setAnswerArray] = useState(answer.split(""));
-  const [guessedWordArray, setguessedWordArray] = useState(
+  const [chosenLetter, setChosenLetter] = useState("");
+  const answerArray = answer.split("");
+
+  const [guessedWordArray, setGuessedWordArray] = useState(
     answerArray.map(() => "")
   );
+  const [activeIndex, setActiveIndex] = useState(0);
+  const vibrate = () => {
+    window.navigator.vibrate([500]);
+  };
   // ############## Split Answer in Array when new Answer received ##################
-  useEffect(() => {
-    setAnswerArray(answer.split(""));
-  }, [answer]);
+
   // ############# Focus first LetterInput when loaded #############
   useEffect(() => {
     inputRef.current[0].focus();
   }, []);
   // ############## Right word ###########################
   useEffect(() => {
-    if (
-      answerArray.join("").toLowerCase() ===
-      guessedWordArray.join("").toLowerCase()
-    ) {
+    if (answerArray.join("") === guessedWordArray.join("")) {
       setTimeout(() => {
         handleNextQuestion();
-        setguessedWordArray(answerArray.map(() => ""));
+        setGuessedWordArray(answerArray.map(() => ""));
         inputRef.current[0].focus();
+        setChosenLetter("");
+        setActiveIndex(0);
       }, 800);
     }
   }, [guessedWordArray, answerArray, handleNextQuestion]);
 
+  useEffect(() => {
+    inputRef.current[activeIndex].value = chosenLetter;
+
+    inputRef.current[activeIndex].dispatchEvent(
+      new Event("input", { bubbles: true })
+    );
+
+    setChosenLetter("");
+  }, [chosenLetter, activeIndex]);
+
   function handleLetterGuess(event, index) {
-    const letter = event.target.value.toLowerCase();
-    const newguessedWordArray = [...guessedWordArray];
+    if (event.target.value === "") {
+      return;
+    }
+    const letter = event.target.value;
+    const newGuessedWordArray = [...guessedWordArray];
 
-    newguessedWordArray[index] = letter;
+    newGuessedWordArray[index] = letter;
 
-    setguessedWordArray(newguessedWordArray);
+    setGuessedWordArray(newGuessedWordArray);
+
     // ############ right letter ################
     if (letter === answerArray[index].toLowerCase()) {
       handleRightAnswer(5);
       if (index < answerArray.length - 1) {
         inputRef.current[index + 1].focus();
+        setActiveIndex((prev) => prev + 1);
+        setChosenLetter("");
       }
     } else {
       // ############# wrong letter ###############
       handleWrongAnswer(5);
       setWrongIndex(index);
+      vibrate();
       setTimeout(() => {
         setWrongIndex(-1);
       }, 800);
 
-      newguessedWordArray[index] = "";
-      setguessedWordArray(newguessedWordArray);
+      newGuessedWordArray[index] = "";
+      setGuessedWordArray(newGuessedWordArray);
     }
   }
 
   return (
-    <>
-      <InputFieldLayout>
-        {answerArray.map((letter, index) => (
-          <StyledInput
-            onChange={(event) => handleLetterGuess(event, index)}
-            ref={(ref) => (inputRef.current[index] = ref)}
-            key={index}
-            maxLength="1"
-            type="text"
-            isRight={guessedWordArray[index] === answerArray[index]}
-            value={guessedWordArray[index] || ""}
-            isWrong={index === wrongIndex}
-          ></StyledInput>
-        ))}
-      </InputFieldLayout>
-    </>
+    <InputFieldLayout>
+      {answerArray.map((letter, index) => (
+        <StyledInput
+          onInput={(event) => handleLetterGuess(event, index)}
+          ref={(ref) => (inputRef.current[index] = ref)}
+          key={index}
+          maxLength="1"
+          type="text"
+          isRight={guessedWordArray[index] === answerArray[index]}
+          value={guessedWordArray[index] || ""}
+          isWrong={index === wrongIndex}
+          readOnly
+          isActive={index === activeIndex}
+        ></StyledInput>
+      ))}
+      <ChooseLetter
+        setChosenLetter={setChosenLetter}
+        activeIndex={activeIndex}
+        answerArray={answerArray}
+      />
+    </InputFieldLayout>
   );
 }

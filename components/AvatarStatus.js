@@ -40,9 +40,9 @@ export default function AvatarStatus({ health, armor, level }) {
       </StyledLegend>
       <StyledStatusBox id="statusBox">
         <label htmlFor="health">Health:</label>
-        <HealthProgress id="health" max="100" value={health}></HealthProgress>
+        <HealthProgress id="health" max="150" value={health}></HealthProgress>
         <label htmlFor="armor">Armor:</label>
-        <ArmorProgress id="armor" max="100" value={armor}></ArmorProgress>
+        <ArmorProgress id="armor" max="150" value={armor}></ArmorProgress>
       </StyledStatusBox>
     </>
   );

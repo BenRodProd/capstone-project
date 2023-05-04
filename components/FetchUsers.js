@@ -6,7 +6,8 @@ const fetcher = async (...args) => {
   }
   return await response.json();
 };
-export default async function FetchUser() {
-  const { data } = useSWR("/api/users", fetcher).then;
-  return data.json();
+export default function FetchUser() {
+  const { data } = useSWR("/api/users", fetcher);
+
+  return data;
 }

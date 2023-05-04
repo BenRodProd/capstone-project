@@ -9,15 +9,4 @@ export default async function handler(request, response) {
 
     return response.status(200).json(users);
   }
-
-  //   if (request.method === "POST") {
-  //     try {
-  //       const userData = request.body;
-  //       await User.create(userData);
-
-  //       response.status(201).json({ status: "User created" });
-  //     } catch (error) {
-  //       response.status(400).json({ error: error.message });
-  //     }
-  //   }
 }

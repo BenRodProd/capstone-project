@@ -65,8 +65,7 @@ export default function App({ Component, pageProps }) {
   if (error) {
     return <div>error</div>;
   }
-  // ########### Left this console.log to show that PR 16 is working!! #########
-  console.log(user);
+
   return (
     <>
       <SWRConfig
@@ -80,6 +79,7 @@ export default function App({ Component, pageProps }) {
         <GlobalStyle />
         <MainStyled>
           <Component
+            userData={user}
             {...pageProps}
             library={currentLibrary}
             currentBook={currentBook}

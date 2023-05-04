@@ -1,2 +1,2 @@
 export const alphabet =
-  "abcdefghijklmnopqrstuvwxyzäöüéèêáàâúùûóòôíÌî1234567890";
+  "abcdefghijklmnopqrstuvwxyzäöüéèêáàâúùûóòôíÌî1234567890 ";

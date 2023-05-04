@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { SWRConfig } from "swr";
 import useSWR from "swr";
 import styled from "styled-components";
-
+import FetchUser from "@/components/fetchUsers";
 import LibraryNavigation from "@/components/EnterLibrary";
 
 const MainStyled = styled.div`
@@ -28,6 +28,7 @@ const fetcher = async (...args) => {
 
 export default function App({ Component, pageProps }) {
   const { data, mutate, error, isLoading } = useSWR("/api/library", fetcher);
+
   const router = useRouter();
   const [currentLibrary, setCurrentLibrary] = useState(data);
   const [currentBook, setCurrentBook] = useState("");
@@ -56,15 +57,16 @@ export default function App({ Component, pageProps }) {
     });
     mutate();
   }
-
+  const user = FetchUser();
   const insideLibrary = router.route.includes("/library");
-  if (isLoading || !currentLibrary) {
+  if (isLoading || !currentLibrary || !user) {
     return <div>loading...</div>;
   }
   if (error) {
     return <div>error</div>;
   }
-
+  // ########### Left this console.log to show that PR 16 is working!! #########
+  console.log(user);
   return (
     <>
       <SWRConfig

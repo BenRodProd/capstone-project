@@ -105,7 +105,7 @@ export default function AddWisdom({ library, currentBook, userData }) {
     const userBookIndex = userData[0].books.findIndex(
       (element) => element.bookname === currentBook
     );
-
+    console.log("addBook user", userData[0].books, userBookIndex);
     const gainedItems = userData[0].books[userBookIndex].gainedItems;
 
     const wisdomsInBook = library.filter(

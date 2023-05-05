@@ -88,7 +88,7 @@ export default function ViewBook({ library, currentBook }) {
     .filter((entry) => entry.book === currentBook)
     .map((wisdom) => wisdom.category)
     .filter((value, index, self) => self.indexOf(value) === index);
-  console.log(currentBook);
+
   return (
     <>
       <BookPageContainer>

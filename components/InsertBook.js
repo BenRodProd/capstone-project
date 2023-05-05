@@ -115,7 +115,8 @@ export default function InsertBook({
   function handleOnBookClick(book) {
     if (!burnActive) {
       setCurrentBook(book);
-      saveCurrentBook(book).then(router.push("/library/viewBook"));
+      saveCurrentBook(book);
+      router.push("/library/viewBook");
     } else {
       setPopUp(true);
     }

@@ -65,7 +65,6 @@ export default function App({ Component, pageProps }) {
         );
 
         setCurrentLibrary(firstSetCurrentLibrary);
-        setCurrentBook(userData[0].currentBook);
       }
     }
   }, [data, user]);

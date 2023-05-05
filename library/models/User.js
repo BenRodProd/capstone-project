@@ -7,6 +7,7 @@ const userSchema = new Schema({
   books: { type: Array, required: true },
   sound: { type: Array, required: true },
   subtitle: { type: String, required: true },
+  currentBook: { type: String, required: true },
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);

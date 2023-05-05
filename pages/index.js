@@ -10,7 +10,7 @@ import { levelLibrary } from "@/library/levelLibrary";
 import UserAvatar from "@/components/UserAvatar";
 import ShowDamage from "@/components/ShowDamage";
 import Pouch from "@/components/Pouch";
-export default function HomePage({ library, userData, itemList }) {
+export default function HomePage({ library, userData, itemList, currentBook }) {
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
@@ -29,6 +29,9 @@ export default function HomePage({ library, userData, itemList }) {
   const [inventory, setInventory] = useState(userData[0].books[0].inventory);
   const [inventorySlots, setInventorySlots] = useState(
     userData[0].books[0].inventorySlots
+  );
+  const [activeBookLibrary, setActiveBookLibrary] = useState(
+    library.filter((element) => element.book === currentBook)
   );
   useEffect(() => {
     setEnemyHealth(currentEnemy.health);

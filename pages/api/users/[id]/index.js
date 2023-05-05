@@ -17,7 +17,6 @@ export default async function handler(request, response) {
   }
 
   if (request.method === "PUT") {
-    console.log("REQUEST BODY", request.body);
     await User.findByIdAndUpdate(id, {
       $set: request.body,
     });

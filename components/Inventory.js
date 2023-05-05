@@ -42,14 +42,12 @@ export default function Inventory({
     if (item === "helmet") {
       setUserArmor((prevUserArmor) => prevUserArmor + 20);
       setInventory(currentInventory.filter((element) => element !== "helmet"));
-      console.log(currentInventory);
     }
   }
 
-  const defaultItem = "empty"; // Change this to whatever default value you want
+  const defaultItem = "empty";
   const currentInventory = new Array(Number(inventorySlots)).fill(defaultItem);
 
-  // Use a for loop to insert the items from inventory into the currentInventory array
   for (let i = 0; i < inventory.length; i++) {
     currentInventory[i] = inventory[i];
   }

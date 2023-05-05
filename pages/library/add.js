@@ -84,9 +84,17 @@ async function sendRequest(url, { arg }) {
   const { status } = await response.json();
 }
 
-export default function AddWisdom({ library, currentBook, userData }) {
+export default function AddWisdom({
+  library,
+  currentBook,
+  userData,
+  itemList,
+}) {
   const [popupActive, setPopupActive] = useState(false);
   const { trigger } = useSWRMutation("/api/library", sendRequest);
+  const userBookIndex = userData[0].books.findIndex(
+    (element) => element.bookname === currentBook
+  );
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -102,24 +110,57 @@ export default function AddWisdom({ library, currentBook, userData }) {
       owner: "Testor",
       book: currentBook,
     });
-    const userBookIndex = userData[0].books.findIndex(
-      (element) => element.bookname === currentBook
-    );
-    console.log("addBook user", userData[0].books, userBookIndex);
-    const gainedItems = userData[0].books[userBookIndex].gainedItems;
+
+    const gainedItems = Number(userData[0].books[userBookIndex].gainedItems);
 
     const wisdomsInBook = library.filter(
       (element) => element.book === currentBook
-    );
-    console.log(wisdomsInBook, gainedItems);
+    ).length;
+    const itemsInInventory = userData[0].books[userBookIndex].inventory;
+
     if (wisdomsInBook % 20 === 0 && gainedItems < wisdomsInBook / 20) {
-      console.log("NEW ITEM!!");
+      // Create a filtered list of items that are not "empty" and not part of itemsInInventory
+
+      const itemKeys = Object.keys(itemList).filter(
+        (key) => key !== "empty" && !itemsInInventory.includes(key)
+      );
+      const randomItem = itemKeys[Math.floor(Math.random() * itemKeys.length)];
+      saveItemToInventory(randomItem);
     }
+
     setPopupActive(true);
     setTimeout(() => setPopupActive(false), 1500);
     event.target.reset();
   }
+  async function saveItemToInventory(item) {
+    const updatedInventory = [
+      ...userData[0].books[userBookIndex].inventory,
+      item,
+    ];
+    const updatedUserData = {
+      ...userData[0],
+      books: [
+        ...userData[0].books.slice(0, userBookIndex),
+        {
+          ...userData[0].books[userBookIndex],
+          inventory: updatedInventory,
+        },
+        ...userData[0].books.slice(userBookIndex + 1),
+      ],
+    };
+    const response = await fetch(`/api/users/${userData[0]._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedUserData),
+    });
 
+    if (!response.ok) {
+      console.error(`Error: ${response.status}`);
+      return;
+    }
+  }
   return (
     <>
       <BackgroundImage
@@ -151,12 +192,7 @@ export default function AddWisdom({ library, currentBook, userData }) {
           <option value="Basics">Basics</option>
           <option value="Javascript">Javascript</option>
         </StyledSelect>
-        <StyledLabel htmlFor="benefit">Pick a Benefit</StyledLabel>
-        <StyledSelect name="benefit">
-          <option value="health">Health</option>
-          <option value="armor">Armor</option>
-          <option value="stamina">Stamina</option>
-        </StyledSelect>
+
         <StyledButton type="submit">SUBMIT</StyledButton>
       </StyledForm>
       {popupActive && <StyledPopup>Wisdom Added</StyledPopup>}

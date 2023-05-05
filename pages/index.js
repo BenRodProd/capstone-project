@@ -26,7 +26,12 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
     library[Math.floor(Math.random() * library.length)]
   );
   const [damageDisplay, setDamageDisplay] = useState(null);
-  const [inventory, setInventory] = useState(userData[0].books[0].inventory);
+
+  const [inventory, setInventory] = useState(
+    userData[0].books[
+      userData[0].books.findIndex((element) => element.bookname === currentBook)
+    ].inventory
+  );
   const [inventorySlots, setInventorySlots] = useState(
     userData[0].books[0].inventorySlots
   );

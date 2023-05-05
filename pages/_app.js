@@ -8,6 +8,7 @@ import styled from "styled-components";
 import FetchUser from "@/components/FetchUsers";
 import LibraryNavigation from "@/components/EnterLibrary";
 import { itemList } from "@/library/itemList";
+
 const MainStyled = styled.div`
   @media only screen and (min-width: 600px) {
     position: relative;
@@ -19,6 +20,7 @@ const MainStyled = styled.div`
     overflow-x: hidden;
   }
 `;
+
 const fetcher = async (...args) => {
   const response = await fetch(...args);
   if (!response.ok) {
@@ -48,6 +50,30 @@ export default function App({ Component, pageProps }) {
       })
     );
     mutate();
+    const bookIndex = user[0].books.findIndex((item) => item.bookname === book);
+
+    if (bookIndex === -1) {
+      console.error(`Error: Book not found.`);
+      return;
+    }
+
+    const response = await fetch(`/api/users/${user[0]._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...user[0],
+        books: user[0].books.filter((item) => item.bookname !== book),
+      }),
+    });
+
+    if (!response.ok) {
+      console.error(`Error: ${response.status}`);
+      return;
+    }
+
+    mutate(`/api/users/${user[0]._id}`);
   }
 
   async function handleBurnWisdom(wisdomId) {
@@ -57,13 +83,13 @@ export default function App({ Component, pageProps }) {
     mutate();
   }
   useEffect(() => {
-    if (data) {
+    if (Array.isArray(data)) {
       if (user) {
         const userData = user.filter((element) => element.name === "Testor");
         const firstSetCurrentLibrary = data.filter(
           (element) => element.owner === userData[0].name
         );
-
+        setCurrentBook(userData[0].currentBook);
         setCurrentLibrary(firstSetCurrentLibrary);
       }
     }
@@ -75,7 +101,7 @@ export default function App({ Component, pageProps }) {
   if (error) {
     return <div>error</div>;
   }
-  console.log(user);
+
   return (
     <>
       <SWRConfig

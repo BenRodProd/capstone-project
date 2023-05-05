@@ -179,8 +179,7 @@ export default function EditWisdom({ library, currentBook, handleBurnWisdom }) {
           <option value="Basics">Basics</option>
           <option value="Javascript">Javascript</option>
         </StyledSelect>
-        <StyledLabel htmlFor="benefit">Benefit:</StyledLabel>
-        <p id="benefit">{wisdom.benefit}</p>
+
         <StyledButton type="submit">SUBMIT</StyledButton>
       </StyledForm>
       {popupActive && <StyledPopup>Wisdom Edited</StyledPopup>}

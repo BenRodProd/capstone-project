@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { mutate } from "swr";
 import { useState } from "react";
 import styled from "styled-components";
 import ShowVerifyPopup from "./ShowVerifyPopup";
@@ -108,6 +109,7 @@ export default function InsertBook({
 
     if (!response.ok) {
       console.error(`Error: ${response.status}`);
+      return;
     }
   }
   const [popUp, setPopUp] = useState(false);

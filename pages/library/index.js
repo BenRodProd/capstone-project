@@ -90,10 +90,11 @@ export default function ViewLibrary({
       },
       body: JSON.stringify(updatedUserData),
     });
-    console.log(userData[0].currentBook);
+
     if (!response.ok) {
       console.error(`Error: ${response.status}`);
     }
+    mutate(`/api/library/${userData[0]._id}`);
   };
 
   return (

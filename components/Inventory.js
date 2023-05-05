@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styled from "styled-components";
 
 const Box = styled.div`
@@ -10,8 +11,16 @@ const Box = styled.div`
   height: 3rem;
   border: 2px solid white;
   background-color: black;
-  z-index: 4;
-  opacity: 0.8;
+  z-index: 5;
+  opacity: 0.9;
+`;
+
+const ItemImage = styled(Image)`
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  padding: 0;
 `;
 
 export default function Inventory({
@@ -20,13 +29,15 @@ export default function Inventory({
   setUserHealth,
   setUserArmor,
   setInventory,
+  itemList,
 }) {
   function useItem(event) {
-    const item = event.target.innerText;
-    if (item === "health") {
+    const item = event.target.alt;
+    if (item === "healthsmall") {
       setUserHealth((prevUserHealth) => prevUserHealth + 20);
-      setInventory(currentInventory.filter((element) => element !== "health"));
-      console.log(currentInventory);
+      setInventory(
+        currentInventory.filter((element) => element !== "healthsmall")
+      );
     }
     if (item === "helmet") {
       setUserArmor((prevUserArmor) => prevUserArmor + 20);
@@ -35,7 +46,7 @@ export default function Inventory({
     }
   }
 
-  const defaultItem = " "; // Change this to whatever default value you want
+  const defaultItem = "empty"; // Change this to whatever default value you want
   const currentInventory = new Array(Number(inventorySlots)).fill(defaultItem);
 
   // Use a for loop to insert the items from inventory into the currentInventory array
@@ -47,7 +58,7 @@ export default function Inventory({
     <>
       {currentInventory.map((item, index) => (
         <Box onClick={useItem} lefty={4 + index * 4} key={index}>
-          {item}
+          <ItemImage src={itemList[item]} alt={item} height="80" width="80" />
         </Box>
       ))}
     </>

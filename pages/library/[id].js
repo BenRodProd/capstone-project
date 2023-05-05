@@ -96,12 +96,7 @@ async function sendRequest(url, { arg }) {
   }
 }
 
-export default function EditWisdom({
-  library,
-
-  currentBook,
-  handleBurnWisdom,
-}) {
+export default function EditWisdom({ library, currentBook, handleBurnWisdom }) {
   const router = useRouter();
   const { id } = router.query;
 

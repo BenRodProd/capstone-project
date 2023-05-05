@@ -10,7 +10,7 @@ import { levelLibrary } from "@/library/levelLibrary";
 import UserAvatar from "@/components/UserAvatar";
 import ShowDamage from "@/components/ShowDamage";
 import Pouch from "@/components/Pouch";
-export default function HomePage({ library, userData }) {
+export default function HomePage({ library, userData, itemList }) {
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
@@ -119,6 +119,7 @@ export default function HomePage({ library, userData }) {
         inventory={inventory}
         inventorySlots={inventorySlots}
         setInventory={setInventory}
+        itemList={itemList}
       ></Pouch>
       {damageDone ? (
         <ShowDamage

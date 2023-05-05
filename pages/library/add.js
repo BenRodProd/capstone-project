@@ -84,7 +84,7 @@ async function sendRequest(url, { arg }) {
   const { status } = await response.json();
 }
 
-export default function AddWisdom({ currentBook }) {
+export default function AddWisdom({ library, currentBook, userData }) {
   const [popupActive, setPopupActive] = useState(false);
   const { trigger } = useSWRMutation("/api/library", sendRequest);
   async function handleSubmit(event) {
@@ -102,7 +102,19 @@ export default function AddWisdom({ currentBook }) {
       owner: "Testor",
       book: currentBook,
     });
+    const userBookIndex = userData[0].books.findIndex(
+      (element) => element.bookname === currentBook
+    );
 
+    const gainedItems = userData[0].books[userBookIndex].gainedItems;
+
+    const wisdomsInBook = library.filter(
+      (element) => element.book === currentBook
+    );
+    console.log(wisdomsInBook, gainedItems);
+    if (wisdomsInBook % 20 === 0 && gainedItems < wisdomsInBook / 20) {
+      console.log("NEW ITEM!!");
+    }
     setPopupActive(true);
     setTimeout(() => setPopupActive(false), 1500);
     event.target.reset();

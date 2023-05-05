@@ -16,6 +16,7 @@ export default function Pouch({
   setUserHealth,
   setUserArmor,
   setInventory,
+  itemList,
 }) {
   const [pouchOpen, setPouchOpen] = useState(false);
   return (
@@ -30,6 +31,7 @@ export default function Pouch({
       ></StyledPouch>
       {pouchOpen ? (
         <Inventory
+          itemList={itemList}
           setUserHealth={setUserHealth}
           inventorySlots={inventorySlots}
           inventory={inventory}

@@ -43,6 +43,14 @@ export default function Inventory({
       setUserArmor((prevUserArmor) => prevUserArmor + 20);
       setInventory(currentInventory.filter((element) => element !== "helmet"));
     }
+    if (item === "shield") {
+      setUserArmor((prevUserArmor) => prevUserArmor + 40);
+      setInventory(currentInventory.filter((element) => element !== "shield"));
+    }
+    if (item === "glove") {
+      setUserArmor((prevUserArmor) => prevUserArmor + 30);
+      setInventory(currentInventory.filter((element) => element !== "shield"));
+    }
   }
 
   const defaultItem = "empty";

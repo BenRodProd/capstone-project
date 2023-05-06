@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSWRMutation from "swr/mutation";
+import { mutate } from "swr";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -95,7 +96,7 @@ export default function AddWisdom({
   const userBookIndex = userData[0].books.findIndex(
     (element) => element.bookname === currentBook
   );
-  console.log(userData);
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -123,7 +124,8 @@ export default function AddWisdom({
       // Create a filtered list of items that are not "empty" and not part of itemsInInventory
 
       const itemKeys = Object.keys(itemList).filter(
-        (key) => key !== "empty" && !itemsInInventory.includes(key)
+        (key) =>
+          key !== "empty" && !itemsInInventory.includes(key) && key !== "pouch"
       );
       const randomItem = itemKeys[Math.floor(Math.random() * itemKeys.length)];
       saveItemToInventory(randomItem);
@@ -161,6 +163,7 @@ export default function AddWisdom({
       console.error(`Error: ${response.status}`);
       return;
     }
+    mutate("/api/users");
   }
   return (
     <>

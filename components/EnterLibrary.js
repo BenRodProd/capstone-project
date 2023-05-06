@@ -45,10 +45,7 @@ export default function LibraryNavigation({
       setPopupActive(true);
       setTimeout(() => setPopupActive(false), 3000);
       router.push("/library");
-      console.log("keep library");
-      console.log(currentBook, userData[0].currentBook);
     } else {
-      console.log("click to main", currentBook, userData[0].currentBook);
       router.push("/");
     }
   }

@@ -33,11 +33,7 @@ const BurnBook = styled(Image)`
   z-index: 3;
   filter: saturate(${(props) => props.saturation});
 `;
-export default function ViewLibrary({
-  setCurrentBook,
-  handleBurnBook,
-  currentBook,
-}) {
+export default function ViewLibrary({ setCurrentBook, handleBurnBook }) {
   const [inputPopupActive, setInputPopupActive] = useState(false);
   const [burnActive, setBurnActive] = useState(false);
   const { data: userData, mutate } = useSWR("/api/users");

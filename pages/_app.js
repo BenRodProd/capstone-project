@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import GlobalStyle from "../styles";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { SWRConfig } from "swr";
+import { SWRConfig, mutate } from "swr";
 import useSWR from "swr";
 import styled from "styled-components";
 import FetchUser from "@/components/FetchUsers";
@@ -31,7 +31,7 @@ const fetcher = async (...args) => {
 
 export default function App({ Component, pageProps }) {
   const user = FetchUser();
-  const { data, mutate, error, isLoading } = useSWR("/api/library", fetcher);
+  const { data, error, isLoading } = useSWR("/api/library", fetcher);
 
   const router = useRouter();
   const [currentLibrary, setCurrentLibrary] = useState(data);
@@ -49,7 +49,7 @@ export default function App({ Component, pageProps }) {
         });
       })
     );
-    mutate();
+    mutate("/api/library");
     const bookIndex = user[0].books.findIndex((item) => item.bookname === book);
 
     if (bookIndex === -1) {
@@ -65,6 +65,7 @@ export default function App({ Component, pageProps }) {
       body: JSON.stringify({
         ...user[0],
         books: user[0].books.filter((item) => item.bookname !== book),
+        currentBook: "",
       }),
     });
 
@@ -73,18 +74,19 @@ export default function App({ Component, pageProps }) {
       return;
     }
 
-    mutate(`/api/users/${user[0]._id}`);
+    mutate(`/api/users/`);
+    setCurrentBook("");
   }
 
   async function handleBurnWisdom(wisdomId) {
     await fetch(`/api/library/${wisdomId}`, {
       method: "DELETE",
     });
-    mutate();
+    mutate("/api/library");
   }
   useEffect(() => {
     if (Array.isArray(data)) {
-      if (user) {
+      if (Array.isArray(user)) {
         const userData = user.filter((element) => element.name === "Testor");
         const firstSetCurrentLibrary = data.filter(
           (element) => element.owner === userData[0].name
@@ -124,7 +126,11 @@ export default function App({ Component, pageProps }) {
             handleBurnWisdom={handleBurnWisdom}
             itemList={itemList}
           />
-          <LibraryNavigation insideLibrary={insideLibrary} />
+          <LibraryNavigation
+            userData={user}
+            currentBook={currentBook}
+            insideLibrary={insideLibrary}
+          />
         </MainStyled>
       </SWRConfig>
     </>

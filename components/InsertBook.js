@@ -111,6 +111,7 @@ export default function InsertBook({
       console.error(`Error: ${response.status}`);
       return;
     }
+    mutate("/api/users");
   }
   const [popUp, setPopUp] = useState(false);
   const router = useRouter();

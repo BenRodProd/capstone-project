@@ -11,6 +11,7 @@ import UserAvatar from "@/components/UserAvatar";
 import ShowDamage from "@/components/ShowDamage";
 import Pouch from "@/components/Pouch";
 export default function HomePage({ library, userData, itemList, currentBook }) {
+  console.log("userData", userData);
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);

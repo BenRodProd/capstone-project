@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import { useSWRConfig } from "swr";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -35,37 +34,33 @@ const BurnBook = styled(Image)`
   filter: saturate(${(props) => props.saturation});
 `;
 export default function ViewLibrary({
-  library,
   setCurrentBook,
   handleBurnBook,
   currentBook,
-  userData,
 }) {
   const [inputPopupActive, setInputPopupActive] = useState(false);
   const [burnActive, setBurnActive] = useState(false);
-  const { mutate } = useSWRConfig();
-  let bookTitle = "";
+  const { data: userData, mutate } = useSWR("/api/users");
+
   let torchColors = 0;
   const router = useRouter();
   function handleNewBookSubmit(event) {
     event.preventDefault();
-    bookTitle = event.target.title.value;
+    const bookTitle = event.target.title.value;
     setCurrentBook(bookTitle);
 
-    addBook();
+    addBook(bookTitle);
 
     router.push("/library/viewBook");
   }
-  const books = library
-    .map((wisdom) => wisdom.book)
-    .filter((value, index, self) => self.indexOf(value) === index);
+  const books = userData[0].books.map((element) => element.bookname);
 
   if (burnActive) {
     torchColors = 1;
   } else {
     torchColors = 0;
   }
-  const addBook = async () => {
+  async function addBook(bookTitle) {
     const newBook = {
       bookname: bookTitle,
       avatar: "",
@@ -94,9 +89,16 @@ export default function ViewLibrary({
     if (!response.ok) {
       console.error(`Error: ${response.status}`);
     }
-    mutate(`/api/library/${userData[0]._id}`);
-  };
-
+    mutate();
+  }
+  function onBurnBook(event) {
+    handleBurnBook(event);
+    setCurrentBook("");
+    mutate();
+  }
+  if (!Array.isArray(userData)) {
+    return <div>loading</div>;
+  }
   return (
     <>
       <BookShelfImage
@@ -110,11 +112,11 @@ export default function ViewLibrary({
           userData={userData}
           burnActive={burnActive}
           setBurnActive={setBurnActive}
-          key={book}
+          key={index}
           setCurrentBook={setCurrentBook}
           bookName={book}
           index={index}
-          handleBurnBook={handleBurnBook}
+          handleBurnBook={onBurnBook}
         ></InsertBook>
       ))}
       {books.length <= 6 ? (

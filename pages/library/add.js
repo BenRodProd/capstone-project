@@ -95,6 +95,7 @@ export default function AddWisdom({
   const userBookIndex = userData[0].books.findIndex(
     (element) => element.bookname === currentBook
   );
+  console.log(userData);
   async function handleSubmit(event) {
     event.preventDefault();
 

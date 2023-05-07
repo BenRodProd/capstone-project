@@ -8,6 +8,7 @@ import styled from "styled-components";
 import FetchUser from "@/components/FetchUsers";
 import LibraryNavigation from "@/components/EnterLibrary";
 import { itemList } from "@/library/itemList";
+import Image from "next/image";
 
 const MainStyled = styled.div`
   @media only screen and (min-width: 600px) {
@@ -19,6 +20,16 @@ const MainStyled = styled.div`
     overflow-y: auto;
     overflow-x: hidden;
   }
+`;
+
+const TitleScreen = styled(Image)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 15;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 `;
 
 const fetcher = async (...args) => {
@@ -36,7 +47,7 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
   const [currentLibrary, setCurrentLibrary] = useState(data);
   const [currentBook, setCurrentBook] = useState("");
-
+  const [firstLoad, setFirstLoad] = useState(true);
   async function handleBurnBook(book) {
     const wisdomsToDelete = currentLibrary.filter((element) => {
       return element.book === book;
@@ -131,6 +142,16 @@ export default function App({ Component, pageProps }) {
             currentBook={currentBook}
             insideLibrary={insideLibrary}
           />
+          {firstLoad ? (
+            <TitleScreen
+              priority
+              src="/assets/MINDBLADE.png"
+              alt="TitleScreen"
+              onClick={() => setFirstLoad(false)}
+              height="1920"
+              width="1080"
+            ></TitleScreen>
+          ) : null}
         </MainStyled>
       </SWRConfig>
     </>

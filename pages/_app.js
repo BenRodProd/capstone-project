@@ -29,7 +29,7 @@ const TitleScreen = styled(Image)`
   z-index: 15;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 `;
 
 const fetcher = async (...args) => {
@@ -137,11 +137,6 @@ export default function App({ Component, pageProps }) {
             handleBurnWisdom={handleBurnWisdom}
             itemList={itemList}
           />
-          <LibraryNavigation
-            userData={user}
-            currentBook={currentBook}
-            insideLibrary={insideLibrary}
-          />
           {firstLoad ? (
             <TitleScreen
               priority
@@ -152,6 +147,11 @@ export default function App({ Component, pageProps }) {
               width="1080"
             ></TitleScreen>
           ) : null}
+          <LibraryNavigation
+            userData={user}
+            currentBook={currentBook}
+            insideLibrary={insideLibrary}
+          />
         </MainStyled>
       </SWRConfig>
     </>

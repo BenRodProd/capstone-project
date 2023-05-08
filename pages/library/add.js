@@ -186,9 +186,15 @@ export default function AddWisdom({
           name="question"
           type="text"
           autoFocus
+          maxLength="25"
         ></StyledInput>
         <StyledLabel htmlFor="answer">Enter Answer:</StyledLabel>
-        <StyledInput required name="answer" type="text"></StyledInput>
+        <StyledInput
+          maxLength="22"
+          required
+          name="answer"
+          type="text"
+        ></StyledInput>
         <StyledLabel htmlFor="category">Pick a Category:</StyledLabel>
         <StyledSelect name="category">
           <option value="Vehicles">Vehicles</option>

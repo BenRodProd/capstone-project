@@ -43,10 +43,9 @@ export default function ViewLibrary({ setCurrentBook, handleBurnBook }) {
   function handleNewBookSubmit(event) {
     event.preventDefault();
     const bookTitle = event.target.title.value;
-    setCurrentBook(bookTitle);
 
     addBook(bookTitle);
-
+    setCurrentBook(bookTitle);
     router.push("/library/viewBook");
   }
   const books = userData[0].books.map((element) => element.bookname);
@@ -60,14 +59,14 @@ export default function ViewLibrary({ setCurrentBook, handleBurnBook }) {
     const newBook = {
       bookname: bookTitle,
       avatar: "knight",
-      xp: "0",
-      level: "1",
-      stage: "1",
-      armor: "0",
-      health: "20",
+      xp: 0,
+      level: 1,
+      stage: 1,
+      armor: 0,
+      health: 20,
       inventory: [],
-      inventorySlots: "2",
-      gainedItems: "0",
+      inventorySlots: 2,
+      gainedItems: 0,
     };
     const updatedUserData = {
       ...userData[0],

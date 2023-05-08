@@ -35,9 +35,6 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
   const [inventorySlots, setInventorySlots] = useState(
     userData[0].books[0].inventorySlots
   );
-  const [activeBookLibrary, setActiveBookLibrary] = useState(
-    library.filter((element) => element.book === currentBook)
-  );
   useEffect(() => {
     setEnemyHealth(currentEnemy.health);
   }, [currentEnemy]);
@@ -128,7 +125,7 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
         inventorySlots={inventorySlots}
         setInventory={setInventory}
         itemList={itemList}
-      ></Pouch>
+      />
       {damageDone ? (
         <ShowDamage
           x={damageDisplay.x}

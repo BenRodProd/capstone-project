@@ -13,12 +13,13 @@ import Image from "next/image";
 const MainStyled = styled.div`
   @media only screen and (min-width: 600px) {
     position: relative;
-    align-self: center;
+
+    align-content: center;
     justify-self: center;
     scale: 1.5;
-    width: 180%;
-    max-width: 375px;
-
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20rem;
     overflow-y: auto;
     overflow-x: hidden;
   }

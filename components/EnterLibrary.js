@@ -11,6 +11,7 @@ const StyledPopup = styled.div`
   width: 100%;
   font-size: 2rem;
   color: red;
+  left: 0;
   top: 15rem;
   background-color: black;
   height: 300px;
@@ -47,7 +48,6 @@ export default function LibraryNavigation({
     ) {
       setPopupActive(true);
       setTimeout(() => setPopupActive(false), 3000);
-      router.push("/library");
     } else if (!library.some((question) => question.book === currentBook)) {
       setPopupActive(true);
       setTimeout(() => setPopupActive(false), 3000);
@@ -67,7 +67,7 @@ export default function LibraryNavigation({
           height="80"
           width="80"
           onClick={handleLeaveLibrary}
-        ></StyledImage>
+        />
       ) : (
         <Link href="/library">
           <StyledImage
@@ -76,7 +76,7 @@ export default function LibraryNavigation({
             alt="Library Icon"
             height="80"
             width="80"
-          ></StyledImage>
+          />
         </Link>
       )}
       {popupActive ? (

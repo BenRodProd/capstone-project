@@ -9,4 +9,9 @@ export default async function handler(request, response) {
 
     return response.status(200).json(users);
   }
+  if (request.method === "PUT") {
+    await User.find();
+
+    response.status(200).json({ status: `User ${id} updated!` });
+  }
 }

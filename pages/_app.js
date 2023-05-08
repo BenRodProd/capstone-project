@@ -2,22 +2,39 @@ import { useEffect, useState } from "react";
 import GlobalStyle from "../styles";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { SWRConfig } from "swr";
+import { SWRConfig, mutate } from "swr";
 import useSWR from "swr";
 import styled from "styled-components";
 import FetchUser from "@/components/FetchUsers";
 import LibraryNavigation from "@/components/EnterLibrary";
+import { itemList } from "@/library/itemList";
+import Image from "next/image";
 
 const MainStyled = styled.div`
   @media only screen and (min-width: 600px) {
     position: relative;
+
+    align-content: center;
+    justify-self: center;
     scale: 1.5;
-    width: 150%;
-    max-width: 375px;
-    margin: 100% auto;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20rem;
     overflow-y: auto;
+    overflow-x: hidden;
   }
 `;
+
+const TitleScreen = styled(Image)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 15;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
 const fetcher = async (...args) => {
   const response = await fetch(...args);
   if (!response.ok) {
@@ -27,15 +44,13 @@ const fetcher = async (...args) => {
 };
 
 export default function App({ Component, pageProps }) {
-  const { data, mutate, error, isLoading } = useSWR("/api/library", fetcher);
+  const user = FetchUser();
+  const { data, error, isLoading } = useSWR("/api/library", fetcher);
 
   const router = useRouter();
   const [currentLibrary, setCurrentLibrary] = useState(data);
   const [currentBook, setCurrentBook] = useState("");
-  useEffect(() => {
-    setCurrentLibrary(data);
-  }, [data]);
-
+  const [firstLoad, setFirstLoad] = useState(true);
   async function handleBurnBook(book) {
     const wisdomsToDelete = currentLibrary.filter((element) => {
       return element.book === book;
@@ -48,16 +63,58 @@ export default function App({ Component, pageProps }) {
         });
       })
     );
-    mutate();
+    mutate("/api/library");
+    const bookIndex = user[0].books.findIndex((item) => item.bookname === book);
+
+    if (bookIndex === -1) {
+      console.error(`Error: Book not found.`);
+      return;
+    }
+
+    const response = await fetch(`/api/users/${user[0]._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...user[0],
+        books: user[0].books.filter((item) => item.bookname !== book),
+        currentBook: "",
+      }),
+    });
+
+    if (!response.ok) {
+      console.error(`Error: ${response.status}`);
+      return;
+    }
+
+    mutate(`/api/users/`);
+    setCurrentBook("");
   }
 
   async function handleBurnWisdom(wisdomId) {
     await fetch(`/api/library/${wisdomId}`, {
       method: "DELETE",
     });
-    mutate();
+    mutate("/api/library");
   }
-  const user = FetchUser();
+  useEffect(() => {
+    if (firstLoad) {
+      router.push("/library");
+    }
+  }, []);
+  useEffect(() => {
+    if (Array.isArray(data)) {
+      if (Array.isArray(user)) {
+        const userData = user.filter((element) => element.name === "Testor");
+        const firstSetCurrentLibrary = data.filter(
+          (element) => element.owner === userData[0].name
+        );
+        setCurrentBook(userData[0].currentBook);
+        setCurrentLibrary(firstSetCurrentLibrary);
+      }
+    }
+  }, [data, user]);
   const insideLibrary = router.route.includes("/library");
   if (isLoading || !currentLibrary || !user) {
     return <div>loading...</div>;
@@ -86,8 +143,24 @@ export default function App({ Component, pageProps }) {
             setCurrentBook={setCurrentBook}
             handleBurnBook={handleBurnBook}
             handleBurnWisdom={handleBurnWisdom}
+            itemList={itemList}
           />
-          <LibraryNavigation insideLibrary={insideLibrary} />
+          {firstLoad ? (
+            <TitleScreen
+              priority
+              src="/assets/MINDBLADE.png"
+              alt="TitleScreen"
+              onClick={() => setFirstLoad(false)}
+              height="1920"
+              width="1080"
+            ></TitleScreen>
+          ) : null}
+          <LibraryNavigation
+            userData={user}
+            currentBook={currentBook}
+            insideLibrary={insideLibrary}
+            library={currentLibrary}
+          />
         </MainStyled>
       </SWRConfig>
     </>

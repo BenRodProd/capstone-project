@@ -9,12 +9,12 @@ import LevelBackgroundImage from "@/components/LevelBackgroundImage";
 import { levelLibrary } from "@/library/levelLibrary";
 import UserAvatar from "@/components/UserAvatar";
 import ShowDamage from "@/components/ShowDamage";
-
-export default function HomePage({ library, userData }) {
-  const [currentEnemyIndex, setcurrentEnemyIndex] = useState(0);
+import Pouch from "@/components/Pouch";
+export default function HomePage({ library, userData, itemList, currentBook }) {
+  const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
-  const [currentEnemy, setcurrentEnemy] = useState(
+  const [currentEnemy, setCurrentEnemy] = useState(
     enemyLibrary[currentEnemyIndex]
   );
   const [userHealth, setUserHealth] = useState(userData[0].books[0].health);
@@ -22,9 +22,19 @@ export default function HomePage({ library, userData }) {
   const [userArmor, setUserArmor] = useState(userData[0].books[0].armor);
   const [enemyHealth, setEnemyHealth] = useState(currentEnemy.health);
   const [damageDone, setDamageDone] = useState(false);
-  const [currentCard, setCurrentCard] = useState(library[0]);
+  const [currentCard, setCurrentCard] = useState(
+    library[Math.floor(Math.random() * library.length)]
+  );
   const [damageDisplay, setDamageDisplay] = useState(null);
 
+  const [inventory, setInventory] = useState(
+    userData[0].books[
+      userData[0].books.findIndex((element) => element.bookname === currentBook)
+    ].inventory
+  );
+  const [inventorySlots, setInventorySlots] = useState(
+    userData[0].books[0].inventorySlots
+  );
   useEffect(() => {
     setEnemyHealth(currentEnemy.health);
   }, [currentEnemy]);
@@ -48,7 +58,7 @@ export default function HomePage({ library, userData }) {
     } else {
       setUserXP((prevXP) => prevXP + currentEnemy.xp);
 
-      setcurrentEnemyIndex((prevEnemyIndex) => prevEnemyIndex + 1);
+      setCurrentEnemyIndex((prevEnemyIndex) => prevEnemyIndex + 1);
       setCurrentLevelIndex((prevLevelIndex) => prevLevelIndex + 1);
 
       if (levelLibrary[currentLevelIndex]) {
@@ -58,10 +68,10 @@ export default function HomePage({ library, userData }) {
         setCurrentLevel(levelLibrary[0]);
       }
       if (enemyLibrary[currentEnemyIndex]) {
-        setcurrentEnemy(enemyLibrary[currentEnemyIndex]);
+        setCurrentEnemy(enemyLibrary[currentEnemyIndex]);
       } else {
-        setcurrentEnemy(enemyLibrary[0]);
-        setcurrentEnemyIndex(0);
+        setCurrentEnemy(enemyLibrary[0]);
+        setCurrentEnemyIndex(0);
       }
     }
   }
@@ -83,6 +93,12 @@ export default function HomePage({ library, userData }) {
     userData[0].books[0].avatar
   }${Math.floor(userXP / 500)}.png`;
   const userLevel = Math.floor(userXP / 500);
+  if (userHealth > 150) {
+    setUserHealth(150);
+  }
+  if (userArmor > 150) {
+    setUserArmor(150);
+  }
 
   return (
     <div>
@@ -102,7 +118,14 @@ export default function HomePage({ library, userData }) {
         handleWrongAnswer={handleWrongAnswer}
         handleRightAnswer={handleRightAnswer}
       />
-
+      <Pouch
+        setUserHealth={setUserHealth}
+        setUserArmor={setUserArmor}
+        inventory={inventory}
+        inventorySlots={inventorySlots}
+        setInventory={setInventory}
+        itemList={itemList}
+      />
       {damageDone ? (
         <ShowDamage
           x={damageDisplay.x}

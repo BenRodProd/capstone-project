@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSWRMutation from "swr/mutation";
+import { mutate } from "swr";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -84,9 +85,18 @@ async function sendRequest(url, { arg }) {
   const { status } = await response.json();
 }
 
-export default function AddWisdom({ currentBook }) {
+export default function AddWisdom({
+  library,
+  currentBook,
+  userData,
+  itemList,
+}) {
   const [popupActive, setPopupActive] = useState(false);
   const { trigger } = useSWRMutation("/api/library", sendRequest);
+  const userBookIndex = userData[0].books.findIndex(
+    (element) => element.bookname === currentBook
+  );
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -103,11 +113,58 @@ export default function AddWisdom({ currentBook }) {
       book: currentBook,
     });
 
+    const gainedItems = Number(userData[0].books[userBookIndex].gainedItems);
+
+    const wisdomsInBook = library.filter(
+      (element) => element.book === currentBook
+    ).length;
+    const itemsInInventory = userData[0].books[userBookIndex].inventory;
+
+    if (wisdomsInBook % 20 === 0 && gainedItems < wisdomsInBook / 20) {
+      // Create a filtered list of items that are not "empty" and not part of itemsInInventory
+
+      const itemKeys = Object.keys(itemList).filter(
+        (key) =>
+          key !== "empty" && !itemsInInventory.includes(key) && key !== "pouch"
+      );
+      const randomItem = itemKeys[Math.floor(Math.random() * itemKeys.length)];
+      saveItemToInventory(randomItem);
+    }
+
     setPopupActive(true);
     setTimeout(() => setPopupActive(false), 1500);
     event.target.reset();
   }
+  async function saveItemToInventory(item) {
+    const updatedInventory = [
+      ...userData[0].books[userBookIndex].inventory,
+      item,
+    ];
+    const updatedUserData = {
+      ...userData[0],
+      books: [
+        ...userData[0].books.slice(0, userBookIndex),
+        {
+          ...userData[0].books[userBookIndex],
+          inventory: updatedInventory,
+        },
+        ...userData[0].books.slice(userBookIndex + 1),
+      ],
+    };
+    const response = await fetch(`/api/users/${userData[0]._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedUserData),
+    });
 
+    if (!response.ok) {
+      console.error(`Error: ${response.status}`);
+      return;
+    }
+    mutate("/api/users");
+  }
   return (
     <>
       <BackgroundImage
@@ -129,9 +186,15 @@ export default function AddWisdom({ currentBook }) {
           name="question"
           type="text"
           autoFocus
+          maxLength="25"
         ></StyledInput>
         <StyledLabel htmlFor="answer">Enter Answer:</StyledLabel>
-        <StyledInput required name="answer" type="text"></StyledInput>
+        <StyledInput
+          maxLength="22"
+          required
+          name="answer"
+          type="text"
+        ></StyledInput>
         <StyledLabel htmlFor="category">Pick a Category:</StyledLabel>
         <StyledSelect name="category">
           <option value="Vehicles">Vehicles</option>
@@ -139,12 +202,7 @@ export default function AddWisdom({ currentBook }) {
           <option value="Basics">Basics</option>
           <option value="Javascript">Javascript</option>
         </StyledSelect>
-        <StyledLabel htmlFor="benefit">Pick a Benefit</StyledLabel>
-        <StyledSelect name="benefit">
-          <option value="health">Health</option>
-          <option value="armor">Armor</option>
-          <option value="stamina">Stamina</option>
-        </StyledSelect>
+
         <StyledButton type="submit">SUBMIT</StyledButton>
       </StyledForm>
       {popupActive && <StyledPopup>Wisdom Added</StyledPopup>}

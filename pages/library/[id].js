@@ -96,12 +96,7 @@ async function sendRequest(url, { arg }) {
   }
 }
 
-export default function EditWisdom({
-  library,
-
-  currentBook,
-  handleBurnWisdom,
-}) {
+export default function EditWisdom({ library, currentBook, handleBurnWisdom }) {
   const router = useRouter();
   const { id } = router.query;
 
@@ -184,8 +179,7 @@ export default function EditWisdom({
           <option value="Basics">Basics</option>
           <option value="Javascript">Javascript</option>
         </StyledSelect>
-        <StyledLabel htmlFor="benefit">Benefit:</StyledLabel>
-        <p id="benefit">{wisdom.benefit}</p>
+
         <StyledButton type="submit">SUBMIT</StyledButton>
       </StyledForm>
       {popupActive && <StyledPopup>Wisdom Edited</StyledPopup>}

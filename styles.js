@@ -11,7 +11,7 @@ export default createGlobalStyle`
   }
 
   body {
-    
+
     margin: 0;
     font-family: system-ui;
     display: flex;
@@ -22,7 +22,7 @@ export default createGlobalStyle`
     
   }
 .clickable {
-  filter: drop-shadow(0px 0px 16px #FFFFFF);
+  
   animation: blink 3s linear 2s infinite alternate;
 }
 @keyframes blink {
@@ -30,7 +30,7 @@ export default createGlobalStyle`
     filter: drop-shadow(0px 0px 0px #FFFFFF);
   }
   50%{
-    filter: drop-shadow(0px 0px 16px #FFFFFF);
+    filter: drop-shadow(0px 0px 8px #FFFFFF);
   }
   100%{
     filter: drop-shadow(0px 0px 0px #FFFFFF);

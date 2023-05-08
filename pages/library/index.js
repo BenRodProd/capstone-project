@@ -1,3 +1,4 @@
+import useSWR from "swr";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -32,32 +33,67 @@ const BurnBook = styled(Image)`
   z-index: 3;
   filter: saturate(${(props) => props.saturation});
 `;
-export default function ViewLibrary({
-  library,
-  setCurrentBook,
-  handleBurnBook,
-}) {
+export default function ViewLibrary({ setCurrentBook, handleBurnBook }) {
   const [inputPopupActive, setInputPopupActive] = useState(false);
   const [burnActive, setBurnActive] = useState(false);
+  const { data: userData, mutate } = useSWR("/api/users");
 
   let torchColors = 0;
   const router = useRouter();
   function handleNewBookSubmit(event) {
     event.preventDefault();
+    const bookTitle = event.target.title.value;
 
-    setCurrentBook(event.target.title.value);
+    addBook(bookTitle);
+    setCurrentBook(bookTitle);
     router.push("/library/viewBook");
   }
-  const books = library
-    .map((wisdom) => wisdom.book)
-    .filter((value, index, self) => self.indexOf(value) === index);
+  const books = userData[0].books.map((element) => element.bookname);
 
   if (burnActive) {
     torchColors = 1;
   } else {
     torchColors = 0;
   }
+  async function addBook(bookTitle) {
+    const newBook = {
+      bookname: bookTitle,
+      avatar: "knight",
+      xp: 0,
+      level: 1,
+      stage: 1,
+      armor: 0,
+      health: 20,
+      inventory: [],
+      inventorySlots: 2,
+      gainedItems: 0,
+    };
+    const updatedUserData = {
+      ...userData[0],
+      books: [...userData[0].books, newBook],
+      currentBook: bookTitle,
+    };
+    const response = await fetch(`/api/users/${userData[0]._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedUserData),
+    });
 
+    if (!response.ok) {
+      console.error(`Error: ${response.status}`);
+    }
+    mutate();
+  }
+  function onBurnBook(event) {
+    handleBurnBook(event);
+    setCurrentBook("");
+    mutate();
+  }
+  if (!Array.isArray(userData)) {
+    return <div>loading</div>;
+  }
   return (
     <>
       <BookShelfImage
@@ -68,13 +104,14 @@ export default function ViewLibrary({
       ></BookShelfImage>
       {books.map((book, index) => (
         <InsertBook
+          userData={userData}
           burnActive={burnActive}
           setBurnActive={setBurnActive}
-          key={book}
+          key={index}
           setCurrentBook={setCurrentBook}
           bookName={book}
           index={index}
-          handleBurnBook={handleBurnBook}
+          handleBurnBook={onBurnBook}
         ></InsertBook>
       ))}
       {books.length <= 6 ? (

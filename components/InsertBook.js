@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { mutate } from "swr";
 import { useState } from "react";
 import styled from "styled-components";
 import ShowVerifyPopup from "./ShowVerifyPopup";
@@ -92,12 +93,32 @@ export default function InsertBook({
   index,
   setCurrentBook,
   handleBurnBook,
+  userData,
 }) {
+  async function saveCurrentBook(book) {
+    const response = await fetch(`/api/users/${userData[0]._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...userData[0],
+        currentBook: book,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error(`Error: ${response.status}`);
+      return;
+    }
+    mutate("/api/users");
+  }
   const [popUp, setPopUp] = useState(false);
   const router = useRouter();
   function handleOnBookClick(book) {
     if (!burnActive) {
       setCurrentBook(book);
+      saveCurrentBook(book);
       router.push("/library/viewBook");
     } else {
       setPopUp(true);

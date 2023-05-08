@@ -98,6 +98,11 @@ export default function App({ Component, pageProps }) {
     mutate("/api/library");
   }
   useEffect(() => {
+    if (firstLoad) {
+      router.push("/library");
+    }
+  }, []);
+  useEffect(() => {
     if (Array.isArray(data)) {
       if (Array.isArray(user)) {
         const userData = user.filter((element) => element.name === "Testor");
@@ -116,9 +121,7 @@ export default function App({ Component, pageProps }) {
   if (error) {
     return <div>error</div>;
   }
-  if (firstLoad) {
-    router.push("/library");
-  }
+
   return (
     <>
       <SWRConfig

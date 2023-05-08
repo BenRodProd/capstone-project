@@ -6,7 +6,7 @@ const InputFieldLayout = styled.div`
   display: flex;
   flex-wrap: wrap;
   position: relative;
-  margin-top: 33rem;
+  margin-top: 32rem;
   margin-bottom: 1rem;
   justify-content: center;
   width: 100%;

@@ -12,7 +12,7 @@ const StyledAvatarImage = styled(Image)`
 const StyledXPProgress = styled.progress`
   position: absolute;
   left: 2rem;
-  top: 35rem;
+  top: 34rem;
   width: 5rem;
   -webkit-appearance: none;
   appearance: none;
@@ -35,7 +35,7 @@ const StyledXPProgress = styled.progress`
 const StyledDescription = styled.span`
   position: absolute;
   left: 2.8rem;
-  top: 35.2rem;
+  top: 34.2rem;
   z-index: 2;
   color: lightgrey;
   font-size: 0.5rem;

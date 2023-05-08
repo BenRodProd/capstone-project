@@ -155,6 +155,7 @@ export default function App({ Component, pageProps }) {
             userData={user}
             currentBook={currentBook}
             insideLibrary={insideLibrary}
+            library={currentLibrary}
           />
         </MainStyled>
       </SWRConfig>

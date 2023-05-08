@@ -59,7 +59,7 @@ export default function ViewLibrary({ setCurrentBook, handleBurnBook }) {
   async function addBook(bookTitle) {
     const newBook = {
       bookname: bookTitle,
-      avatar: "",
+      avatar: "knight",
       xp: "0",
       level: "1",
       stage: "1",

@@ -33,15 +33,22 @@ export default function LibraryNavigation({
   insideLibrary,
   currentBook,
   userData,
+  library,
 }) {
   const [popupActive, setPopupActive] = useState(false);
   const router = useRouter();
+  console.log(library, currentBook, userData);
   function handleLeaveLibrary() {
     if (
       !currentBook ||
       currentBook === "" ||
-      userData[0].currentBook !== currentBook
+      userData[0].currentBook !== currentBook ||
+      !library
     ) {
+      setPopupActive(true);
+      setTimeout(() => setPopupActive(false), 3000);
+      router.push("/library");
+    } else if (!library.some((question) => question.book === currentBook)) {
       setPopupActive(true);
       setTimeout(() => setPopupActive(false), 3000);
       router.push("/library");
@@ -73,7 +80,10 @@ export default function LibraryNavigation({
         </Link>
       )}
       {popupActive ? (
-        <StyledPopup>Please choose an active Book or create one</StyledPopup>
+        <StyledPopup>
+          Please choose an active Book or create one. The chosen Book may not be
+          empty.
+        </StyledPopup>
       ) : null}
     </>
   );

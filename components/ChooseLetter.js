@@ -1,5 +1,17 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { alphabet } from "@/library/alphabet";
+import { useState } from "react";
+
+const blurIn = keyframes`
+  from {
+    filter: blur(3rem);
+  }
+
+  to {
+    filter: blur(0);
+  }
+`;
+
 const StyledLetterChoice = styled.span`
   font-family: monospace;
   font-size: 1rem;
@@ -10,7 +22,9 @@ const StyledLetterChoice = styled.span`
   margin: 5px 5px;
   align-items: center;
   text-align: center;
+  animation: ${blurIn} 1s linear;
 `;
+
 const StyledLetterBox = styled.div`
   display: grid;
   position: absolute;

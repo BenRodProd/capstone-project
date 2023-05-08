@@ -13,6 +13,8 @@ import Image from "next/image";
 const MainStyled = styled.div`
   @media only screen and (min-width: 600px) {
     position: relative;
+    align-self: center;
+    justify-self: center;
     scale: 1.5;
     width: 180%;
     max-width: 375px;
@@ -114,7 +116,9 @@ export default function App({ Component, pageProps }) {
   if (error) {
     return <div>error</div>;
   }
-
+  if (firstLoad) {
+    router.push("/library");
+  }
   return (
     <>
       <SWRConfig

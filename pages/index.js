@@ -37,6 +37,7 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
   const [inventorySlots, setInventorySlots] = useState(
     userData[0].books[0].inventorySlots
   );
+
   useEffect(() => {
     setEnemyHealth(currentEnemy.health);
   }, [currentEnemy]);
@@ -95,7 +96,7 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
     userData[0].books[0].avatar
   }${Math.floor(Number(userXP) / 500)}.png`;
   const userLevel = Math.floor(Number(userXP) / 500);
-  console.log(userXP);
+
   if (userHealth > 150) {
     setUserHealth(150);
   }

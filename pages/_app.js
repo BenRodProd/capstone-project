@@ -176,7 +176,7 @@ export default function App({ Component, pageProps }) {
       setTitleActive(false);
     }, 16800);
   }
-  console.log(titleActive);
+
   return (
     <>
       <SWRConfig

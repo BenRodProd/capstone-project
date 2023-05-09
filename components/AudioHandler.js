@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 const musicVolume = 0.3;
 const backgroundVolume = 0.1;
 export default function AudioHandler({ level }) {
-  console.log(level);
   const [backgroundAudioFile, setBackgroundAudioFile] = useState("");
   const [musicFile, setMusicFile] = useState("");
 
@@ -14,7 +13,7 @@ export default function AudioHandler({ level }) {
     if (level === "library") {
       music.current.volume = 0;
       backgroundSound.current.volume = backgroundVolume - 0.05;
-      console.log(music.current);
+
       setBackgroundAudioFile("/assets/audio/back/library.mp3");
 
       setMusicFile("");
@@ -29,7 +28,6 @@ export default function AudioHandler({ level }) {
       music.current.volume = musicVolume - 0.2;
       backgroundSound.current.volume = backgroundVolume;
 
-      console.log(backgroundSound.current.volume, music.current.volume);
       setBackgroundAudioFile("assets/audio/back/blackforest.mp3");
 
       setMusicFile("/assets/audio/music/orchestra4.mp3");
@@ -42,7 +40,6 @@ export default function AudioHandler({ level }) {
       backgroundSound.current.pause();
       setBackgroundAudioFile("");
 
-      console.log(music.current.volume);
       // fadeOutMusic(music.current, 0.3);
     }
     if (level.level === 8) {

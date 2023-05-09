@@ -35,6 +35,7 @@ export default function LibraryNavigation({
   currentBook,
   userData,
   library,
+  loginActive,
 }) {
   const [popupActive, setPopupActive] = useState(false);
   const router = useRouter();
@@ -59,32 +60,36 @@ export default function LibraryNavigation({
 
   return (
     <>
-      {insideLibrary ? (
-        <StyledImage
-          className="clickable"
-          src="/assets/journey.png"
-          alt="Library Icon"
-          height="80"
-          width="80"
-          onClick={handleLeaveLibrary}
-        />
-      ) : (
-        <Link href="/library">
-          <StyledImage
-            className="clickable"
-            src="/assets/bookicon.png"
-            alt="Library Icon"
-            height="80"
-            width="80"
-          />
-        </Link>
+      {!loginActive && (
+        <>
+          {insideLibrary ? (
+            <StyledImage
+              className="clickable"
+              src="/assets/journey.png"
+              alt="Library Icon"
+              height="80"
+              width="80"
+              onClick={handleLeaveLibrary}
+            />
+          ) : (
+            <Link href="/library">
+              <StyledImage
+                className="clickable"
+                src="/assets/bookicon.png"
+                alt="Library Icon"
+                height="80"
+                width="80"
+              />
+            </Link>
+          )}
+          {popupActive ? (
+            <StyledPopup>
+              Please choose an active Book or create one. The chosen Book may
+              not be empty.
+            </StyledPopup>
+          ) : null}
+        </>
       )}
-      {popupActive ? (
-        <StyledPopup>
-          Please choose an active Book or create one. The chosen Book may not be
-          empty.
-        </StyledPopup>
-      ) : null}
     </>
   );
 }

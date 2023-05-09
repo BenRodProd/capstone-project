@@ -4,12 +4,12 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { SWRConfig, mutate } from "swr";
 import useSWR from "swr";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import FetchUser from "@/components/FetchUsers";
 import LibraryNavigation from "@/components/EnterLibrary";
 import { itemList } from "@/library/itemList";
 import Image from "next/image";
-
+import AudioHandler from "@/components/AudioHandler";
 const MainStyled = styled.div`
   @media only screen and (min-width: 600px) {
     position: relative;
@@ -25,6 +25,25 @@ const MainStyled = styled.div`
   }
 `;
 
+const zoom = keyframes`
+0% {
+scale:1;
+transform: translate(0,0);
+opacity: 1;
+}
+20% {
+  opacity: 1;
+}
+40% {
+  opacity:0.0;
+}
+100% {
+  scale:10;
+  transform: translate(-30rem, -70rem);
+  opacity: 0.0;
+}
+`;
+
 const TitleScreen = styled(Image)`
   position: absolute;
   top: 0;
@@ -33,6 +52,35 @@ const TitleScreen = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  animation: ${zoom} 40s ease-in 1;
+`;
+const LoginScreen = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 15;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  object-fit: cover;
+`;
+const StyledInput = styled.input`
+  position: absolute;
+  width: 25rem;
+  height: 4rem;
+  font-size: 4rem;
+  top: 65rem;
+  left: 100%;
+  z-index: 20;
+`;
+const StyledButton = styled.button`
+  position: absolute;
+  width: 25rem;
+  height: 4rem;
+  font-size: 4rem;
+  top: 70rem;
+  left: 100%;
+  z-index: 20;
 `;
 
 const fetcher = async (...args) => {
@@ -51,6 +99,7 @@ export default function App({ Component, pageProps }) {
   const [currentLibrary, setCurrentLibrary] = useState(data);
   const [currentBook, setCurrentBook] = useState("");
   const [firstLoad, setFirstLoad] = useState(true);
+  const [titleActive, setTitleActive] = useState(false);
   async function handleBurnBook(book) {
     const wisdomsToDelete = currentLibrary.filter((element) => {
       return element.book === book;
@@ -122,6 +171,11 @@ export default function App({ Component, pageProps }) {
   if (error) {
     return <div>error</div>;
   }
+  function titleHandler() {
+    setTimeout(() => {
+      setTitleActive(false);
+    }, 16800);
+  }
 
   return (
     <>
@@ -145,16 +199,42 @@ export default function App({ Component, pageProps }) {
             handleBurnWisdom={handleBurnWisdom}
             itemList={itemList}
           />
-          {firstLoad ? (
-            <TitleScreen
-              priority
-              src="/assets/MINDBLADE.png"
-              alt="TitleScreen"
-              onClick={() => setFirstLoad(false)}
-              height="1920"
-              width="1080"
-            ></TitleScreen>
-          ) : null}
+          {firstLoad && (
+            <>
+              <LoginScreen>
+                <Image
+                  priority
+                  src="/assets/MINDBLADE.png"
+                  alt="TitleScreen"
+                  height="1920"
+                  width="1080"
+                />
+                <StyledInput autoFocus type="text" placeholder="Name" />
+
+                <StyledButton
+                  type="button"
+                  onClick={() => (setTitleActive(true), setFirstLoad(false))}
+                >
+                  Submit
+                </StyledButton>
+              </LoginScreen>
+              <AudioHandler level="login" />
+            </>
+          )}
+          {titleActive && (
+            <>
+              {titleHandler()}
+              <TitleScreen
+                priority
+                src="/assets/MINDBLADE.png"
+                alt="TitleScreen"
+                height="1920"
+                width="1080"
+              ></TitleScreen>
+
+              <AudioHandler level="intro" />
+            </>
+          )}
           <LibraryNavigation
             userData={user}
             currentBook={currentBook}

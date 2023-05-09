@@ -20,6 +20,7 @@
     "react-dom": "18.2.0",
     "styled-components": "^5.3.9",
     "swr": "^2.1.5",
+    "use-sound": "^4.0.1",
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {

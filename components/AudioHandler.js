@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 
-const musicVolume = 0.2;
-
+const musicVolume = 0.3;
+const backgroundVolume = 0.1;
 export default function AudioHandler({ level }) {
-  const [volumeState, setVolumeState] = useState(0);
-
   console.log(level);
   const [backgroundAudioFile, setBackgroundAudioFile] = useState("");
   const [musicFile, setMusicFile] = useState("");
@@ -15,24 +13,31 @@ export default function AudioHandler({ level }) {
   useEffect(() => {
     if (level === "library") {
       music.current.volume = 0;
-
+      backgroundSound.current.volume = backgroundVolume - 0.05;
       console.log(music.current);
       setBackgroundAudioFile("/assets/audio/back/library.mp3");
 
       setMusicFile("");
     }
     if (level.level === 1) {
+      music.current.volume = musicVolume;
+      backgroundSound.current.volume = backgroundVolume;
       setBackgroundAudioFile("/assets/audio/back/meadows.mp3");
       setMusicFile("/assets/audio/music/orchestra3.mp3");
     }
     if (level.level === 2) {
+      music.current.volume = musicVolume - 0.2;
+      backgroundSound.current.volume = backgroundVolume;
+
+      console.log(backgroundSound.current.volume, music.current.volume);
       setBackgroundAudioFile("assets/audio/back/blackforest.mp3");
-      music.current.volume = 0;
+
       setMusicFile("/assets/audio/music/orchestra4.mp3");
-      music.current.volume = musicVolume;
     }
     if (level === "intro") {
-      music.current.volume = musicVolume;
+      backgroundSound.current.volume = backgroundVolume;
+      music.current.volume = musicVolume + 0.2;
+
       setMusicFile("/assets/audio/music/intro.mp3");
       backgroundSound.current.pause();
       setBackgroundAudioFile("");
@@ -41,18 +46,21 @@ export default function AudioHandler({ level }) {
       // fadeOutMusic(music.current, 0.3);
     }
     if (level.level === 8) {
+      backgroundSound.current.volume = backgroundVolume;
       setBackgroundAudioFile("/assets/audio/back/cavesounds.mp3");
     }
     if (level.level === 3) {
+      backgroundSound.current.volume = backgroundVolume;
       setMusicFile("assets/audio/music/orchestra1.mp3");
+      music.current.volume = musicVolume;
     }
     if ((level.level === 1) & (level.stage >= 3)) {
-      music.current.volume = 0;
+      backgroundSound.current.volume = backgroundVolume;
       setMusicFile("assets/audio/music/orchestra2.mp3");
       music.current.volume = musicVolume;
     }
     if ((level.level === 2) & (level.stage === 3 || level.stage === 5)) {
-      music.current.volume = 0;
+      backgroundSound.current.volume = backgroundVolume;
       setMusicFile("assets/audio/music/orchestra2.mp3");
       music.current.volume = musicVolume;
     }

@@ -119,7 +119,6 @@ export default function EditWisdom({ library, currentBook, handleBurnWisdom }) {
       _id: wisdom._id,
       book: currentBook,
       right: wisdom.right,
-      benefit: wisdom.benefit,
       owner: "Testor",
     });
 

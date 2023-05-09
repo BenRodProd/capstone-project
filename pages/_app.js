@@ -174,7 +174,7 @@ export default function App({ Component, pageProps }) {
   function titleHandler() {
     setTimeout(() => {
       setTitleActive(false);
-    }, 17000);
+    }, 16800);
   }
   console.log(titleActive);
   return (

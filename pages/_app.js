@@ -25,7 +25,7 @@ opacity: 1;
 }
 100% {
   scale:10;
-  transform: translate(-30rem, -70rem);
+  transform: translate(-120%, -100%);
   opacity: 0.0;
 }
 `;
@@ -41,9 +41,13 @@ const StyledForm = styled.form`
 `;
 
 const TitleScreen = styled(Image)`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  z-index: 15;
+  object-fit: fill;
   animation: ${zoom} 40s ease-in 1;
 `;
 const LoginScreen = styled.div`
@@ -163,6 +167,10 @@ export default function App({ Component, pageProps }) {
       >
         <Head>
           <title>Journey of Wisdom</title>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+          ></meta>
         </Head>
         <GlobalStyle />
 

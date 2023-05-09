@@ -1,16 +1,21 @@
 import Image from "next/image";
 import styled from "styled-components";
 
-const StyledAvatar = styled(Image)``;
+const StyledEnemy = styled(Image)`
+  justify-self: flex-end;
+
+  object-fit: contain;
+  bottom: 0;
+`;
 
 export default function EnemyAvatar({ currentEnemy }) {
   return (
     <>
-      <StyledAvatar
+      <StyledEnemy
         src={currentEnemy.img}
         alt={currentEnemy.name}
-        width="200"
-        height="200"
+        width="150"
+        height="150"
       />
     </>
   );

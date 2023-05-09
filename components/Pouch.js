@@ -4,9 +4,8 @@ import { useState } from "react";
 import Inventory from "./Inventory";
 
 const StyledPouch = styled(Image)`
-  position: absolute;
-  top: 28rem;
-  left: 0rem;
+  position: relative;
+
   opacity: 0.7;
 `;
 

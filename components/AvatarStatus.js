@@ -3,26 +3,21 @@ import { HealthProgress, ArmorProgress } from "./StyledProgress";
 import { useState, useEffect } from "react";
 const StyledStatusBox = styled.div`
   display: flex;
-  position: absolute;
-  margin-top: 25rem;
-  right: 2px;
+  position: relative;
+
   flex-direction: column;
+  align-self: flex-end;
   align-items: center;
   border: 2px solid grey;
   background-color: rgba(77, 72, 74, 0.4);
   padding: 0.5rem;
   width: fit-content;
-  margin-right: 0.2;
 `;
 const StyledLegend = styled.legend`
-  position: absolute;
-  top: 29rem;
-  right: 4rem;
-
   color: cyan;
-  z-index: 5;
+  z-index: 15;
   font-size: ${(props) => props.size};
-
+  float: right;
   transform-origin: 0 0;
 `;
 export default function AvatarStatus({ health, armor, level }) {
@@ -35,15 +30,17 @@ export default function AvatarStatus({ health, armor, level }) {
   }, [level]);
   return (
     <>
-      <StyledLegend size={levelSize} htmlFor="statusBox">
-        LEVEL: {level}
-      </StyledLegend>
-      <StyledStatusBox id="statusBox">
-        <label htmlFor="health">Health:</label>
-        <HealthProgress id="health" max="150" value={health}></HealthProgress>
-        <label htmlFor="armor">Armor:</label>
-        <ArmorProgress id="armor" max="150" value={armor}></ArmorProgress>
-      </StyledStatusBox>
+      <fieldset>
+        <StyledLegend size={levelSize} htmlFor="statusBox">
+          LEVEL: {level}
+        </StyledLegend>
+        <StyledStatusBox id="statusBox">
+          <label htmlFor="health">Health:</label>
+          <HealthProgress id="health" max="150" value={health}></HealthProgress>
+          <label htmlFor="armor">Armor:</label>
+          <ArmorProgress id="armor" max="150" value={armor}></ArmorProgress>
+        </StyledStatusBox>
+      </fieldset>
     </>
   );
 }

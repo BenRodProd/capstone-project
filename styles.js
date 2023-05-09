@@ -11,15 +11,13 @@ export default createGlobalStyle`
   }
 
   body {
-
-    height: 100vh;
-  width: 100vw;
-padding: 0;
+    width: 100vw;
+    height:100vh;
+ 
+    padding: 0;
     margin: 0;
     font-family: system-ui;
-    display: flex;
-    justify-content:center;
-    text-align: center;
+  
     background-color: black;
     color: white;
     

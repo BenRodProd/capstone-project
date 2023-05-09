@@ -13,9 +13,7 @@ export default function AudioHandler({ level }) {
     if (level === "library") {
       music.current.volume = 0;
       backgroundSound.current.volume = backgroundVolume - 0.05;
-
       setBackgroundAudioFile("/assets/audio/back/library.mp3");
-
       setMusicFile("");
     }
     if (level.level === 1) {
@@ -27,20 +25,14 @@ export default function AudioHandler({ level }) {
     if (level.level === 2) {
       music.current.volume = musicVolume - 0.2;
       backgroundSound.current.volume = backgroundVolume;
-
       setBackgroundAudioFile("assets/audio/back/blackforest.mp3");
-
       setMusicFile("/assets/audio/music/orchestra4.mp3");
     }
     if (level === "intro") {
-      backgroundSound.current.volume = backgroundVolume;
+      backgroundSound.current.volume = 0;
       music.current.volume = musicVolume + 0.2;
-
       setMusicFile("/assets/audio/music/intro.mp3");
-      backgroundSound.current.pause();
       setBackgroundAudioFile("");
-
-      // fadeOutMusic(music.current, 0.3);
     }
     if (level.level === 8) {
       backgroundSound.current.volume = backgroundVolume;

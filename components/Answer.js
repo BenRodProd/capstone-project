@@ -6,9 +6,9 @@ const InputFieldLayout = styled.div`
   display: flex;
   flex-wrap: wrap;
   position: relative;
-  margin-top: 32rem;
-  margin-bottom: 1rem;
+  align-items: center;
   justify-content: center;
+  align-self: flex-end;
   width: 100%;
 `;
 

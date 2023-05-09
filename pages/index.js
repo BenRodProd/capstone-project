@@ -11,7 +11,40 @@ import UserAvatar from "@/components/UserAvatar";
 import ShowDamage from "@/components/ShowDamage";
 import Pouch from "@/components/Pouch";
 import AudioHandler from "@/components/AudioHandler";
+import styled from "styled-components";
 
+const EnemyBox = styled.div`
+  display: flex;
+  position: absolute;
+  width: 100%;
+  top: 35vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+`;
+const BackgroundAndEnemy = styled.div``;
+
+const LevelBox = styled.div`
+  display: flex;
+
+  top: 0;
+`;
+
+const ScreenBox = styled.main`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+
+  height: 100vh;
+  width: 100vw;
+`;
+const AnswerBox = styled.div`
+  align-self: flex-end;
+  justify-self: flex-end;
+
+  width: 100%;
+  margin-top: auto;
+`;
 export default function HomePage({ library, userData, itemList, currentBook }) {
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
@@ -105,40 +138,57 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
   }
 
   return (
-    <div>
-      <LevelBackgroundImage level={currentLevel} />
-      <Question question={currentCard.question} />
-      <EnemyAvatar currentEnemy={currentEnemy} />
-      <EnemyStatus enemyHealth={enemyHealth} />
-      <UserAvatar
-        imageSrc={userAvatarImage}
-        userXP={userXP}
-        level={userLevel}
-      />
-      <AvatarStatus health={userHealth} armor={userArmor} level={userLevel} />
-      <Answer
-        answer={currentCard.answer}
-        handleNextQuestion={handleNextQuestion}
-        handleWrongAnswer={handleWrongAnswer}
-        handleRightAnswer={handleRightAnswer}
-      />
-      <Pouch
-        setUserHealth={setUserHealth}
-        setUserArmor={setUserArmor}
-        inventory={inventory}
-        inventorySlots={inventorySlots}
-        setInventory={setInventory}
-        itemList={itemList}
-      />
-      {damageDone && (
-        <ShowDamage
-          x={damageDisplay.x}
-          y={damageDisplay.y}
-          color={damageDisplay.color}
-          damage={damageDisplay.damage}
-        />
-      )}
+    <>
+      <ScreenBox>
+        <BackgroundAndEnemy>
+          <LevelBackgroundImage level={currentLevel} />
+          <EnemyBox>
+            <EnemyAvatar currentEnemy={currentEnemy} />
+            <EnemyStatus enemyHealth={enemyHealth} />
+          </EnemyBox>
+
+          <Question question={currentCard.question} />
+        </BackgroundAndEnemy>
+
+        <LevelBox>
+          <Pouch
+            setUserHealth={setUserHealth}
+            setUserArmor={setUserArmor}
+            inventory={inventory}
+            inventorySlots={inventorySlots}
+            setInventory={setInventory}
+            itemList={itemList}
+          />
+          <UserAvatar
+            imageSrc={userAvatarImage}
+            userXP={userXP}
+            level={userLevel}
+          />
+          <AvatarStatus
+            health={userHealth}
+            armor={userArmor}
+            level={userLevel}
+          />
+        </LevelBox>
+        <AnswerBox>
+          <Answer
+            answer={currentCard.answer}
+            handleNextQuestion={handleNextQuestion}
+            handleWrongAnswer={handleWrongAnswer}
+            handleRightAnswer={handleRightAnswer}
+          />
+        </AnswerBox>
+
+        {damageDone && (
+          <ShowDamage
+            x={damageDisplay.x}
+            y={damageDisplay.y}
+            color={damageDisplay.color}
+            damage={damageDisplay.damage}
+          />
+        )}
+      </ScreenBox>
       <AudioHandler level={currentLevel} />
-    </div>
+    </>
   );
 }

@@ -4,15 +4,12 @@ import Image from "next/image";
 import React from "react";
 
 const StyledAvatarImage = styled(Image)`
-  position: absolute;
-  left: 2rem;
-  top: 30rem;
+  position: relative;
 `;
 
 const StyledXPProgress = styled.progress`
-  position: absolute;
-  left: 2rem;
-  top: 34rem;
+  position: relative;
+
   width: 5rem;
   -webkit-appearance: none;
   appearance: none;
@@ -32,10 +29,17 @@ const StyledXPProgress = styled.progress`
   }
 `;
 
+const StyledBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 2rem;
+`;
+
 const StyledDescription = styled.span`
-  position: absolute;
-  left: 2.8rem;
-  top: 34.2rem;
+  position: relative;
+
   z-index: 2;
   color: lightgrey;
   font-size: 0.5rem;
@@ -44,17 +48,19 @@ const StyledDescription = styled.span`
 export default function UserAvatar({ imageSrc, userXP, level }) {
   return (
     <>
-      <StyledAvatarImage
-        src={imageSrc}
-        alt="User Avatar"
-        width="80"
-        height="80"
-      />
+      <StyledBox>
+        <StyledAvatarImage
+          src={imageSrc}
+          alt="User Avatar"
+          width="80"
+          height="80"
+        />
 
-      <StyledDescription>
-        {userXP} / {(level + 1) * 500} XP
-      </StyledDescription>
-      <StyledXPProgress value={userXP} max="500" />
+        <StyledDescription>
+          {userXP} / {(level + 1) * 500} XP
+        </StyledDescription>
+        <StyledXPProgress value={userXP} max="500" />
+      </StyledBox>
     </>
   );
 }

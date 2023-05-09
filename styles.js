@@ -11,16 +11,18 @@ export default createGlobalStyle`
   }
 
   body {
-
+    width: 100vw;
+    height:100vh;
+ 
+    padding: 0;
     margin: 0;
     font-family: system-ui;
-    display: flex;
-    justify-content:center;
-    text-align: center;
+  
     background-color: black;
     color: white;
     
   }
+
 .clickable {
   
   animation: blink 3s linear 2s infinite alternate;
@@ -37,5 +39,4 @@ export default createGlobalStyle`
   }
   
 }
-
 `;

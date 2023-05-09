@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
+import AudioHandler from "@/components/AudioHandler";
 
 const BookPageStyle = styled.ul`
   position: relative;
@@ -148,6 +149,7 @@ export default function ViewBook({ library, currentBook }) {
         You have {library.filter((entry) => entry.book === currentBook).length}{" "}
         wisdoms in your book
       </p>
+      <AudioHandler level="library" />
     </>
   );
 }

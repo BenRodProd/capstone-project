@@ -10,6 +10,8 @@ import { levelLibrary } from "@/library/levelLibrary";
 import UserAvatar from "@/components/UserAvatar";
 import ShowDamage from "@/components/ShowDamage";
 import Pouch from "@/components/Pouch";
+import AudioHandler from "@/components/AudioHandler";
+
 export default function HomePage({ library, userData, itemList, currentBook }) {
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
@@ -18,7 +20,7 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
     enemyLibrary[currentEnemyIndex]
   );
   const [userHealth, setUserHealth] = useState(userData[0].books[0].health);
-  const [userXP, setUserXP] = useState(userData[0].books[0].xp);
+  const [userXP, setUserXP] = useState(Number(userData[0].books[0].xp));
   const [userArmor, setUserArmor] = useState(userData[0].books[0].armor);
   const [enemyHealth, setEnemyHealth] = useState(currentEnemy.health);
   const [damageDone, setDamageDone] = useState(false);
@@ -56,7 +58,7 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
         setDamageDone(false);
       }, 400);
     } else {
-      setUserXP((prevXP) => prevXP + currentEnemy.xp);
+      setUserXP((prevXP) => Number(prevXP) + Number(currentEnemy.xp));
 
       setCurrentEnemyIndex((prevEnemyIndex) => prevEnemyIndex + 1);
       setCurrentLevelIndex((prevLevelIndex) => prevLevelIndex + 1);
@@ -91,8 +93,9 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
 
   const userAvatarImage = `/assets/avatars/${
     userData[0].books[0].avatar
-  }${Math.floor(userXP / 500)}.png`;
-  const userLevel = Math.floor(userXP / 500);
+  }${Math.floor(Number(userXP) / 500)}.png`;
+  const userLevel = Math.floor(Number(userXP) / 500);
+  console.log(userXP);
   if (userHealth > 150) {
     setUserHealth(150);
   }
@@ -126,14 +129,15 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
         setInventory={setInventory}
         itemList={itemList}
       />
-      {damageDone ? (
+      {damageDone && (
         <ShowDamage
           x={damageDisplay.x}
           y={damageDisplay.y}
           color={damageDisplay.color}
           damage={damageDisplay.damage}
         />
-      ) : null}
+      )}
+      <AudioHandler level={currentLevel} />
     </div>
   );
 }

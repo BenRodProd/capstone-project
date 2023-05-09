@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import InsertBook from "@/components/InsertBook";
+import AudioHandler from "@/components/AudioHandler";
 
 const BookShelfImage = styled(Image)`
   position: flex;
@@ -143,6 +144,7 @@ export default function ViewLibrary({ setCurrentBook, handleBurnBook }) {
           <AddNewBookButton type="submit">Submit</AddNewBookButton>
         </form>
       )}
+      <AudioHandler level="library" />
     </>
   );
 }

@@ -4,6 +4,7 @@ import useSWRMutation from "swr/mutation";
 import { mutate } from "swr";
 import Image from "next/image";
 import Link from "next/link";
+import AudioHandler from "@/components/AudioHandler";
 
 const StyledForm = styled.form`
   display: grid;
@@ -214,6 +215,7 @@ export default function AddWisdom({
           height="180"
         ></StyledBackToBookImage>
       </Link>
+      <AudioHandler level="library" />
     </>
   );
 }

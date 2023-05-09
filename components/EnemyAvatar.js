@@ -1,12 +1,7 @@
 import Image from "next/image";
 import styled from "styled-components";
 
-const StyledAvatar = styled(Image)`
-  position: absolute;
-  object-fit: contain;
-  top: 15rem;
-  left: 5rem;
-`;
+const StyledAvatar = styled(Image)``;
 
 export default function EnemyAvatar({ currentEnemy }) {
   return (

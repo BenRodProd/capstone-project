@@ -34,7 +34,11 @@ const BurnBook = styled(Image)`
   z-index: 3;
   filter: saturate(${(props) => props.saturation});
 `;
-export default function ViewLibrary({ setCurrentBook, handleBurnBook }) {
+export default function ViewLibrary({
+  setCurrentBook,
+  handleBurnBook,
+  loginActive,
+}) {
   const [inputPopupActive, setInputPopupActive] = useState(false);
   const [burnActive, setBurnActive] = useState(false);
   const { data: userData, mutate } = useSWR("/api/users");
@@ -97,54 +101,57 @@ export default function ViewLibrary({ setCurrentBook, handleBurnBook }) {
   }
   return (
     <>
-      <BookShelfImage
-        src="/assets/bookshelf2.png"
-        height="1920"
-        width="1080"
-        alt="bookshelf"
-      ></BookShelfImage>
-      {books.map((book, index) => (
-        <InsertBook
-          userData={userData}
-          burnActive={burnActive}
-          setBurnActive={setBurnActive}
-          key={index}
-          setCurrentBook={setCurrentBook}
-          bookName={book}
-          index={index}
-          handleBurnBook={onBurnBook}
-        ></InsertBook>
-      ))}
-      {books.length <= 6 ? (
-        <AddNewBookButton
-          onClick={() => setInputPopupActive(true)}
-          type="button"
-        >
-          Add new Book
-        </AddNewBookButton>
-      ) : null}
-      <BurnBook
-        width="80"
-        height="100"
-        alt="delete book"
-        src="/assets/torch.png"
-        onClick={() => setBurnActive(!burnActive)}
-        saturation={torchColors}
-      ></BurnBook>
-
-      {inputPopupActive && (
-        <form onSubmit={handleNewBookSubmit}>
-          <label htmlFor="title">Enter Title</label>
-          <AddNewBookTitleInput
-            autoFocus
-            maxLength="20"
-            required
-            name="title"
-          ></AddNewBookTitleInput>
-          <AddNewBookButton type="submit">Submit</AddNewBookButton>
-        </form>
+      {!loginActive && (
+        <>
+          <BookShelfImage
+            src="/assets/bookshelf2.png"
+            height="1920"
+            width="1080"
+            alt="bookshelf"
+          ></BookShelfImage>
+          {books.map((book, index) => (
+            <InsertBook
+              userData={userData}
+              burnActive={burnActive}
+              setBurnActive={setBurnActive}
+              key={index}
+              setCurrentBook={setCurrentBook}
+              bookName={book}
+              index={index}
+              handleBurnBook={onBurnBook}
+            ></InsertBook>
+          ))}
+          {books.length <= 6 ? (
+            <AddNewBookButton
+              onClick={() => setInputPopupActive(true)}
+              type="button"
+            >
+              Add new Book
+            </AddNewBookButton>
+          ) : null}
+          <BurnBook
+            width="80"
+            height="100"
+            alt="delete book"
+            src="/assets/torch.png"
+            onClick={() => setBurnActive(!burnActive)}
+            saturation={torchColors}
+          ></BurnBook>
+          {inputPopupActive && (
+            <form onSubmit={handleNewBookSubmit}>
+              <label htmlFor="title">Enter Title</label>
+              <AddNewBookTitleInput
+                autoFocus
+                maxLength="20"
+                required
+                name="title"
+              ></AddNewBookTitleInput>
+              <AddNewBookButton type="submit">Submit</AddNewBookButton>
+            </form>
+          )}
+          <AudioHandler level="library" />{" "}
+        </>
       )}
-      <AudioHandler level="library" />
     </>
   );
 }

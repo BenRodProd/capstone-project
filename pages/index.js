@@ -11,6 +11,13 @@ import UserAvatar from "@/components/UserAvatar";
 import ShowDamage from "@/components/ShowDamage";
 import Pouch from "@/components/Pouch";
 import AudioHandler from "@/components/AudioHandler";
+import styled from "styled-components";
+
+const EnemyBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
 
 export default function HomePage({ library, userData, itemList, currentBook }) {
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
@@ -108,8 +115,10 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
     <div>
       <LevelBackgroundImage level={currentLevel} />
       <Question question={currentCard.question} />
-      <EnemyAvatar currentEnemy={currentEnemy} />
-      <EnemyStatus enemyHealth={enemyHealth} />
+      <EnemyBox>
+        <EnemyAvatar currentEnemy={currentEnemy} />
+        <EnemyStatus enemyHealth={enemyHealth} />
+      </EnemyBox>
       <UserAvatar
         imageSrc={userAvatarImage}
         userXP={userXP}

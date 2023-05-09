@@ -10,20 +10,6 @@ import LibraryNavigation from "@/components/EnterLibrary";
 import { itemList } from "@/library/itemList";
 import Image from "next/image";
 import AudioHandler from "@/components/AudioHandler";
-const MainStyled = styled.div`
-  @media only screen and (min-width: 600px) {
-    position: relative;
-
-    align-content: center;
-    justify-self: center;
-    scale: 1.5;
-    width: 100%;
-    max-width: 400px;
-    margin-top: 20rem;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-`;
 
 const zoom = keyframes`
 0% {
@@ -44,43 +30,34 @@ opacity: 1;
 }
 `;
 
-const TitleScreen = styled(Image)`
+const StyledForm = styled.form`
   position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10%;
+  z-index: 999;
+  top: 55%;
+`;
+
+const TitleScreen = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: cover;
   animation: ${zoom} 40s ease-in 1;
 `;
 const LoginScreen = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 15;
-  width: 100%;
-  height: 100%;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
   background-color: black;
   object-fit: cover;
 `;
 const StyledInput = styled.input`
-  position: absolute;
-  width: 25rem;
-  height: 4rem;
-  font-size: 4rem;
-  top: 65rem;
-  left: 100%;
-  z-index: 20;
+  font-size: 2rem;
 `;
 const StyledButton = styled.button`
-  position: absolute;
-  width: 25rem;
-  height: 4rem;
-  font-size: 4rem;
-  top: 70rem;
-  left: 100%;
-  z-index: 20;
+  font-size: 2rem;
 `;
 
 const fetcher = async (...args) => {
@@ -188,60 +165,60 @@ export default function App({ Component, pageProps }) {
           <title>Journey of Wisdom</title>
         </Head>
         <GlobalStyle />
-        <MainStyled>
-          <Component
-            userData={user}
-            {...pageProps}
-            library={currentLibrary}
-            currentBook={currentBook}
-            setCurrentBook={setCurrentBook}
-            handleBurnBook={handleBurnBook}
-            handleBurnWisdom={handleBurnWisdom}
-            itemList={itemList}
-          />
-          {firstLoad && (
-            <>
-              <LoginScreen>
-                <Image
-                  priority
-                  src="/assets/MINDBLADE.png"
-                  alt="TitleScreen"
-                  height="1920"
-                  width="1080"
-                />
-                <StyledInput autoFocus type="text" placeholder="Name" />
 
-                <StyledButton
-                  type="button"
-                  onClick={() => (setTitleActive(true), setFirstLoad(false))}
-                >
-                  Submit
-                </StyledButton>
-              </LoginScreen>
-              <AudioHandler level="login" />
-            </>
-          )}
-          {titleActive && (
-            <>
-              {titleHandler()}
-              <TitleScreen
+        <Component
+          userData={user}
+          {...pageProps}
+          library={currentLibrary}
+          currentBook={currentBook}
+          setCurrentBook={setCurrentBook}
+          handleBurnBook={handleBurnBook}
+          handleBurnWisdom={handleBurnWisdom}
+          itemList={itemList}
+          loginActive={firstLoad}
+        />
+        {firstLoad && (
+          <>
+            <LoginScreen>
+              <Image
                 priority
                 src="/assets/MINDBLADE.png"
-                alt="TitleScreen"
-                height="1920"
-                width="1080"
-              ></TitleScreen>
+                alt="Login Screen"
+                fill={true}
+              />
+            </LoginScreen>
+            <StyledForm>
+              <StyledInput autoFocus type="text" placeholder="Name" />
+              <StyledButton
+                type="submit"
+                onClick={() => (setTitleActive(true), setFirstLoad(false))}
+              >
+                Submit
+              </StyledButton>
+            </StyledForm>
+            <AudioHandler level="login" />
+          </>
+        )}
+        {titleActive && (
+          <>
+            {titleHandler()}
+            <TitleScreen
+              priority
+              src="/assets/MINDBLADE.png"
+              alt="Title Screen"
+              width="1080"
+              height="1920"
+            ></TitleScreen>
 
-              <AudioHandler level="intro" />
-            </>
-          )}
-          <LibraryNavigation
-            userData={user}
-            currentBook={currentBook}
-            insideLibrary={insideLibrary}
-            library={currentLibrary}
-          />
-        </MainStyled>
+            <AudioHandler level="intro" />
+          </>
+        )}
+        <LibraryNavigation
+          userData={user}
+          currentBook={currentBook}
+          insideLibrary={insideLibrary}
+          library={currentLibrary}
+        />
       </SWRConfig>
     </>
   );

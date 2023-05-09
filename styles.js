@@ -12,6 +12,9 @@ export default createGlobalStyle`
 
   body {
 
+    height: 100vh;
+  width: 100vw;
+padding: 0;
     margin: 0;
     font-family: system-ui;
     display: flex;
@@ -21,6 +24,7 @@ export default createGlobalStyle`
     color: white;
     
   }
+
 .clickable {
   
   animation: blink 3s linear 2s infinite alternate;
@@ -37,5 +41,4 @@ export default createGlobalStyle`
   }
   
 }
-
 `;

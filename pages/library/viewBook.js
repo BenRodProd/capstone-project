@@ -8,7 +8,7 @@ const BookPageStyle = styled.ul`
   font-family: Georgia, "Times New Roman", Times, serif;
   color: black;
   list-style: none;
-
+  text-align: center;
   padding-left: 0;
   margin-top: 1rem;
   margin-bottom: 5rem;
@@ -26,7 +26,12 @@ const BookPageStyle = styled.ul`
     font-weight: bold;
   }
 `;
-
+const StyledBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 const BookTitle = styled.h1`
   position: relative;
   margin-top: 3rem;
@@ -34,6 +39,7 @@ const BookTitle = styled.h1`
   font-family: "Franklin Gothic Medium";
   color: black;
   font-size: 3.5rem;
+  text-align: center;
   z-index: 1;
 `;
 
@@ -44,8 +50,9 @@ const BookPageContainer = styled.div`
 `;
 
 const FeatherLink = styled(Link)`
-  position: fixed;
+  position: relative;
   bottom: 0;
+  justify-self: center;
 `;
 
 const StyledWisdom = styled.li`
@@ -137,18 +144,21 @@ export default function ViewBook({ library, currentBook }) {
           })}
         </BookPageImage>
       </BookPageContainer>
-      <FeatherLink href="/library/add">
-        <Image
-          src="/assets/feather.png"
-          alt="feather"
-          width="150"
-          height="40"
-        ></Image>
-      </FeatherLink>
-      <p>
-        You have {library.filter((entry) => entry.book === currentBook).length}{" "}
-        wisdoms in your book
-      </p>
+      <StyledBottom>
+        <FeatherLink href="/library/add">
+          <Image
+            src="/assets/feather.png"
+            alt="feather"
+            width="150"
+            height="40"
+          ></Image>
+        </FeatherLink>
+        <p>
+          You have{" "}
+          {library.filter((entry) => entry.book === currentBook).length} wisdoms
+          in your book
+        </p>
+      </StyledBottom>
       <AudioHandler level="library" />
     </>
   );

@@ -7,30 +7,46 @@ import InsertBook from "@/components/InsertBook";
 import AudioHandler from "@/components/AudioHandler";
 
 const BookShelfImage = styled(Image)`
-  position: flex;
   width: 100%;
   height: 100%;
   object-fit: cover;
   z-index: -1;
 `;
 
+const LibraryStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+`;
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: auto;
+  text-align: center;
+`;
+
 const AddNewBookButton = styled.button`
-  position: fixed;
-  bottom: 1rem;
-  left: 8rem;
-  width: 7rem;
+  position: absolute;
+  justify-self: center;
+  margin: 0;
+  bottom: 0;
+  width: 100%;
+  height: 5%;
 `;
 
 const AddNewBookTitleInput = styled.input`
-  position: fixed;
-  bottom: 0;
-  left: 6.7rem;
+  width: 100%;
 `;
 
 const BurnBook = styled(Image)`
   position: absolute;
-  top: 34rem;
-  right: 1rem;
+  bottom: 5%;
+  right: 5%;
+  width: 30%;
+  height: 30%;
+  object-fit: contain;
   z-index: 3;
   filter: saturate(${(props) => props.saturation});
 `;
@@ -101,57 +117,59 @@ export default function ViewLibrary({
   }
   return (
     <>
-      {!loginActive && (
-        <>
-          <BookShelfImage
-            src="/assets/bookshelf2.png"
-            height="1920"
-            width="1080"
-            alt="bookshelf"
-          ></BookShelfImage>
-          {books.map((book, index) => (
-            <InsertBook
-              userData={userData}
-              burnActive={burnActive}
-              setBurnActive={setBurnActive}
-              key={index}
-              setCurrentBook={setCurrentBook}
-              bookName={book}
-              index={index}
-              handleBurnBook={onBurnBook}
-            ></InsertBook>
-          ))}
-          {books.length <= 6 ? (
-            <AddNewBookButton
-              onClick={() => setInputPopupActive(true)}
-              type="button"
-            >
-              Add new Book
-            </AddNewBookButton>
-          ) : null}
-          <BurnBook
-            width="80"
-            height="100"
-            alt="delete book"
-            src="/assets/torch.png"
-            onClick={() => setBurnActive(!burnActive)}
-            saturation={torchColors}
-          ></BurnBook>
-          {inputPopupActive && (
-            <form onSubmit={handleNewBookSubmit}>
-              <label htmlFor="title">Enter Title</label>
-              <AddNewBookTitleInput
-                autoFocus
-                maxLength="20"
-                required
-                name="title"
-              ></AddNewBookTitleInput>
-              <AddNewBookButton type="submit">Submit</AddNewBookButton>
-            </form>
-          )}
-          <AudioHandler level="library" />{" "}
-        </>
-      )}
+      <LibraryStyle>
+        {!loginActive && (
+          <>
+            <BookShelfImage
+              src="/assets/bookshelf2.png"
+              height="1920"
+              width="1080"
+              alt="bookshelf"
+            ></BookShelfImage>
+            {books.map((book, index) => (
+              <InsertBook
+                userData={userData}
+                burnActive={burnActive}
+                setBurnActive={setBurnActive}
+                key={index}
+                setCurrentBook={setCurrentBook}
+                bookName={book}
+                index={index}
+                handleBurnBook={onBurnBook}
+              ></InsertBook>
+            ))}
+            {inputPopupActive && (
+              <StyledForm onSubmit={handleNewBookSubmit}>
+                <label htmlFor="title">Enter Title</label>
+                <AddNewBookTitleInput
+                  autoFocus
+                  maxLength="20"
+                  required
+                  name="title"
+                ></AddNewBookTitleInput>
+                <AddNewBookButton type="submit">Submit</AddNewBookButton>
+              </StyledForm>
+            )}
+            {(books.length <= 6) & !inputPopupActive && (
+              <AddNewBookButton
+                onClick={() => setInputPopupActive(true)}
+                type="button"
+              >
+                Add new Book
+              </AddNewBookButton>
+            )}
+            <BurnBook
+              width="80"
+              height="100"
+              alt="delete book"
+              src="/assets/torch.png"
+              onClick={() => setBurnActive(!burnActive)}
+              saturation={torchColors}
+            ></BurnBook>
+          </>
+        )}
+      </LibraryStyle>
+      <AudioHandler level="library" />
     </>
   );
 }

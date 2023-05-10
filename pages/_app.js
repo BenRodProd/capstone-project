@@ -40,6 +40,18 @@ const StyledForm = styled.form`
   top: 55%;
 `;
 
+const LoginImage = styled(Image)`
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+  z-index: 25;
+  object-fit: fill;
+  opacity: 0.8;
+`;
+
 const TitleScreen = styled(Image)`
   position: absolute;
   top: 0;
@@ -54,14 +66,17 @@ const LoginScreen = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
-  background-color: black;
+
   object-fit: cover;
 `;
 const StyledInput = styled.input`
   font-size: 2rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: black;
 `;
 const StyledButton = styled.button`
   font-size: 2rem;
+  background-color: rgba(255, 255, 255, 0.5);
 `;
 
 const fetcher = async (...args) => {
@@ -188,22 +203,23 @@ export default function App({ Component, pageProps }) {
         {firstLoad && (
           <>
             <LoginScreen>
-              <Image
+              <LoginImage
                 priority
                 src="/assets/MINDBLADE.png"
                 alt="Login Screen"
                 fill={true}
               />
+
+              <StyledForm>
+                <StyledInput autoFocus type="text" placeholder="Name" />
+                <StyledButton
+                  type="submit"
+                  onClick={() => (setTitleActive(true), setFirstLoad(false))}
+                >
+                  Submit
+                </StyledButton>
+              </StyledForm>
             </LoginScreen>
-            <StyledForm>
-              <StyledInput autoFocus type="text" placeholder="Name" />
-              <StyledButton
-                type="submit"
-                onClick={() => (setTitleActive(true), setFirstLoad(false))}
-              >
-                Submit
-              </StyledButton>
-            </StyledForm>
             <AudioHandler level="login" />
           </>
         )}
@@ -222,6 +238,7 @@ export default function App({ Component, pageProps }) {
           </>
         )}
         <LibraryNavigation
+          loginActive={firstLoad}
           userData={user}
           currentBook={currentBook}
           insideLibrary={insideLibrary}

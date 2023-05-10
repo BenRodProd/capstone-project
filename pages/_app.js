@@ -63,7 +63,9 @@ const TitleScreen = styled(Image)`
   animation: ${zoom} 40s ease-in 1;
 `;
 const LoginScreen = styled.div`
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
 

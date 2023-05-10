@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
-const musicVolume = 0.3;
-const backgroundVolume = 0.1;
+const musicVolume = 0.5;
+const backgroundVolume = 0.4;
 export default function AudioHandler({ level }) {
   const [backgroundAudioFile, setBackgroundAudioFile] = useState("");
   const [musicFile, setMusicFile] = useState("");
@@ -23,8 +23,8 @@ export default function AudioHandler({ level }) {
       setMusicFile("/assets/audio/music/orchestra3.mp3");
     }
     if (level.level === 2) {
-      music.current.volume = musicVolume - 0.2;
-      backgroundSound.current.volume = backgroundVolume;
+      music.current.volume = musicVolume - 0.4;
+      backgroundSound.current.volume = backgroundVolume - 0.25;
       setBackgroundAudioFile("assets/audio/back/blackforest.mp3");
       setMusicFile("/assets/audio/music/orchestra4.mp3");
     }
@@ -39,7 +39,7 @@ export default function AudioHandler({ level }) {
       setBackgroundAudioFile("/assets/audio/back/cavesounds.mp3");
     }
     if (level.level === 3) {
-      backgroundSound.current.volume = backgroundVolume;
+      setBackgroundAudioFile("");
       setMusicFile("assets/audio/music/orchestra1.mp3");
       music.current.volume = musicVolume;
     }
@@ -49,7 +49,7 @@ export default function AudioHandler({ level }) {
       music.current.volume = musicVolume;
     }
     if ((level.level === 2) & (level.stage === 3 || level.stage === 5)) {
-      backgroundSound.current.volume = backgroundVolume;
+      backgroundSound.current.volume = backgroundVolume - 0.25;
       setMusicFile("assets/audio/music/orchestra2.mp3");
       music.current.volume = musicVolume;
     }

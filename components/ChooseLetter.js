@@ -16,12 +16,13 @@ const StyledLetterChoice = styled.span`
   font-family: monospace;
   font-size: 1rem;
   border: 2px solid white;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  width: 1.8rem;
-  height: 1.5rem;
+  padding-left: 0.2rem;
+  padding-right: 0.2rem;
+  width: 2rem;
+  height: 1.8rem;
   margin: 5px 5px;
   align-items: center;
+  justify-content: center;
   text-align: center;
   animation: ${blurIn} 1s linear;
 `;

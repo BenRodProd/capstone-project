@@ -14,7 +14,7 @@ export default function EnemyAvatar({ currentEnemy }) {
       <StyledEnemy
         src={currentEnemy.img}
         alt={currentEnemy.name}
-        width="150"
+        width="250"
         height="150"
       />
     </>

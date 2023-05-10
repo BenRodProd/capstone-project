@@ -150,13 +150,17 @@ export default function ViewLibrary({
                 <AddNewBookButton type="submit">Submit</AddNewBookButton>
               </StyledForm>
             )}
-            {(books.length <= 6) & !inputPopupActive && (
-              <AddNewBookButton
-                onClick={() => setInputPopupActive(true)}
-                type="button"
-              >
-                Add new Book
-              </AddNewBookButton>
+            {books.length < 6 && (
+              <>
+                {!inputPopupActive && (
+                  <AddNewBookButton
+                    onClick={() => setInputPopupActive(true)}
+                    type="button"
+                  >
+                    Add new Book
+                  </AddNewBookButton>
+                )}
+              </>
             )}
             <BurnBook
               width="80"

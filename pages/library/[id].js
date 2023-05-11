@@ -2,43 +2,63 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import useSWRMutation from "swr/mutation";
+import { mutate } from "swr";
 import Image from "next/image";
 import Link from "next/link";
 import ShowVerifyBurnWisdomPopup from "@/components/ShowVerifyBurnWisdomPopup";
+import RPGButton from "@/components/Button";
+
 const StyledForm = styled.form`
+  margin-top: -2rem;
   display: grid;
   gap: 0.2rem;
   flex-direction: column;
   grid-template-columns: 50% 50%;
-  margin-top: 16rem;
+
   color: black;
   justify-content: center;
   align-items: center;
   font-family: Georgia, "Times New Roman", Times, serif;
 `;
-
+const StyleWrapper = styled.div`
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+`;
 const StyledLabel = styled.label`
   text-align: right;
 `;
-
-const StyledInput = styled.textarea`
-  background-color: transparent;
-`;
-
-const StyledButton = styled.button`
+const FormWrapper = styled.div`
   display: flex;
-  position: absolute;
-  margin-top: 2rem;
-  top: 23rem;
-  text-align: center;
-  justify-self: center;
-  justify-self: center;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-weight: bold;
+`;
+const StyledInput = styled.input`
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid;
+  height: 2rem;
 `;
 
 const StyledSelect = styled.select`
   background-color: transparent;
+  font-size: 1rem;
+`;
+
+const ButtonWrapper = styled.div`
+  position: absolute;
+  justify-self: center;
+  align-self: center;
+  bottom: 30%;
+
+  scale: 0.7;
+`;
+
+const StyledPopup = styled.div`
+  position: absolute;
+  border: 2px solid white;
+  top: 30rem;
+  left: 0;
+  text-align: center;
+  width: 100%;
 `;
 
 const StyledBook = styled(Image)`
@@ -51,27 +71,34 @@ const StyledBook = styled(Image)`
   z-index: -2;
 `;
 
-const StyledBackToBookImage = styled(Image)`
+const BookWrapper = styled.div`
+  display: flex;
+  width: 100%;
   position: relative;
-  margin-top: 10rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+const StyledBackToBookImage = styled(Image)`
+  position: absolute;
+  bottom: 0;
+  width: 40%;
+  height: 20%;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 const BackgroundImage = styled(Image)`
   position: absolute;
   top: 0;
+  bottom: 0;
   left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0.7;
   z-index: -3;
   object-fit: cover;
-`;
-
-const StyledPopup = styled.div`
-  position: absolute;
-  border: 2px solid white;
-  top: 30rem;
-  left: 0;
-  text-align: center;
-  width: 100%;
 `;
 
 const BurnWisdom = styled(Image)`
@@ -81,7 +108,9 @@ const BurnWisdom = styled(Image)`
   z-index: 3;
   filter: saturate(${(props) => props.saturation});
 `;
-
+const StyledOption = styled.option`
+  font-size: 1rem;
+`;
 async function sendRequest(url, { arg }) {
   // here we set the request method
   const response = await fetch(url, {
@@ -121,7 +150,7 @@ export default function EditWisdom({ library, currentBook, handleBurnWisdom }) {
       right: wisdom.right,
       owner: "Testor",
     });
-
+    mutate("/api/library");
     setPopupActive(true);
     setTimeout(() => {
       setPopupActive(false);
@@ -143,44 +172,57 @@ export default function EditWisdom({ library, currentBook, handleBurnWisdom }) {
   }
   return (
     <>
-      <BackgroundImage
-        src="/assets/desktop.png"
-        alt="desktop"
-        width="400"
-        height="740"
-      ></BackgroundImage>
-      <StyledBook
-        src="/assets/openbook.png"
-        alt="book"
-        width="1080"
-        height="1920"
-      />
-      <StyledForm onSubmit={handleSubmit}>
-        <StyledLabel htmlFor="question">Enter Question:</StyledLabel>
-        <StyledInput
-          autoFocus
-          defaultValue={wisdom.question}
-          required
-          name="question"
-          type="text"
-        ></StyledInput>
-        <StyledLabel htmlFor="answer">Enter Answer:</StyledLabel>
-        <StyledInput
-          defaultValue={wisdom.answer}
-          required
-          name="answer"
-          type="text"
-        ></StyledInput>
-        <StyledLabel htmlFor="category">Pick a Category:</StyledLabel>
-        <StyledSelect defaultValue={wisdom.category} name="category">
-          <option value="Vehicles">Vehicles</option>
-          <option value="Food">Food</option>
-          <option value="Basics">Basics</option>
-          <option value="Javascript">Javascript</option>
-        </StyledSelect>
+      <StyleWrapper>
+        <BackgroundImage
+          src="/assets/desktop.png"
+          alt="desktop"
+          width="400"
+          height="740"
+        ></BackgroundImage>
+        <BookWrapper>
+          <StyledBook
+            src="/assets/openbook.png"
+            alt="book"
+            width="1080"
+            height="1920"
+          />
+          <FormWrapper>
+            <StyledForm onSubmit={handleSubmit}>
+              <StyledLabel htmlFor="question">Enter Question:</StyledLabel>
+              <StyledInput
+                autoFocus
+                defaultValue={wisdom.question}
+                required
+                name="question"
+                type="text"
+              ></StyledInput>
+              <StyledLabel htmlFor="answer">Enter Answer:</StyledLabel>
+              <StyledInput
+                defaultValue={wisdom.answer}
+                required
+                name="answer"
+                type="text"
+              ></StyledInput>
 
-        <StyledButton type="submit">SUBMIT</StyledButton>
-      </StyledForm>
+              <StyledLabel htmlFor="category">Pick a Category:</StyledLabel>
+              <StyledSelect defaultValue={wisdom.category} name="category">
+                <option value="Vehicles">Vehicles</option>
+                <option value="Food">Food</option>
+                <option value="Basics">Basics</option>
+                <option value="Javascript">Javascript</option>
+              </StyledSelect>
+
+              <ButtonWrapper>
+                <RPGButton
+                  textSize="2rem"
+                  text="Submit"
+                  type="submit"
+                ></RPGButton>
+              </ButtonWrapper>
+            </StyledForm>
+          </FormWrapper>
+        </BookWrapper>
+      </StyleWrapper>
       {popupActive && <StyledPopup>Wisdom Edited</StyledPopup>}
       <BurnWisdom
         width="80"

@@ -8,7 +8,7 @@ const StyledButton = styled.button`
 `;
 const StyledButtonImage = styled(Image)`
   position: relative;
-  z-index: -1;
+  z-index: 0;
 `;
 
 const StyledButtonText = styled.span`

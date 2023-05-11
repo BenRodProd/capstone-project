@@ -49,11 +49,11 @@ const AddNewBookTitleInput = styled.input`
 
 const BurnBook = styled(Image)`
   position: absolute;
-  bottom: 27%;
-  right: 5%;
-  width: 30%;
-  height: 30%;
-  object-fit: contain;
+  bottom: 28%;
+  right: 15%;
+  width: 20%;
+  height: 20%;
+
   z-index: 3;
   filter: saturate(${(props) => props.saturation});
 `;
@@ -177,8 +177,8 @@ export default function ViewLibrary({
               </>
             )}
             <BurnBook
-              width="80"
-              height="100"
+              width="130"
+              height="1000"
               alt="delete book"
               src="/assets/torch.png"
               onClick={() => setBurnActive(!burnActive)}

@@ -1,4 +1,4 @@
-import styled,  from "styled-components";
+import styled from "styled-components";
 import { alphabet } from "@/library/alphabet";
 
 const StyledLetterChoice = styled.span`
@@ -13,7 +13,6 @@ const StyledLetterChoice = styled.span`
   align-items: center;
   justify-content: center;
   text-align: center;
-
 `;
 
 const StyledLetterBox = styled.div`
@@ -33,7 +32,6 @@ export default function ChooseLetter({
 }) {
   const choices = [];
 
- 
   while (choices.length < 8) {
     const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
     if (
@@ -51,7 +49,6 @@ export default function ChooseLetter({
     <StyledLetterBox>
       {choices.map((element, index) => (
         <StyledLetterChoice
-         
           key={index}
           onClick={() => setChosenLetter(element)}
         >

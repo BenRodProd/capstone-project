@@ -5,6 +5,7 @@ import { mutate } from "swr";
 import Image from "next/image";
 import Link from "next/link";
 import AudioHandler from "@/components/AudioHandler";
+import RPGButton from "@/components/Button";
 
 const StyledForm = styled.form`
   display: grid;
@@ -17,7 +18,7 @@ const StyledForm = styled.form`
   align-items: center;
   font-family: Georgia, "Times New Roman", Times, serif;
 `;
-
+const StyleWrapper = styled.div``;
 const StyledLabel = styled.label`
   text-align: right;
 `;
@@ -40,6 +41,13 @@ const StyledButton = styled.button`
 
 const StyledSelect = styled.select`
   background-color: transparent;
+`;
+
+const ButtonWrapper = styled.div`
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
 `;
 
 const StyledPopup = styled.div`
@@ -168,44 +176,47 @@ export default function AddWisdom({
   }
   return (
     <>
-      <BackgroundImage
-        src="/assets/desktop.png"
-        alt="desktop"
-        width="400"
-        height="740"
-      ></BackgroundImage>
-      <StyledBook
-        src="/assets/openbook.png"
-        alt="book"
-        width="1080"
-        height="1920"
-      />
-      <StyledForm onSubmit={handleSubmit}>
-        <StyledLabel htmlFor="question">Enter Question:</StyledLabel>
-        <StyledInput
-          required
-          name="question"
-          type="text"
-          autoFocus
-          maxLength="25"
-        ></StyledInput>
-        <StyledLabel htmlFor="answer">Enter Answer:</StyledLabel>
-        <StyledInput
-          maxLength="22"
-          required
-          name="answer"
-          type="text"
-        ></StyledInput>
-        <StyledLabel htmlFor="category">Pick a Category:</StyledLabel>
-        <StyledSelect name="category">
-          <option value="Vehicles">Vehicles</option>
-          <option value="Food">Food</option>
-          <option value="Basics">Basics</option>
-          <option value="Javascript">Javascript</option>
-        </StyledSelect>
-
-        <StyledButton type="submit">SUBMIT</StyledButton>
-      </StyledForm>
+      <StyleWrapper>
+        <BackgroundImage
+          src="/assets/desktop.png"
+          alt="desktop"
+          width="400"
+          height="740"
+        ></BackgroundImage>
+        <StyledBook
+          src="/assets/openbook.png"
+          alt="book"
+          width="1080"
+          height="1920"
+        />
+        <StyledForm onSubmit={handleSubmit}>
+          <StyledLabel htmlFor="question">Enter Question:</StyledLabel>
+          <StyledInput
+            required
+            name="question"
+            type="text"
+            autoFocus
+            maxLength="25"
+          ></StyledInput>
+          <StyledLabel htmlFor="answer">Enter Answer:</StyledLabel>
+          <StyledInput
+            maxLength="22"
+            required
+            name="answer"
+            type="text"
+          ></StyledInput>
+          <StyledLabel htmlFor="category">Pick a Category:</StyledLabel>
+          <StyledSelect name="category">
+            <option value="Vehicles">Vehicles</option>
+            <option value="Food">Food</option>
+            <option value="Basics">Basics</option>
+            <option value="Javascript">Javascript</option>
+          </StyledSelect>
+          <ButtonWrapper>
+            <RPGButton textSize="2rem" text="Submit" type="submit"></RPGButton>
+          </ButtonWrapper>
+        </StyledForm>
+      </StyleWrapper>
       {popupActive && <StyledPopup>Wisdom Added</StyledPopup>}
       <Link href="/library/viewBook">
         <StyledBackToBookImage

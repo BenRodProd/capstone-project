@@ -15,6 +15,6 @@ Used Tech:
 
 ## Deployment
 
-###Preview here:
+### Preview here:
 
 [MINDBLADE - The Odyssey](https://capstone-project-kohl-seven.vercel.app/)

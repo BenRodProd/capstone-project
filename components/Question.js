@@ -1,33 +1,46 @@
 import styled from "styled-components";
 
 const StyledQuestion = styled.div`
-  position: absolute;
-  top: 40%;
-  left: 30%;
+  position: relative;
+  align-self: center;
+  justify-self: center;
   transform: translate(-50% -50%);
-  border: 4px solid #2651a6;
+  border: 20px solid transparent;
+  border-image: url("/assets/border.png") 30% stretch;
   margin: 0 auto;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
+
   justify-content: center;
   height: fit-content;
   width: fit-content;
-  background-color: rgba(225, 235, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.7);
+
   padding: 0.5rem;
-  color: black;
-  font-size: 1rem;
+  color: white;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 2rem;
   &:after {
     object-fit: cover;
   }
 `;
-
+const StyledText = styled.span`
+  text-shadow: #fc0 1px 0 10px;
+`;
+const Wrapper = styled.div`
+  display: flex;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100%;
+`;
 export default function Question({ question }) {
   return (
     <>
-      <StyledQuestion>{question}</StyledQuestion>
+      <Wrapper>
+        <StyledQuestion>
+          <StyledText>{question}</StyledText>
+        </StyledQuestion>
+      </Wrapper>
     </>
   );
 }

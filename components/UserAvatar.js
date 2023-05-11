@@ -39,10 +39,10 @@ const StyledBox = styled.div`
 
 const StyledDescription = styled.span`
   position: relative;
-
+  text-shadow: #fc0 1px 0 10px;
   z-index: 2;
   color: lightgrey;
-  font-size: 0.5rem;
+  font-size: 0.7rem;
 `;
 
 export default function UserAvatar({ imageSrc, userXP, level }) {

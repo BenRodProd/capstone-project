@@ -12,6 +12,7 @@ const StyledBackground = styled(Image)`
 
 const LevelName = styled.h1`
   text-align: center;
+  text-shadow: #fc0 1px 0 15px;
 `;
 
 export default function LevelBackgroundImage({ level }) {

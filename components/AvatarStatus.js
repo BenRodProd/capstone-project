@@ -14,11 +14,18 @@ const StyledStatusBox = styled.div`
   width: fit-content;
 `;
 const StyledLegend = styled.legend`
+  text-shadow: #fc0 0 0 10px;
   color: cyan;
   z-index: 15;
   font-size: ${(props) => props.size};
   float: right;
   transform-origin: 0 0;
+`;
+const StyledLabel = styled.label`
+  text-shadow: #fc0 1px 0 10px;
+`;
+const StyledFieldSet = styled.fieldset`
+  border: none;
 `;
 export default function AvatarStatus({ health, armor, level }) {
   const [levelSize, setLevelSize] = useState("1rem");
@@ -30,17 +37,17 @@ export default function AvatarStatus({ health, armor, level }) {
   }, [level]);
   return (
     <>
-      <fieldset>
+      <StyledFieldSet>
         <StyledLegend size={levelSize} htmlFor="statusBox">
           LEVEL: {level}
         </StyledLegend>
         <StyledStatusBox id="statusBox">
-          <label htmlFor="health">Health:</label>
+          <StyledLabel htmlFor="health">Health:</StyledLabel>
           <HealthProgress id="health" max="150" value={health}></HealthProgress>
-          <label htmlFor="armor">Armor:</label>
+          <StyledLabel htmlFor="armor">Armor:</StyledLabel>
           <ArmorProgress id="armor" max="150" value={armor}></ArmorProgress>
         </StyledStatusBox>
-      </fieldset>
+      </StyledFieldSet>
     </>
   );
 }

@@ -9,7 +9,8 @@ const Box = styled.div`
   left: ${(props) => props.lefty}rem;
   width: 3rem;
   height: 3rem;
-
+  border: 10px solid transparent;
+  border-image: url("/assets/border.png") 30% stretch;
   background-color: black;
   z-index: 5;
   opacity: 0.9;

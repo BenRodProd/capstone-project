@@ -4,11 +4,13 @@ import { alphabet } from "@/library/alphabet";
 const StyledLetterChoice = styled.span`
   font-family: monospace;
   font-size: 1rem;
-  border: 2px solid white;
+  border: 10px solid transparent;
+  border-image: url("/assets/border.png") 30% stretch;
   padding-left: 0.2rem;
   padding-right: 0.2rem;
+  padding-bottom: 0.2rem;
   width: 2rem;
-  height: 1.8rem;
+  height: 2rem;
   margin: 5px 5px;
   align-items: center;
   justify-content: center;

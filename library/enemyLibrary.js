@@ -66,10 +66,10 @@ export const enemyLibrary = [
     img: "/assets/creatures/creature0303.png",
   },
   {
-    name: "Murcha, the Trollhunter",
+    name: "The Thief",
     health: 20,
     xp: 140,
-    img: "/assets/creatures/creature0304.png",
+    img: "/assets/creatures/thieve.png",
   },
   {
     name: "cavedeamon",
@@ -136,5 +136,23 @@ export const enemyLibrary = [
     health: 20,
     xp: 140,
     img: "/assets/creatures/forestghost03.png",
+  },
+  {
+    name: "Ghost of the Forest",
+    health: 20,
+    xp: 140,
+    img: "/assets/creatures/thieve2.png",
+  },
+  {
+    name: "Ghost of the Forest",
+    health: 20,
+    xp: 140,
+    img: "/assets/creatures/stonemonster.png",
+  },
+  {
+    name: "Ghost of the Forest",
+    health: 20,
+    xp: 140,
+    img: "/assets/creatures/stonemonster2.png",
   },
 ];

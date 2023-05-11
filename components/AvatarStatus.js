@@ -8,12 +8,16 @@ const StyledStatusBox = styled.div`
   flex-direction: column;
   align-self: flex-end;
   align-items: center;
-  border: 2px solid grey;
-  background-color: rgba(77, 72, 74, 0.4);
+  border: 20px solid transparent;
+  border-image: url("/assets/border.png") 30% stretch;
+  background-color: transparent;
   padding: 0.5rem;
   width: fit-content;
 `;
-const StyledLegend = styled.legend`
+const StyledLegend = styled.span`
+  position: absolute;
+  top: -25%;
+  right: 10%;
   text-shadow: #fc0 0 0 10px;
   color: cyan;
   z-index: 15;
@@ -21,33 +25,46 @@ const StyledLegend = styled.legend`
   float: right;
   transform-origin: 0 0;
 `;
+const StyledLevel = styled.span`
+  font-size: 2em;
+`;
+
 const StyledLabel = styled.label`
   text-shadow: #fc0 1px 0 10px;
 `;
 const StyledFieldSet = styled.fieldset`
   border: none;
 `;
+const StyleWrapper = styled.div`
+  scale: 0.8;
+`;
 export default function AvatarStatus({ health, armor, level }) {
-  const [levelSize, setLevelSize] = useState("1rem");
+  const [levelSize, setLevelSize] = useState("1.5rem");
   useEffect(() => {
-    setLevelSize("1.5rem");
+    setLevelSize("2rem");
     setTimeout(() => {
-      setLevelSize("1rem");
+      setLevelSize("1.5rem");
     }, 1500);
   }, [level]);
   return (
     <>
-      <StyledFieldSet>
-        <StyledLegend size={levelSize} htmlFor="statusBox">
-          LEVEL: {level}
-        </StyledLegend>
-        <StyledStatusBox id="statusBox">
-          <StyledLabel htmlFor="health">Health:</StyledLabel>
-          <HealthProgress id="health" max="150" value={health}></HealthProgress>
-          <StyledLabel htmlFor="armor">Armor:</StyledLabel>
-          <ArmorProgress id="armor" max="150" value={armor}></ArmorProgress>
-        </StyledStatusBox>
-      </StyledFieldSet>
+      <StyleWrapper>
+        <StyledFieldSet>
+          <StyledLegend size={levelSize}>
+            LEVEL:<StyledLevel>{level}</StyledLevel>
+          </StyledLegend>
+          <StyledStatusBox id="statusBox">
+            <StyledLabel htmlFor="health">Health:</StyledLabel>
+            <HealthProgress
+              id="health"
+              max="150"
+              value={health}
+            ></HealthProgress>
+            <StyledLabel htmlFor="armor">Armor:</StyledLabel>
+            <ArmorProgress id="armor" max="150" value={armor}></ArmorProgress>
+          </StyledStatusBox>
+        </StyledFieldSet>
+      </StyleWrapper>
     </>
   );
 }

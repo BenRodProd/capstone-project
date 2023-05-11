@@ -16,7 +16,7 @@ export default createGlobalStyle`
  
     padding: 0;
     margin: 0;
-    font-family: system-ui;
+    font-family: Georgia, "Times New Roman", Times, serif;
   
     background-color: black;
     color: white;

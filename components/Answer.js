@@ -106,7 +106,7 @@ export default function Answer({
 
     // ############ right letter ################
     if (letter === answerArray[index].toLowerCase()) {
-      handleRightAnswer(5);
+      handleRightAnswer(20);
       if (index < answerArray.length - 1) {
         inputRef.current[index + 1].focus();
         setActiveIndex((prev) => prev + 1);
@@ -114,7 +114,7 @@ export default function Answer({
       }
     } else {
       // ############# wrong letter ###############
-      handleWrongAnswer(5);
+      handleWrongAnswer(15);
       setWrongIndex(index);
       vibrate();
       setTimeout(() => {

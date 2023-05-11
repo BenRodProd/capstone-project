@@ -14,7 +14,9 @@ Used Tech:
 - Assets from ["]
 
 - [FreePik.com](https://www.freepik.com/free-vector/medieval-game-menu-frames-ui-elements-buttons_26230908.htm#query=game%20button&position=39&from_view=search&track=ais)
-### Deployment
 
-Preview here:
-[MINDBLADE - The Odyssey] (https://capstone-project-kohl-seven.vercel.app/)
+## Deployment
+
+###Preview here:
+
+[MINDBLADE - The Odyssey](https://capstone-project-kohl-seven.vercel.app/)

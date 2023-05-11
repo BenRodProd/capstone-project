@@ -34,7 +34,6 @@ const StyledButtonWrapper = styled.div`
 `;
 
 export default function RPGButton({ text, textSize }) {
-  console.log(textSize);
   return (
     <>
       <StyledButtonWrapper>

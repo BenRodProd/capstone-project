@@ -1,16 +1,5 @@
-import styled, { keyframes } from "styled-components";
+import styled,  from "styled-components";
 import { alphabet } from "@/library/alphabet";
-import { useState } from "react";
-
-const blurIn = keyframes`
-  from {
-    filter: blur(3rem);
-  }
-
-  to {
-    filter: blur(0);
-  }
-`;
 
 const StyledLetterChoice = styled.span`
   font-family: monospace;
@@ -24,7 +13,7 @@ const StyledLetterChoice = styled.span`
   align-items: center;
   justify-content: center;
   text-align: center;
-  animation: ${blurIn} 1s linear;
+
 `;
 
 const StyledLetterBox = styled.div`
@@ -34,9 +23,9 @@ const StyledLetterBox = styled.div`
   grid-auto-flow: column;
   width: 100%;
   place-self: center;
-
   cursor: default;
 `;
+
 export default function ChooseLetter({
   setChosenLetter,
   activeIndex,
@@ -44,7 +33,7 @@ export default function ChooseLetter({
 }) {
   const choices = [];
 
-  // Get 8 random letters
+ 
   while (choices.length < 8) {
     const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
     if (
@@ -54,8 +43,6 @@ export default function ChooseLetter({
       choices.push(randomLetter);
     }
   }
-
-  // Insert the answer letter at a random index
   const answerLetter = answerArray[activeIndex];
   const randomIndex = Math.floor(Math.random() * choices.length);
   choices.splice(randomIndex, 0, answerLetter);
@@ -64,6 +51,7 @@ export default function ChooseLetter({
     <StyledLetterBox>
       {choices.map((element, index) => (
         <StyledLetterChoice
+         
           key={index}
           onClick={() => setChosenLetter(element)}
         >

@@ -29,7 +29,7 @@ export default function EnemyAvatar({ currentEnemy }) {
       setAnimation(false);
     }, 3000);
   }, [currentEnemy]);
-  console.log(animation);
+
   return (
     <>
       <StyledEnemy

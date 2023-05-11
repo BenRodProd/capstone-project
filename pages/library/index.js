@@ -122,7 +122,7 @@ export default function ViewLibrary({
   if (!Array.isArray(userData)) {
     return <div>loading</div>;
   }
-  console.log(inputPopupActive);
+
   return (
     <>
       <LibraryStyle>

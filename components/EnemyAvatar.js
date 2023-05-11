@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const StyledEnemy = styled(Image)`
@@ -10,13 +9,6 @@ const StyledEnemy = styled(Image)`
 `;
 
 export default function EnemyAvatar({ currentEnemy }) {
-  useEffect(() => {
-    setAnimation("true");
-    setTimeout(() => {
-      setAnimation("false");
-    }, 2000);
-  }, [currentEnemy]);
-
   return (
     <>
       <StyledEnemy

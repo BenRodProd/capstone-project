@@ -10,6 +10,7 @@ import LibraryNavigation from "@/components/EnterLibrary";
 import { itemList } from "@/library/itemList";
 import Image from "next/image";
 import AudioHandler from "@/components/AudioHandler";
+import RPGButton from "@/components/Button";
 
 const zoom = keyframes`
 0% {
@@ -77,8 +78,33 @@ const StyledInput = styled.input`
   color: black;
 `;
 const StyledButton = styled.button`
+  position: relative;
   font-size: 2rem;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: transparent;
+  border: none;
+`;
+const StyledButtonImage = styled(Image)`
+  position: relative;
+  z-index: -1;
+`;
+
+const StyledButtonText = styled.h2`
+  position: absolute;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 2rem;
+  top: 18%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0;
+`;
+
+const StyledButtonWrapper = styled.div`
+  display: flex;
+
+  position: relative;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
 `;
 
 const fetcher = async (...args) => {
@@ -110,7 +136,7 @@ export default function App({ Component, pageProps }) {
         });
       })
     );
-    mutate("/api/library");
+    mutate("/api/library/");
     const bookIndex = user[0].books.findIndex((item) => item.bookname === book);
 
     if (bookIndex === -1) {
@@ -174,7 +200,11 @@ export default function App({ Component, pageProps }) {
       setTitleActive(false);
     }, 16800);
   }
-
+  function handleOnClickSubmit(event) {
+    event.preventDefault();
+    setTitleActive(true);
+    setFirstLoad(false);
+  }
   return (
     <>
       <SWRConfig
@@ -206,20 +236,14 @@ export default function App({ Component, pageProps }) {
           <>
             <LoginScreen>
               <LoginImage
-                priority
                 src="/assets/MINDBLADE.png"
                 alt="Login Screen"
                 fill={true}
               />
 
-              <StyledForm>
+              <StyledForm onSubmit={handleOnClickSubmit}>
                 <StyledInput autoFocus type="text" placeholder="Name" />
-                <StyledButton
-                  type="submit"
-                  onClick={() => (setTitleActive(true), setFirstLoad(false))}
-                >
-                  Submit
-                </StyledButton>
+                <RPGButton text="Submit"></RPGButton>
               </StyledForm>
             </LoginScreen>
             <AudioHandler level="login" />
@@ -229,7 +253,6 @@ export default function App({ Component, pageProps }) {
           <>
             {titleHandler()}
             <TitleScreen
-              priority
               src="/assets/MINDBLADE.png"
               alt="Title Screen"
               width="1080"

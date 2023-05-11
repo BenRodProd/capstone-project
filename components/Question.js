@@ -1,11 +1,10 @@
 import styled from "styled-components";
 
 const StyledQuestion = styled.div`
-  top: 8rem;
-  left: 2rem;
-
-  display: flex;
   position: absolute;
+  top: 40%;
+  left: 30%;
+  transform: translate(-50% -50%);
   border: 4px solid #2651a6;
   margin: 0 auto;
   -webkit-border-radius: 20px;

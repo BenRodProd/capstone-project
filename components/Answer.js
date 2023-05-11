@@ -143,9 +143,11 @@ export default function Answer({
         ></StyledInput>
       ))}
       <ChooseLetter
+        chosenLetter={chosenLetter}
         setChosenLetter={setChosenLetter}
         activeIndex={activeIndex}
         answerArray={answerArray}
+        wrongIndex={wrongIndex}
       />
     </InputFieldLayout>
   );

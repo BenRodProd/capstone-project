@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import InsertBook from "@/components/InsertBook";
 import AudioHandler from "@/components/AudioHandler";
+import RPGButton from "@/components/Button";
 
 const BookShelfImage = styled(Image)`
   width: 100%;
@@ -12,7 +13,13 @@ const BookShelfImage = styled(Image)`
   object-fit: cover;
   z-index: -1;
 `;
-
+const ButtonWrapper = styled.div`
+  position: absolute;
+  z-index: 5;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+`;
 const LibraryStyle = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,7 +49,7 @@ const AddNewBookTitleInput = styled.input`
 
 const BurnBook = styled(Image)`
   position: absolute;
-  bottom: 5%;
+  bottom: 27%;
   right: 5%;
   width: 30%;
   height: 30%;
@@ -115,6 +122,7 @@ export default function ViewLibrary({
   if (!Array.isArray(userData)) {
     return <div>loading</div>;
   }
+
   return (
     <>
       <LibraryStyle>
@@ -139,26 +147,32 @@ export default function ViewLibrary({
               ></InsertBook>
             ))}
             {inputPopupActive && (
-              <StyledForm onSubmit={handleNewBookSubmit}>
-                <label htmlFor="title">Enter Title</label>
-                <AddNewBookTitleInput
-                  autoFocus
-                  maxLength="20"
-                  required
-                  name="title"
-                ></AddNewBookTitleInput>
-                <AddNewBookButton type="submit">Submit</AddNewBookButton>
-              </StyledForm>
+              <ButtonWrapper>
+                <StyledForm onSubmit={handleNewBookSubmit}>
+                  <label htmlFor="title">Enter Title</label>
+                  <AddNewBookTitleInput
+                    autoFocus
+                    maxLength="20"
+                    required
+                    name="title"
+                  ></AddNewBookTitleInput>
+                  <RPGButton
+                    textSize="2rem"
+                    text="Submit"
+                    type="submit"
+                  ></RPGButton>
+                </StyledForm>
+              </ButtonWrapper>
             )}
             {books.length < 6 && (
               <>
                 {!inputPopupActive && (
-                  <AddNewBookButton
-                    onClick={() => setInputPopupActive(true)}
-                    type="button"
-                  >
-                    Add new Book
-                  </AddNewBookButton>
+                  <ButtonWrapper onClick={() => setInputPopupActive(true)}>
+                    <RPGButton
+                      textSize="1.3rem"
+                      text="Add new Book"
+                    ></RPGButton>
+                  </ButtonWrapper>
                 )}
               </>
             )}

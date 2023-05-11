@@ -136,7 +136,7 @@ export default function App({ Component, pageProps }) {
         });
       })
     );
-    mutate("/api/library");
+    mutate("/api/library/");
     const bookIndex = user[0].books.findIndex((item) => item.bookname === book);
 
     if (bookIndex === -1) {

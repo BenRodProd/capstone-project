@@ -15,10 +15,13 @@ const StyledEnemy = styled(Image)`
   object-fit: contain;
   bottom: 0;
   ${({ animation }) =>
-    animation &&
-    css`
-      animation: ${fadeIn} 3s ease-in 1;
-    `}
+    animation
+      ? css`
+          animation: ${fadeIn} 3s ease-in 1;
+        `
+      : css`
+          animation: none;
+        `}
 `;
 
 export default function EnemyAvatar({ currentEnemy }) {

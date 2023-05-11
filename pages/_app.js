@@ -59,7 +59,7 @@ const TitleScreen = styled(Image)`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 15;
+  z-index: 115;
   object-fit: fill;
   animation: ${zoom} 40s ease-in 1;
 `;

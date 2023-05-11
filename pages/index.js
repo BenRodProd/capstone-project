@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Question from "@/components/Question";
 import Answer from "@/components/Answer";
 import AvatarStatus from "@/components/AvatarStatus";
@@ -13,6 +14,7 @@ import Pouch from "@/components/Pouch";
 import AudioHandler from "@/components/AudioHandler";
 import styled from "styled-components";
 import { fightSound, hurtSound } from "@/components/soundHandler";
+import RPGButton from "@/components/Button";
 
 const EnemyBox = styled.div`
   display: flex;
@@ -49,6 +51,42 @@ const AnswerBox = styled.div`
   width: 100%;
   margin-top: auto;
 `;
+const DeathPopUp = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 3;
+  text-align: center;
+`;
+const DeathWrapper = styled.div`
+  display: flex;
+
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+`;
+const DeathBorder = styled.div`
+  border: 20px solid transparent;
+  border-image: url("/assets/border.png") 30% stretch;
+  background-color: rgba(0, 0, 0, 0.8);
+`;
+const DeathImage = styled(Image)`
+  position: absolute;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+`;
+const GameOverText = styled.h1`
+  text-shadow: #fc0 1px 0 10px;
+`;
 export default function HomePage({ library, userData, itemList, currentBook }) {
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
@@ -74,6 +112,7 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
   const [inventorySlots, setInventorySlots] = useState(
     userData[0].books[0].inventorySlots
   );
+  const [deadActive, setDeadActive] = useState(false);
 
   useEffect(() => {
     setEnemyHealth(currentEnemy.health);
@@ -130,8 +169,18 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
     setTimeout(() => {
       setDamageDone(false);
     }, 400);
+    if (userHealth <= 0) {
+      setDeadActive(true);
+    }
   }
-
+  function handleRestart(event) {
+    event.preventDefault();
+    setCurrentLevel(levelLibrary[0]);
+    setUserHealth(userData[0].books[0].health);
+    setUserArmor(userData[0].books[0].armor);
+    setCurrentEnemy(enemyLibrary[0]);
+    setDeadActive(false);
+  }
   const userAvatarImage = `/assets/avatars/${
     userData[0].books[0].avatar
   }${Math.floor(Number(userXP) / 500)}.png`;
@@ -193,6 +242,26 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
             color={damageDisplay.color}
             damage={damageDisplay.damage}
           />
+        )}
+        {deadActive && (
+          <>
+            <DeathPopUp>
+              <DeathWrapper>
+                <DeathImage
+                  src="/assets/gameover.png"
+                  width="1080"
+                  height="1920"
+                  alt="gameover"
+                />
+                <DeathBorder>
+                  <GameOverText>GAME OVER</GameOverText>
+                  <form onSubmit={handleRestart}>
+                    <RPGButton text="Restart"></RPGButton>
+                  </form>
+                </DeathBorder>
+              </DeathWrapper>
+            </DeathPopUp>
+          </>
         )}
       </ScreenBox>
       <AudioHandler level={currentLevel} />

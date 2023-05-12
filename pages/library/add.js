@@ -225,6 +225,13 @@ export default function AddWisdom({
     inputRef.current.focus();
   }
   async function saveItemToInventory(item) {
+    if (item === "pouch") {
+      const moreSlots = [userData[0].books[userBookIndex].InventorySlots + 1];
+      console.log(moreSlots);
+      const updatedUserData = [
+        ...userData[0].books[userBookIndex].inventorySlots,
+      ];
+    }
     const updatedInventory = [
       ...userData[0].books[userBookIndex].inventory,
       item,

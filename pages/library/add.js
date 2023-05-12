@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import useSWRMutation from "swr/mutation";
 import { mutate } from "swr";
 import Image from "next/image";
@@ -94,7 +94,55 @@ const BackgroundImage = styled(Image)`
   z-index: -3;
   object-fit: cover;
 `;
+const InventoryWrapper = styled.div`
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+`;
+const Box = styled.div`
+  font-size: 0.6rem;
+  align-items: center;
 
+  left: ${(props) => props.lefty}rem;
+  width: 3rem;
+  height: 3rem;
+  border: 10px solid transparent;
+  border-image: url("/assets/border.png") 30% stretch;
+  background-color: black;
+  z-index: 5;
+  opacity: 0.9;
+`;
+
+const ItemImage = styled(Image)`
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  padding: 0;
+`;
+
+const ItemPopup = styled.div`
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 25%;
+  background-color: black;
+  border: 20px solid transparent;
+  border-image: url("/assets/border.png") 30% stretch;
+  z-index: 0;
+`;
+const ItemPopupHeader = styled.span`
+  justify-self: flex-start;
+`;
 async function sendRequest(url, { arg }) {
   const response = await fetch(url, {
     method: "POST",
@@ -112,12 +160,20 @@ export default function AddWisdom({
   userData,
   itemList,
 }) {
+  const inputRef = useRef();
   const [popupActive, setPopupActive] = useState(false);
+  const [ItemPopupActive, setItemPopupActive] = useState(false);
+  const [currentInventory, setCurrentInventory] = useState(
+    userData[0].books[
+      userData[0].books.findIndex((element) => element.bookname === currentBook)
+    ].inventory
+  );
+  const [newItem, setNewItem] = useState();
   const { trigger } = useSWRMutation("/api/library", sendRequest);
   const userBookIndex = userData[0].books.findIndex(
     (element) => element.bookname === currentBook
   );
-
+  useEffect(() => {}, [currentInventory]);
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -141,7 +197,7 @@ export default function AddWisdom({
     ).length;
     const itemsInInventory = userData[0].books[userBookIndex].inventory;
 
-    if (wisdomsInBook % 20 === 0 && gainedItems < wisdomsInBook / 20) {
+    if (wisdomsInBook % 5 === 0 && gainedItems < wisdomsInBook / 5) {
       // Create a filtered list of items that are not "empty" and not part of itemsInInventory
 
       const itemKeys = Object.keys(itemList).filter(
@@ -149,12 +205,24 @@ export default function AddWisdom({
           key !== "empty" && !itemsInInventory.includes(key) && key !== "pouch"
       );
       const randomItem = itemKeys[Math.floor(Math.random() * itemKeys.length)];
+      if (!randomItem) {
+        setNewItem("pouch");
+        saveItemToInventory(pouch);
+      }
       saveItemToInventory(randomItem);
+      setNewItem(randomItem);
+      setCurrentInventory((prev) => [...prev, newItem]);
+      setItemPopupActive(true);
+      setTimeout(() => {
+        setItemPopupActive(false);
+      }, 1000);
+      console.log(newItem, itemList);
     }
 
     setPopupActive(true);
     setTimeout(() => setPopupActive(false), 1500);
     event.target.reset();
+    inputRef.current.focus();
   }
   async function saveItemToInventory(item) {
     const updatedInventory = [
@@ -205,6 +273,7 @@ export default function AddWisdom({
           <StyledForm onSubmit={handleSubmit}>
             <StyledLabel htmlFor="question">Enter Question:</StyledLabel>
             <StyledInput
+              ref={inputRef}
               required
               name="question"
               type="text"
@@ -222,6 +291,8 @@ export default function AddWisdom({
             <StyledSelect name="category">
               <option value="Vehicles">Vehicles</option>
               <option value="Food">Food</option>
+              <option value="Food">Buildings</option>
+              <option value="Food">Adverbs</option>
               <option value="Basics">Basics</option>
               <option value="Javascript">Javascript</option>
             </StyledSelect>
@@ -234,8 +305,31 @@ export default function AddWisdom({
             </ButtonWrapper>
           </StyledForm>
         </BookWrapper>
+        <InventoryWrapper>
+          {currentInventory.map((item, index) => (
+            <Box lefty={4 + index * 4} key={index}>
+              <ItemImage
+                src={itemList[item]}
+                alt={item}
+                height="80"
+                width="80"
+              />
+            </Box>
+          ))}
+        </InventoryWrapper>
       </StyleWrapper>
       {popupActive && <StyledPopup>Wisdom Added</StyledPopup>}
+      {ItemPopupActive && (
+        <ItemPopup>
+          <ItemPopupHeader>You gave gained:</ItemPopupHeader>
+          <ItemImage
+            src={itemList[newItem]}
+            alt={newItem}
+            height="100"
+            width="100"
+          />
+        </ItemPopup>
+      )}
       <Link href="/library/viewBook">
         <StyledBackToBookImage
           src="/assets/bookicon.png"

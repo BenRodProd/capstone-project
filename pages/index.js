@@ -126,15 +126,7 @@ export default function HomePage({
     userData[0].books[userBookIndex].inventorySlots
   );
   const [deadActive, setDeadActive] = useState(false);
-  useEffect(() => {
-    console.log("MAIN RENDER TRIGGER");
-  }, []);
-  useEffect(() => {
-    console.log("Health Change Render Trigger");
-  }, [userHealth]);
-  useEffect(() => {
-    console.log("enemyHealth render trigger");
-  }, [enemyHealth]);
+
   useEffect(() => {
     setEnemyHealth(currentEnemy.health);
   }, [currentEnemy]);

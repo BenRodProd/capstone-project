@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useEffect } from "react";
 import { alphabet } from "@/library/alphabet";
 
 const StyledLetterChoice = styled.span`
@@ -43,6 +44,7 @@ export default function ChooseLetter({
       choices.push(randomLetter);
     }
   }
+
   const answerLetter = answerArray[activeIndex];
   const randomIndex = Math.floor(Math.random() * choices.length);
   choices.splice(randomIndex, 0, answerLetter);

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { useEffect } from "react";
 const StyledQuestion = styled.div`
   position: relative;
   align-self: center;
@@ -35,6 +35,7 @@ const Wrapper = styled.div`
 `;
 export default function Question({ question }) {
   console.log("Question Render Trigger");
+
   return (
     <>
       <Wrapper>

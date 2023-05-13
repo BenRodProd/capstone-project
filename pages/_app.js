@@ -114,6 +114,7 @@ export default function App({ Component, pageProps }) {
   const [currentBook, setCurrentBook] = useState("");
   const [firstLoad, setFirstLoad] = useState(true);
   const [titleActive, setTitleActive] = useState(false);
+
   async function handleBurnBook(book) {
     const wisdomsToDelete = currentLibrary.filter((element) => {
       return element.book === book;
@@ -126,7 +127,7 @@ export default function App({ Component, pageProps }) {
         });
       })
     );
-    mutate("/api/library/");
+    mutate("/api/library");
     const bookIndex = user[0].books.findIndex((item) => item.bookname === book);
 
     if (bookIndex === -1) {
@@ -151,7 +152,7 @@ export default function App({ Component, pageProps }) {
       return;
     }
 
-    mutate(`/api/users/`);
+    mutate(`/api/users`);
     setCurrentBook("");
   }
 
@@ -159,7 +160,7 @@ export default function App({ Component, pageProps }) {
     await fetch(`/api/library/${wisdomId}`, {
       method: "DELETE",
     });
-    mutate("/api/library");
+    mutate("/api/library/");
   }
   useEffect(() => {
     if (firstLoad) {
@@ -243,6 +244,7 @@ export default function App({ Component, pageProps }) {
             <>
               {titleHandler()}
               <TitleScreen
+                onClick={() => setTitleActive(false)}
                 src="/assets/MINDBLADE.png"
                 alt="Title Screen"
                 width="1080"

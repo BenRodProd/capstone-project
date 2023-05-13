@@ -7,152 +7,26 @@ import Link from "next/link";
 import AudioHandler from "@/components/AudioHandler";
 import RPGButton from "@/components/Button";
 import { HealthProgress } from "@/components/StyledProgress";
+import {
+  StyledForm,
+  StyleWrapper,
+  StyledLabel,
+  StyledInput,
+  StyledSelect,
+  ButtonWrapper,
+  StyledPopup,
+  StyledBook,
+  BookWrapper,
+  StyledBackToBookImage,
+  HealthProgressWrapper,
+  BackgroundImage,
+  InventoryWrapper,
+  Box,
+  ItemImage,
+  ItemPopup,
+  ItemPopupHeader,
+} from "@/components/Styles/AddBookStyled.js";
 
-const StyledForm = styled.form`
-  display: grid;
-  gap: 0.2rem;
-  flex-direction: column;
-  grid-template-columns: 50% 50%;
-
-  color: black;
-  justify-content: center;
-  align-items: center;
-  font-family: Georgia, "Times New Roman", Times, serif;
-`;
-const StyleWrapper = styled.div`
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-`;
-const StyledLabel = styled.label`
-  text-align: right;
-`;
-
-const StyledInput = styled.input`
-  background-color: transparent;
-  border: none;
-  border-bottom: 2px solid;
-`;
-
-const StyledSelect = styled.select`
-  background-color: transparent;
-`;
-
-const ButtonWrapper = styled.div`
-  position: absolute;
-  justify-self: center;
-  align-self: center;
-  bottom: 30%;
-
-  scale: 0.7;
-`;
-
-const StyledPopup = styled.div`
-  position: absolute;
-  border: 2px solid white;
-  top: 30rem;
-  left: 0;
-  text-align: center;
-  width: 100%;
-`;
-
-const StyledBook = styled(Image)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  object-fit: contain;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-`;
-
-const BookWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  position: relative;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-const StyledBackToBookImage = styled(Image)`
-  position: absolute;
-  bottom: 0;
-  width: 40%;
-  height: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-`;
-const HealthProgressWrapper = styled.div`
-  display: flex;
-  position: absolute;
-  top: 65%;
-  flex-direction: column;
-  width: 100%;
-
-  justify-content: center;
-  align-items: center;
-`;
-const BackgroundImage = styled(Image)`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.7;
-  z-index: -3;
-  object-fit: cover;
-`;
-const InventoryWrapper = styled.div`
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: row;
-`;
-const Box = styled.div`
-  font-size: 0.6rem;
-  align-items: center;
-
-  left: ${(props) => props.lefty}rem;
-  width: 3rem;
-  height: 3rem;
-  border: 10px solid transparent;
-  border-image: url("/assets/border.png") 30% stretch;
-  background-color: black;
-  z-index: 5;
-  opacity: 0.9;
-`;
-
-const ItemImage = styled(Image)`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 0;
-`;
-
-const ItemPopup = styled.div`
-  display: flex;
-  position: absolute;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
-  height: 25%;
-  background-color: black;
-  border: 20px solid transparent;
-  border-image: url("/assets/border.png") 30% stretch;
-  z-index: 0;
-`;
-const ItemPopupHeader = styled.span`
-  justify-self: flex-start;
-`;
 async function sendRequest(url, { arg }) {
   const response = await fetch(url, {
     method: "POST",
@@ -345,22 +219,11 @@ export default function AddWisdom({
         return;
       }
       setCurrentInventory((prev) => [...prev, item]);
-      mutate("/api/users/");
+      mutate("/api/users");
     }
   }
   const userHealth = userData[0].books[userBookIndex].health;
-  console.log(
-    "newItem:",
-    newItem,
-    "currentInventory:",
-    currentInventory,
-    "InventorySlots:",
-    userData[0].books[userBookIndex].inventorySlots,
-    "Userdata",
-    userData,
-    "UserHealth:",
-    userHealth
-  );
+
   return (
     <>
       <StyleWrapper>

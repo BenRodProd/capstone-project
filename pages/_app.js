@@ -31,6 +31,19 @@ opacity: 1;
 }
 `;
 
+const MediaQuery = styled.div`
+  /* @media (min-width: 900px) {
+    display: flex;
+    position: relative;
+    align-items: center;
+    margin: 40%;
+    justify-content: center;
+    position: relative;
+    max-width: 400px;
+    max-height: 800px;
+  } */
+`;
+
 const StyledForm = styled.form`
   position: absolute;
   display: flex;
@@ -82,29 +95,6 @@ const StyledButton = styled.button`
   font-size: 2rem;
   background-color: transparent;
   border: none;
-`;
-const StyledButtonImage = styled(Image)`
-  position: relative;
-  z-index: -1;
-`;
-
-const StyledButtonText = styled.h2`
-  position: absolute;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-size: 2rem;
-  top: 18%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 0;
-`;
-
-const StyledButtonWrapper = styled.div`
-  display: flex;
-
-  position: relative;
-  align-self: center;
-  justify-content: center;
-  align-items: center;
 `;
 
 const fetcher = async (...args) => {
@@ -220,55 +210,56 @@ export default function App({ Component, pageProps }) {
           ></meta>
         </Head>
         <GlobalStyle />
+        <MediaQuery>
+          <Component
+            userData={user}
+            {...pageProps}
+            library={currentLibrary}
+            currentBook={currentBook}
+            setCurrentBook={setCurrentBook}
+            handleBurnBook={handleBurnBook}
+            handleBurnWisdom={handleBurnWisdom}
+            itemList={itemList}
+            loginActive={firstLoad}
+          />
+          {firstLoad && (
+            <>
+              <LoginScreen>
+                <LoginImage
+                  src="/assets/MINDBLADE.png"
+                  alt="Login Screen"
+                  fill={true}
+                />
 
-        <Component
-          userData={user}
-          {...pageProps}
-          library={currentLibrary}
-          currentBook={currentBook}
-          setCurrentBook={setCurrentBook}
-          handleBurnBook={handleBurnBook}
-          handleBurnWisdom={handleBurnWisdom}
-          itemList={itemList}
-          loginActive={firstLoad}
-        />
-        {firstLoad && (
-          <>
-            <LoginScreen>
-              <LoginImage
+                <StyledForm onSubmit={handleOnClickSubmit}>
+                  <StyledInput autoFocus type="text" placeholder="Name" />
+                  <RPGButton text="Submit"></RPGButton>
+                </StyledForm>
+              </LoginScreen>
+              <AudioHandler level="login" />
+            </>
+          )}
+          {titleActive && (
+            <>
+              {titleHandler()}
+              <TitleScreen
                 src="/assets/MINDBLADE.png"
-                alt="Login Screen"
-                fill={true}
-              />
+                alt="Title Screen"
+                width="1080"
+                height="1920"
+              ></TitleScreen>
 
-              <StyledForm onSubmit={handleOnClickSubmit}>
-                <StyledInput autoFocus type="text" placeholder="Name" />
-                <RPGButton text="Submit"></RPGButton>
-              </StyledForm>
-            </LoginScreen>
-            <AudioHandler level="login" />
-          </>
-        )}
-        {titleActive && (
-          <>
-            {titleHandler()}
-            <TitleScreen
-              src="/assets/MINDBLADE.png"
-              alt="Title Screen"
-              width="1080"
-              height="1920"
-            ></TitleScreen>
-
-            <AudioHandler level="intro" />
-          </>
-        )}
-        <LibraryNavigation
-          loginActive={firstLoad}
-          userData={user}
-          currentBook={currentBook}
-          insideLibrary={insideLibrary}
-          library={currentLibrary}
-        />
+              <AudioHandler level="intro" />
+            </>
+          )}
+          <LibraryNavigation
+            loginActive={firstLoad}
+            userData={user}
+            currentBook={currentBook}
+            insideLibrary={insideLibrary}
+            library={currentLibrary}
+          />
+        </MediaQuery>
       </SWRConfig>
     </>
   );

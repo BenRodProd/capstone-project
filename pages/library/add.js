@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import AudioHandler from "@/components/AudioHandler";
 import RPGButton from "@/components/Button";
+import { HealthProgress } from "@/components/StyledProgress";
 
 const StyledForm = styled.form`
   display: grid;
@@ -81,7 +82,16 @@ const StyledBackToBookImage = styled(Image)`
   left: 50%;
   transform: translateX(-50%);
 `;
+const HealthProgressWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  top: 65%;
+  flex-direction: column;
+  width: 100%;
 
+  justify-content: center;
+  align-items: center;
+`;
 const BackgroundImage = styled(Image)`
   position: absolute;
   top: 0;
@@ -120,7 +130,7 @@ const ItemImage = styled(Image)`
   position: relative;
   width: 100%;
   height: 100%;
-
+  object-fit: contain;
   padding: 0;
 `;
 
@@ -168,12 +178,14 @@ export default function AddWisdom({
       userData[0].books.findIndex((element) => element.bookname === currentBook)
     ].inventory
   );
+  const [healthPopup, setHealthPopup] = useState(false);
   const [newItem, setNewItem] = useState();
+
   const { trigger } = useSWRMutation("/api/library", sendRequest);
   const userBookIndex = userData[0].books.findIndex(
     (element) => element.bookname === currentBook
   );
-  useEffect(() => {}, [currentInventory]);
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -204,21 +216,35 @@ export default function AddWisdom({
         (key) =>
           key !== "empty" && !itemsInInventory.includes(key) && key !== "pouch"
       );
-      const randomItem = itemKeys[Math.floor(Math.random() * itemKeys.length)];
-      if (!randomItem) {
+      let randomItem = itemKeys[Math.floor(Math.random() * itemKeys.length)];
+      if (!randomItem & currentInventory.includes("empty")) {
+        console.log("HEALTH!!!!");
+        saveItemToInventory("health");
+        setHealthPopup(true);
+        setTimeout(() => {
+          setHealthPopup(false);
+        }, 1000);
+        return;
+      } else if (!randomItem & !currentInventory.includes("empty")) {
+        console.log("there should be a pouch");
         setNewItem("pouch");
-        saveItemToInventory(pouch);
-      }
-      saveItemToInventory(randomItem);
-      setNewItem(randomItem);
-      setCurrentInventory((prev) => [...prev, newItem]);
-      setItemPopupActive(true);
-      setTimeout(() => {
-        setItemPopupActive(false);
-      }, 1000);
-      console.log(newItem, itemList);
-    }
+        saveItemToInventory("pouch");
+        setItemPopupActive(true);
+        setTimeout(() => {
+          setItemPopupActive(false);
+        }, 1000);
+        return;
+      } else {
+        saveItemToInventory(randomItem);
+        setNewItem(randomItem);
 
+        setItemPopupActive(true);
+        setTimeout(() => {
+          setItemPopupActive(false);
+        }, 1000);
+      }
+    }
+    console.log(userData[0].books[1].inventorySlots);
     setPopupActive(true);
     setTimeout(() => setPopupActive(false), 1500);
     event.target.reset();
@@ -226,41 +252,115 @@ export default function AddWisdom({
   }
   async function saveItemToInventory(item) {
     if (item === "pouch") {
-      const moreSlots = [userData[0].books[userBookIndex].InventorySlots + 1];
-      console.log(moreSlots);
-      const updatedUserData = [
-        ...userData[0].books[userBookIndex].inventorySlots,
-      ];
-    }
-    const updatedInventory = [
-      ...userData[0].books[userBookIndex].inventory,
-      item,
-    ];
-    const updatedUserData = {
-      ...userData[0],
-      books: [
-        ...userData[0].books.slice(0, userBookIndex),
-        {
-          ...userData[0].books[userBookIndex],
-          inventory: updatedInventory,
+      const insertInInventory = "empty";
+      const moreSlots =
+        Number(userData[0].books[userBookIndex].inventorySlots) + 1;
+      const updatedUserData = {
+        ...userData[0],
+        books: [
+          ...userData[0].books.slice(0, userBookIndex),
+          {
+            ...userData[0].books[userBookIndex],
+            inventory: [
+              ...userData[0].books[userBookIndex].inventory,
+              insertInInventory,
+            ],
+            inventorySlots: moreSlots,
+          },
+          ...userData[0].books.slice(userBookIndex + 1),
+        ],
+      };
+      const response = await fetch(`/api/users/${userData[0]._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
         },
-        ...userData[0].books.slice(userBookIndex + 1),
-      ],
-    };
-    const response = await fetch(`/api/users/${userData[0]._id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedUserData),
-    });
+        body: JSON.stringify(updatedUserData),
+      });
 
-    if (!response.ok) {
-      console.error(`Error: ${response.status}`);
+      if (!response.ok) {
+        console.error(`Error: ${response.status}`);
+        return;
+      }
+      setCurrentInventory((prev) => [...prev, "empty"]);
+      mutate("/api/users");
+      console.log(userData);
       return;
+    } else if (item === "health") {
+      const newHealth = Number(userData[0].books[userBookIndex].health) + 20;
+      const updatedUserData = {
+        ...userData[0],
+        books: [
+          ...userData[0].books.slice(0, userBookIndex),
+          {
+            ...userData[0].books[userBookIndex],
+
+            health: newHealth,
+          },
+          ...userData[0].books.slice(userBookIndex + 1),
+        ],
+      };
+      const response = await fetch(`/api/users/${userData[0]._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUserData),
+      });
+
+      if (!response.ok) {
+        console.error(`Error: ${response.status}`);
+        return;
+      }
+
+      mutate("/api/users");
+      console.log(userData);
+      return;
+    } else {
+      const updatedInventory = [
+        ...userData[0].books[userBookIndex].inventory,
+        item,
+      ];
+      const updatedUserData = {
+        ...userData[0],
+        books: [
+          ...userData[0].books.slice(0, userBookIndex),
+          {
+            ...userData[0].books[userBookIndex],
+            inventory: updatedInventory,
+          },
+          ...userData[0].books.slice(userBookIndex + 1),
+        ],
+      };
+      const response = await fetch(`/api/users/${userData[0]._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUserData),
+      });
+
+      if (!response.ok) {
+        console.error(`Error: ${response.status}`);
+        return;
+      }
+      setCurrentInventory((prev) => [...prev, item]);
+      mutate("/api/users/");
     }
-    mutate("/api/users");
   }
+  const userHealth = userData[0].books[userBookIndex].health;
+  console.log(
+    "newItem:",
+    newItem,
+    "currentInventory:",
+    currentInventory,
+    "InventorySlots:",
+    userData[0].books[userBookIndex].inventorySlots,
+    "Userdata",
+    userData,
+    "UserHealth:",
+    userHealth
+  );
   return (
     <>
       <StyleWrapper>
@@ -312,6 +412,7 @@ export default function AddWisdom({
             </ButtonWrapper>
           </StyledForm>
         </BookWrapper>
+
         <InventoryWrapper>
           {currentInventory.map((item, index) => (
             <Box lefty={4 + index * 4} key={index}>
@@ -324,6 +425,9 @@ export default function AddWisdom({
             </Box>
           ))}
         </InventoryWrapper>
+        <HealthProgressWrapper>
+          <HealthProgress id="health" max="150" value={userHealth} />
+        </HealthProgressWrapper>
       </StyleWrapper>
       {popupActive && <StyledPopup>Wisdom Added</StyledPopup>}
       {ItemPopupActive && (
@@ -337,6 +441,13 @@ export default function AddWisdom({
           />
         </ItemPopup>
       )}
+      {healthPopup && (
+        <ItemPopup>
+          <ItemPopupHeader>You gave gained:</ItemPopupHeader>
+          <ItemPopupHeader>20 Health Points!</ItemPopupHeader>
+        </ItemPopup>
+      )}
+
       <Link href="/library/viewBook">
         <StyledBackToBookImage
           src="/assets/bookicon.png"

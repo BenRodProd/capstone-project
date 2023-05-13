@@ -87,16 +87,31 @@ const DeathImage = styled(Image)`
 const GameOverText = styled.h1`
   text-shadow: #fc0 1px 0 10px;
 `;
-export default function HomePage({ library, userData, itemList, currentBook }) {
+export default function HomePage({
+  library,
+  userData,
+  itemList,
+  currentBook,
+  setCurrentBook,
+}) {
+  const userBookIndex = userData[0].books.findIndex(
+    (element) => element.bookname === currentBook
+  );
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [currentEnemy, setCurrentEnemy] = useState(
     enemyLibrary[currentEnemyIndex]
   );
-  const [userHealth, setUserHealth] = useState(userData[0].books[0].health);
-  const [userXP, setUserXP] = useState(Number(userData[0].books[0].xp));
-  const [userArmor, setUserArmor] = useState(userData[0].books[0].armor);
+  const [userHealth, setUserHealth] = useState(
+    userData[0].books[userBookIndex].health
+  );
+  const [userXP, setUserXP] = useState(
+    Number(userData[0].books[userBookIndex].xp)
+  );
+  const [userArmor, setUserArmor] = useState(
+    userData[0].books[userBookIndex].armor
+  );
   const [enemyHealth, setEnemyHealth] = useState(currentEnemy.health);
   const [damageDone, setDamageDone] = useState(false);
   const [currentCard, setCurrentCard] = useState(
@@ -105,19 +120,25 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
   const [damageDisplay, setDamageDisplay] = useState(null);
 
   const [inventory, setInventory] = useState(
-    userData[0].books[
-      userData[0].books.findIndex((element) => element.bookname === currentBook)
-    ].inventory
+    userData[0].books[userBookIndex].inventory
   );
   const [inventorySlots, setInventorySlots] = useState(
-    userData[0].books[0].inventorySlots
+    userData[0].books[userBookIndex].inventorySlots
   );
   const [deadActive, setDeadActive] = useState(false);
-
+  useEffect(() => {
+    console.log("MAIN RENDER TRIGGER");
+  }, []);
+  useEffect(() => {
+    console.log("Health Change Render Trigger");
+  }, [userHealth]);
+  useEffect(() => {
+    console.log("enemyHealth render trigger");
+  }, [enemyHealth]);
   useEffect(() => {
     setEnemyHealth(currentEnemy.health);
   }, [currentEnemy]);
-
+  console.log("Generall Component Trigger");
   function handleNextQuestion() {
     let nextCardIndex = Math.floor(Math.random() * library.length);
     while (currentCard.question === library[nextCardIndex].question) {
@@ -176,9 +197,10 @@ export default function HomePage({ library, userData, itemList, currentBook }) {
   function handleRestart(event) {
     event.preventDefault();
     setCurrentLevel(levelLibrary[0]);
-    setUserHealth(userData[0].books[0].health);
-    setUserArmor(userData[0].books[0].armor);
+    setUserHealth(userData[0].books[userBookIndex].health);
+    setUserArmor(userData[0].books[userBookIndex].armor);
     setCurrentEnemy(enemyLibrary[0]);
+    handleNextQuestion();
     setDeadActive(false);
   }
   const userAvatarImage = `/assets/avatars/${

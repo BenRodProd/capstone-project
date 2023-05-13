@@ -34,6 +34,7 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 export default function Question({ question }) {
+  console.log("Question Render Trigger");
   return (
     <>
       <Wrapper>

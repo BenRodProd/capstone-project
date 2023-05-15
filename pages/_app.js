@@ -11,6 +11,7 @@ import { itemList } from "@/library/itemList";
 import Image from "next/image";
 import AudioHandler from "@/components/AudioHandler";
 import RPGButton from "@/components/Button";
+import Loading from "@/components/Loading";
 
 const zoom = keyframes`
 0% {
@@ -90,12 +91,6 @@ const StyledInput = styled.input`
   background-color: rgba(255, 255, 255, 0.5);
   color: black;
 `;
-const StyledButton = styled.button`
-  position: relative;
-  font-size: 2rem;
-  background-color: transparent;
-  border: none;
-`;
 
 const fetcher = async (...args) => {
   const response = await fetch(...args);
@@ -160,7 +155,7 @@ export default function App({ Component, pageProps }) {
     await fetch(`/api/library/${wisdomId}`, {
       method: "DELETE",
     });
-    mutate("/api/library/");
+    mutate("/api/library");
   }
   useEffect(() => {
     if (firstLoad) {
@@ -181,7 +176,7 @@ export default function App({ Component, pageProps }) {
   }, [data, user]);
   const insideLibrary = router.route.includes("/library");
   if (isLoading || !currentLibrary || !user) {
-    return <div>loading...</div>;
+    return <Loading />;
   }
   if (error) {
     return <div>error</div>;

@@ -195,6 +195,7 @@ export default function HomePage({
     handleNextQuestion();
     setDeadActive(false);
   }
+
   const userAvatarImage = `/assets/avatars/${
     userData[0].books[0].avatar
   }${Math.floor(Number(userXP) / 500)}.png`;

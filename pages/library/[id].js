@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useSWRMutation from "swr/mutation";
 import { mutate } from "swr";
 import Image from "next/image";

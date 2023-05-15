@@ -1,8 +1,6 @@
-import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import useSWRMutation from "swr/mutation";
 import { mutate } from "swr";
-import Image from "next/image";
 import Link from "next/link";
 import AudioHandler from "@/components/AudioHandler";
 import RPGButton from "@/components/Button";
@@ -92,7 +90,6 @@ export default function AddWisdom({
       );
       let randomItem = itemKeys[Math.floor(Math.random() * itemKeys.length)];
       if (!randomItem & currentInventory.includes("empty")) {
-        console.log("HEALTH!!!!");
         saveItemToInventory("health");
         setHealthPopup(true);
         setTimeout(() => {
@@ -100,7 +97,6 @@ export default function AddWisdom({
         }, 1000);
         return;
       } else if (!randomItem & !currentInventory.includes("empty")) {
-        console.log("there should be a pouch");
         setNewItem("pouch");
         saveItemToInventory("pouch");
         setItemPopupActive(true);
@@ -118,7 +114,7 @@ export default function AddWisdom({
         }, 1000);
       }
     }
-    console.log(userData[0].books[1].inventorySlots);
+
     setPopupActive(true);
     setTimeout(() => setPopupActive(false), 1500);
     event.target.reset();
@@ -158,7 +154,7 @@ export default function AddWisdom({
       }
       setCurrentInventory((prev) => [...prev, "empty"]);
       mutate("/api/users");
-      console.log(userData);
+
       return;
     } else if (item === "health") {
       const newHealth = Number(userData[0].books[userBookIndex].health) + 20;
@@ -188,7 +184,7 @@ export default function AddWisdom({
       }
 
       mutate("/api/users");
-      console.log(userData);
+
       return;
     } else {
       const updatedInventory = [

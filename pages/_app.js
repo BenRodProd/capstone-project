@@ -32,19 +32,6 @@ opacity: 1;
 }
 `;
 
-const MediaQuery = styled.div`
-  /* @media (min-width: 900px) {
-    display: flex;
-    position: relative;
-    align-items: center;
-    margin: 40%;
-    justify-content: center;
-    position: relative;
-    max-width: 400px;
-    max-height: 800px;
-  } */
-`;
-
 const StyledForm = styled.form`
   position: absolute;
   display: flex;
@@ -206,57 +193,56 @@ export default function App({ Component, pageProps }) {
           ></meta>
         </Head>
         <GlobalStyle />
-        <MediaQuery>
-          <Component
-            userData={user}
-            {...pageProps}
-            library={currentLibrary}
-            currentBook={currentBook}
-            setCurrentBook={setCurrentBook}
-            handleBurnBook={handleBurnBook}
-            handleBurnWisdom={handleBurnWisdom}
-            itemList={itemList}
-            loginActive={firstLoad}
-          />
-          {firstLoad && (
-            <>
-              <LoginScreen>
-                <LoginImage
-                  src="/assets/MINDBLADE.png"
-                  alt="Login Screen"
-                  fill={true}
-                />
 
-                <StyledForm onSubmit={handleOnClickSubmit}>
-                  <StyledInput autoFocus type="text" placeholder="Name" />
-                  <RPGButton text="Submit"></RPGButton>
-                </StyledForm>
-              </LoginScreen>
-              <AudioHandler level="login" />
-            </>
-          )}
-          {titleActive && (
-            <>
-              {titleHandler()}
-              <TitleScreen
-                onClick={() => setTitleActive(false)}
+        <Component
+          userData={user}
+          {...pageProps}
+          library={currentLibrary}
+          currentBook={currentBook}
+          setCurrentBook={setCurrentBook}
+          handleBurnBook={handleBurnBook}
+          handleBurnWisdom={handleBurnWisdom}
+          itemList={itemList}
+          loginActive={firstLoad}
+        />
+        {firstLoad && (
+          <>
+            <LoginScreen>
+              <LoginImage
                 src="/assets/MINDBLADE.png"
-                alt="Title Screen"
-                width="1080"
-                height="1920"
-              ></TitleScreen>
+                alt="Login Screen"
+                fill={true}
+              />
 
-              <AudioHandler level="intro" />
-            </>
-          )}
-          <LibraryNavigation
-            loginActive={firstLoad}
-            userData={user}
-            currentBook={currentBook}
-            insideLibrary={insideLibrary}
-            library={currentLibrary}
-          />
-        </MediaQuery>
+              <StyledForm onSubmit={handleOnClickSubmit}>
+                <StyledInput autoFocus type="text" placeholder="Name" />
+                <RPGButton text="Submit"></RPGButton>
+              </StyledForm>
+            </LoginScreen>
+            <AudioHandler level="login" />
+          </>
+        )}
+        {titleActive && (
+          <>
+            {titleHandler()}
+            <TitleScreen
+              onClick={() => setTitleActive(false)}
+              src="/assets/MINDBLADE.png"
+              alt="Title Screen"
+              width="1080"
+              height="1920"
+            ></TitleScreen>
+
+            <AudioHandler level="intro" />
+          </>
+        )}
+        <LibraryNavigation
+          loginActive={firstLoad}
+          userData={user}
+          currentBook={currentBook}
+          insideLibrary={insideLibrary}
+          library={currentLibrary}
+        />
       </SWRConfig>
     </>
   );

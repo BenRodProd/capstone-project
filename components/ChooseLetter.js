@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useEffect } from "react";
 import { alphabet } from "@/library/alphabet";
 
 const StyledLetterChoice = styled.span`

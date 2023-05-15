@@ -130,7 +130,7 @@ export default function HomePage({
   useEffect(() => {
     setEnemyHealth(currentEnemy.health);
   }, [currentEnemy]);
-  console.log("Generall Component Trigger");
+
   function handleNextQuestion() {
     let nextCardIndex = Math.floor(Math.random() * library.length);
     while (currentCard.question === library[nextCardIndex].question) {

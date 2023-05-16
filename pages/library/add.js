@@ -75,13 +75,13 @@ export default function AddWisdom({
     });
 
     const gainedItems = Number(userData[0].books[userBookIndex].gainedItems);
-
+    giveMoreHealth();
     const wisdomsInBook = library.filter(
       (element) => element.book === currentBook
     ).length;
     const itemsInInventory = userData[0].books[userBookIndex].inventory;
 
-    if (wisdomsInBook % 5 === 0 && gainedItems < wisdomsInBook / 5) {
+    if (wisdomsInBook % 20 === 0 && gainedItems < wisdomsInBook / 20) {
       // Create a filtered list of items that are not "empty" and not part of itemsInInventory
 
       const itemKeys = Object.keys(itemList).filter(
@@ -218,8 +218,41 @@ export default function AddWisdom({
       mutate("/api/users");
     }
   }
-  const userHealth = userData[0].books[userBookIndex].health;
+  async function save(data, id) {
+    const response = await fetch(`/api/users/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
+    if (!response.ok) {
+      console.error(`Error: ${response.status}`);
+      return;
+    }
+  }
+  function getDataForHealth(points) {
+    const newHealth = Number(userData[0].books[userBookIndex].health) + points;
+    return {
+      ...userData[0],
+      books: [
+        ...userData[0].books.slice(0, userBookIndex),
+        {
+          ...userData[0].books[userBookIndex],
+
+          health: newHealth,
+        },
+        ...userData[0].books.slice(userBookIndex + 1),
+      ],
+    };
+  }
+  const userHealth = userData[0].books[userBookIndex].health;
+  async function giveMoreHealth() {
+    const data = getDataForHealth(1);
+    await save(data, userData[0]._id);
+    mutate("/api/users");
+  }
   return (
     <>
       <StyleWrapper>

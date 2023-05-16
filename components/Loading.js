@@ -18,7 +18,7 @@ const StyledLoadingImage = styled(Image)`
   height: 50%;
   justify-content: center;
   align-self: center;
-  animation: ${rotate} 2s infinite;
+  animation: ${rotate} 2s linear infinite;
   object-fit: cover;
 `;
 

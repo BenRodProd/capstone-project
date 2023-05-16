@@ -43,6 +43,7 @@ export default function ChooseLetter({
       choices.push(randomLetter);
     }
   }
+
   const answerLetter = answerArray[activeIndex];
   const randomIndex = Math.floor(Math.random() * choices.length);
   choices.splice(randomIndex, 0, answerLetter);

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 const StyledQuestion = styled.div`
   position: relative;
   align-self: center;

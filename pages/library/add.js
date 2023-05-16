@@ -1,99 +1,29 @@
-import styled from "styled-components";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import useSWRMutation from "swr/mutation";
 import { mutate } from "swr";
-import Image from "next/image";
 import Link from "next/link";
 import AudioHandler from "@/components/AudioHandler";
 import RPGButton from "@/components/Button";
-
-const StyledForm = styled.form`
-  display: grid;
-  gap: 0.2rem;
-  flex-direction: column;
-  grid-template-columns: 50% 50%;
-
-  color: black;
-  justify-content: center;
-  align-items: center;
-  font-family: Georgia, "Times New Roman", Times, serif;
-`;
-const StyleWrapper = styled.div`
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-`;
-const StyledLabel = styled.label`
-  text-align: right;
-`;
-
-const StyledInput = styled.input`
-  background-color: transparent;
-  border: none;
-  border-bottom: 2px solid;
-`;
-
-const StyledSelect = styled.select`
-  background-color: transparent;
-`;
-
-const ButtonWrapper = styled.div`
-  position: absolute;
-  justify-self: center;
-  align-self: center;
-  bottom: 30%;
-
-  scale: 0.7;
-`;
-
-const StyledPopup = styled.div`
-  position: absolute;
-  border: 2px solid white;
-  top: 30rem;
-  left: 0;
-  text-align: center;
-  width: 100%;
-`;
-
-const StyledBook = styled(Image)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  object-fit: contain;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-`;
-
-const BookWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  position: relative;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-const StyledBackToBookImage = styled(Image)`
-  position: absolute;
-  bottom: 0;
-  width: 40%;
-  height: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-`;
-
-const BackgroundImage = styled(Image)`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.7;
-  z-index: -3;
-  object-fit: cover;
-`;
+import { HealthProgress } from "@/components/StyledProgress";
+import {
+  StyledForm,
+  StyleWrapper,
+  StyledLabel,
+  StyledInput,
+  StyledSelect,
+  ButtonWrapper,
+  StyledPopup,
+  StyledBook,
+  BookWrapper,
+  StyledBackToBookImage,
+  HealthProgressWrapper,
+  BackgroundImage,
+  InventoryWrapper,
+  Box,
+  ItemImage,
+  ItemPopup,
+  ItemPopupHeader,
+} from "@/components/Styles/AddBookStyled.js";
 
 async function sendRequest(url, { arg }) {
   const response = await fetch(url, {
@@ -112,7 +42,17 @@ export default function AddWisdom({
   userData,
   itemList,
 }) {
+  const inputRef = useRef();
   const [popupActive, setPopupActive] = useState(false);
+  const [ItemPopupActive, setItemPopupActive] = useState(false);
+  const [currentInventory, setCurrentInventory] = useState(
+    userData[0].books[
+      userData[0].books.findIndex((element) => element.bookname === currentBook)
+    ].inventory
+  );
+  const [healthPopup, setHealthPopup] = useState(false);
+  const [newItem, setNewItem] = useState();
+
   const { trigger } = useSWRMutation("/api/library", sendRequest);
   const userBookIndex = userData[0].books.findIndex(
     (element) => element.bookname === currentBook
@@ -135,7 +75,7 @@ export default function AddWisdom({
     });
 
     const gainedItems = Number(userData[0].books[userBookIndex].gainedItems);
-
+    giveMoreHealth();
     const wisdomsInBook = library.filter(
       (element) => element.book === currentBook
     ).length;
@@ -148,42 +88,169 @@ export default function AddWisdom({
         (key) =>
           key !== "empty" && !itemsInInventory.includes(key) && key !== "pouch"
       );
-      const randomItem = itemKeys[Math.floor(Math.random() * itemKeys.length)];
-      saveItemToInventory(randomItem);
+      let randomItem = itemKeys[Math.floor(Math.random() * itemKeys.length)];
+      if (!randomItem & currentInventory.includes("empty")) {
+        saveItemToInventory("health");
+        setHealthPopup(true);
+        setTimeout(() => {
+          setHealthPopup(false);
+        }, 1000);
+        return;
+      } else if (!randomItem & !currentInventory.includes("empty")) {
+        setNewItem("pouch");
+        saveItemToInventory("pouch");
+        setItemPopupActive(true);
+        setTimeout(() => {
+          setItemPopupActive(false);
+        }, 1000);
+        return;
+      } else {
+        saveItemToInventory(randomItem);
+        setNewItem(randomItem);
+
+        setItemPopupActive(true);
+        setTimeout(() => {
+          setItemPopupActive(false);
+        }, 1000);
+      }
     }
 
     setPopupActive(true);
     setTimeout(() => setPopupActive(false), 1500);
     event.target.reset();
+    inputRef.current.focus();
   }
   async function saveItemToInventory(item) {
-    const updatedInventory = [
-      ...userData[0].books[userBookIndex].inventory,
-      item,
-    ];
-    const updatedUserData = {
-      ...userData[0],
-      books: [
-        ...userData[0].books.slice(0, userBookIndex),
-        {
-          ...userData[0].books[userBookIndex],
-          inventory: updatedInventory,
+    if (item === "pouch") {
+      const insertInInventory = "empty";
+      const moreSlots =
+        Number(userData[0].books[userBookIndex].inventorySlots) + 1;
+      const updatedUserData = {
+        ...userData[0],
+        books: [
+          ...userData[0].books.slice(0, userBookIndex),
+          {
+            ...userData[0].books[userBookIndex],
+            inventory: [
+              ...userData[0].books[userBookIndex].inventory,
+              insertInInventory,
+            ],
+            inventorySlots: moreSlots,
+          },
+          ...userData[0].books.slice(userBookIndex + 1),
+        ],
+      };
+      const response = await fetch(`/api/users/${userData[0]._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
         },
-        ...userData[0].books.slice(userBookIndex + 1),
-      ],
-    };
-    const response = await fetch(`/api/users/${userData[0]._id}`, {
+        body: JSON.stringify(updatedUserData),
+      });
+
+      if (!response.ok) {
+        console.error(`Error: ${response.status}`);
+        return;
+      }
+      setCurrentInventory((prev) => [...prev, "empty"]);
+      mutate("/api/users");
+
+      return;
+    } else if (item === "health") {
+      const newHealth = Number(userData[0].books[userBookIndex].health) + 20;
+      const updatedUserData = {
+        ...userData[0],
+        books: [
+          ...userData[0].books.slice(0, userBookIndex),
+          {
+            ...userData[0].books[userBookIndex],
+
+            health: newHealth,
+          },
+          ...userData[0].books.slice(userBookIndex + 1),
+        ],
+      };
+      const response = await fetch(`/api/users/${userData[0]._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUserData),
+      });
+
+      if (!response.ok) {
+        console.error(`Error: ${response.status}`);
+        return;
+      }
+
+      mutate("/api/users");
+
+      return;
+    } else {
+      const updatedInventory = [
+        ...userData[0].books[userBookIndex].inventory,
+        item,
+      ];
+      const updatedUserData = {
+        ...userData[0],
+        books: [
+          ...userData[0].books.slice(0, userBookIndex),
+          {
+            ...userData[0].books[userBookIndex],
+            inventory: updatedInventory,
+          },
+          ...userData[0].books.slice(userBookIndex + 1),
+        ],
+      };
+      const response = await fetch(`/api/users/${userData[0]._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUserData),
+      });
+
+      if (!response.ok) {
+        console.error(`Error: ${response.status}`);
+        return;
+      }
+      setCurrentInventory((prev) => [...prev, item]);
+      mutate("/api/users");
+    }
+  }
+  async function save(data, id) {
+    const response = await fetch(`/api/users/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedUserData),
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
       console.error(`Error: ${response.status}`);
       return;
     }
+  }
+  function getDataForHealth(points) {
+    const newHealth = Number(userData[0].books[userBookIndex].health) + points;
+    return {
+      ...userData[0],
+      books: [
+        ...userData[0].books.slice(0, userBookIndex),
+        {
+          ...userData[0].books[userBookIndex],
+
+          health: newHealth,
+        },
+        ...userData[0].books.slice(userBookIndex + 1),
+      ],
+    };
+  }
+  const userHealth = userData[0].books[userBookIndex].health;
+  async function giveMoreHealth() {
+    const data = getDataForHealth(1);
+    await save(data, userData[0]._id);
     mutate("/api/users");
   }
   return (
@@ -205,6 +272,7 @@ export default function AddWisdom({
           <StyledForm onSubmit={handleSubmit}>
             <StyledLabel htmlFor="question">Enter Question:</StyledLabel>
             <StyledInput
+              ref={inputRef}
               required
               name="question"
               type="text"
@@ -222,6 +290,8 @@ export default function AddWisdom({
             <StyledSelect name="category">
               <option value="Vehicles">Vehicles</option>
               <option value="Food">Food</option>
+              <option value="Food">Buildings</option>
+              <option value="Food">Adverbs</option>
               <option value="Basics">Basics</option>
               <option value="Javascript">Javascript</option>
             </StyledSelect>
@@ -234,8 +304,42 @@ export default function AddWisdom({
             </ButtonWrapper>
           </StyledForm>
         </BookWrapper>
+
+        <InventoryWrapper>
+          {currentInventory.map((item, index) => (
+            <Box lefty={4 + index * 4} key={index}>
+              <ItemImage
+                src={itemList[item]}
+                alt={item}
+                height="80"
+                width="80"
+              />
+            </Box>
+          ))}
+        </InventoryWrapper>
+        <HealthProgressWrapper>
+          <HealthProgress id="health" max="150" value={userHealth} />
+        </HealthProgressWrapper>
       </StyleWrapper>
       {popupActive && <StyledPopup>Wisdom Added</StyledPopup>}
+      {ItemPopupActive && (
+        <ItemPopup>
+          <ItemPopupHeader>You gave gained:</ItemPopupHeader>
+          <ItemImage
+            src={itemList[newItem]}
+            alt={newItem}
+            height="100"
+            width="100"
+          />
+        </ItemPopup>
+      )}
+      {healthPopup && (
+        <ItemPopup>
+          <ItemPopupHeader>You gave gained:</ItemPopupHeader>
+          <ItemPopupHeader>20 Health Points!</ItemPopupHeader>
+        </ItemPopup>
+      )}
+
       <Link href="/library/viewBook">
         <StyledBackToBookImage
           src="/assets/bookicon.png"

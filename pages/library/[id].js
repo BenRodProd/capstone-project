@@ -1,12 +1,13 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useSWRMutation from "swr/mutation";
 import { mutate } from "swr";
 import Image from "next/image";
 import Link from "next/link";
 import ShowVerifyBurnWisdomPopup from "@/components/ShowVerifyBurnWisdomPopup";
 import RPGButton from "@/components/Button";
+import Loading from "@/components/Loading";
 
 const StyledForm = styled.form`
   margin-top: -2rem;
@@ -165,10 +166,10 @@ export default function EditWisdom({ library, currentBook, handleBurnWisdom }) {
 
   const wisdom = library.filter((wisdom) => wisdom._id === id)[0];
   if (!id) {
-    return <div>loading...</div>;
+    return <Loading />;
   }
   if (!wisdom) {
-    return <div>loading...</div>;
+    return <Loading />;
   }
   return (
     <>

@@ -27,4 +27,4 @@ Used Tech:
 
 ### Credits
 
-- Assets from [FreePik.com](https://www.freepik.com/free-vector/medieval-game-menu-frames-ui-elements-buttons_26230908.htm#query=game%20button&position=39&from_view=search&track=ais)
+- Boxes and Buttons from [FreePik.com](https://www.freepik.com/free-vector/medieval-game-menu-frames-ui-elements-buttons_26230908.htm#query=game%20button&position=39&from_view=search&track=ais)

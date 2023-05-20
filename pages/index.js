@@ -41,8 +41,8 @@ const ScreenBox = styled.main`
   position: relative;
   flex-direction: column;
 
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
 `;
 const AnswerBox = styled.div`
   align-self: flex-end;

@@ -15,6 +15,7 @@ const BookPageStyle = styled.ul`
   margin-left: 3rem;
   margin-right: 3rem;
 
+  
   li {
     position: relative;
     margin-top: 1rem;
@@ -26,11 +27,27 @@ const BookPageStyle = styled.ul`
     font-weight: bold;
   }
 `;
+
+const WholeBookBack = styled.div`
+position:absolute;
+
+width:100%;
+height:100%;
+margin-top: -5rem;
+background-image: url("/assets/bookpage.png");
+background-repeat: no-repeat;
+background-size: cover;
+opacity: 0.8;
+
+
+`
+
 const StyledBottom = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  
 `;
 const BookTitle = styled.h1`
   position: relative;
@@ -47,12 +64,15 @@ const BookPageContainer = styled.div`
   height: calc(100vh - 8rem);
   margin-top: 3rem;
   overflow: scroll;
+  overflow-x: hidden;
 `;
 
 const FeatherLink = styled(Link)`
-  position: relative;
+position:absolute;
+ 
   bottom: 0;
   justify-self: center;
+  z-index:225;
 `;
 
 const StyledWisdom = styled.li`
@@ -66,6 +86,7 @@ const StyledWisdom = styled.li`
 
 const StyledLink = styled(Link)`
   position: relative;
+  margin-bottom:0;
   cursor: pointer;
   z-index: 5;
   text-decoration: none;
@@ -74,20 +95,24 @@ const StyledLink = styled(Link)`
 
 const BookPageImage = styled.div`
   position: relative;
+  
 
-  height: 100%;
 
   &::before {
     content: "";
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background-image: url("/assets/bookpage.png");
 
-    background-size: cover;
+    background-image: url("/assets/bookpage.png");
+   
+    background-position: center;
+    overflow:hidden;
+    background-size: contain;
     opacity: 0.7;
+    z-index:-1;
   }
 `;
 
@@ -99,6 +124,7 @@ export default function ViewBook({ library, currentBook }) {
 
   return (
     <>
+    <WholeBookBack>
       <BookPageContainer>
         <BookPageImage>
           <BookTitle>
@@ -159,6 +185,7 @@ export default function ViewBook({ library, currentBook }) {
           in your book
         </p>
       </StyledBottom>
+      </WholeBookBack>
       <AudioHandler level="library" />
     </>
   );

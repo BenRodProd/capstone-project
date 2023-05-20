@@ -13,6 +13,31 @@ import AudioHandler from "@/components/AudioHandler";
 import RPGButton from "@/components/Button";
 import Loading from "@/components/Loading";
 
+const MediaQuery = styled.div`
+
+max-width: 600px;
+max-height:1200px;
+min-height: 90vh;
+ position:relative;
+
+
+@media (min-width:600px){
+  padding:0;
+  margin:auto;
+  overflow:hidden;
+  border: 20px solid transparent;
+  border-image: url("/assets/border.png") 30% stretch;
+
+}
+
+
+`
+const NavigationWrapper = styled.div`
+
+position:absolute;
+top:10px;
+
+`
 const zoom = keyframes`
 0% {
 scale:1;
@@ -42,6 +67,15 @@ const StyledForm = styled.form`
   top: 55%;
 `;
 
+const ImageContainer = styled.div`
+  position: absolute;
+  padding:0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
+
 const LoginImage = styled(Image)`
   position: absolute;
   top: 0;
@@ -50,8 +84,9 @@ const LoginImage = styled(Image)`
   width: 100%;
   height: 100%;
   z-index: 25;
-  object-fit: fill;
+  object-fit: contain;
   opacity: 0.8;
+  object-position: center;
 `;
 
 const TitleScreen = styled(Image)`
@@ -61,15 +96,16 @@ const TitleScreen = styled(Image)`
   width: 100%;
   height: 100%;
   z-index: 115;
-  object-fit: fill;
+  object-fit: contain;
+ 
   animation: ${zoom} 40s ease-in 1;
 `;
 const LoginScreen = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 
   object-fit: cover;
 `;
@@ -193,7 +229,7 @@ export default function App({ Component, pageProps }) {
           ></meta>
         </Head>
         <GlobalStyle />
-
+        <MediaQuery>
         <Component
           userData={user}
           {...pageProps}
@@ -208,6 +244,7 @@ export default function App({ Component, pageProps }) {
         {firstLoad && (
           <>
             <LoginScreen>
+              <ImageContainer>
               <LoginImage
                 src="/assets/MINDBLADE.png"
                 alt="Login Screen"
@@ -218,6 +255,7 @@ export default function App({ Component, pageProps }) {
                 <StyledInput autoFocus type="text" placeholder="Name" />
                 <RPGButton text="Submit"></RPGButton>
               </StyledForm>
+              </ImageContainer>
             </LoginScreen>
             <AudioHandler level="login" />
           </>
@@ -236,6 +274,7 @@ export default function App({ Component, pageProps }) {
             <AudioHandler level="intro" />
           </>
         )}
+        <NavigationWrapper>
         <LibraryNavigation
           loginActive={firstLoad}
           userData={user}
@@ -243,7 +282,10 @@ export default function App({ Component, pageProps }) {
           insideLibrary={insideLibrary}
           library={currentLibrary}
         />
+        </NavigationWrapper>
+         </MediaQuery>
       </SWRConfig>
+     
     </>
   );
 }

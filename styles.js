@@ -20,7 +20,7 @@ export default createGlobalStyle`
   
     background-color: black;
     color: white;
-    
+   
   }
 
 .clickable {
@@ -39,4 +39,7 @@ export default createGlobalStyle`
   }
   
 }
+
+
+
 `;

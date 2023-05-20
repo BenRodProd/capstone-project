@@ -23,8 +23,8 @@ const StyledForm = styled.form`
 `;
 const StyleWrapper = styled.div`
   display: flex;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
 `;
 const StyledLabel = styled.label`
   text-align: right;

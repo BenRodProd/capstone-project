@@ -14,8 +14,8 @@ export const StyledForm = styled.form`
 `;
 export const StyleWrapper = styled.div`
   display: flex;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
 `;
 export const StyledLabel = styled.label`
   text-align: right;

@@ -23,6 +23,7 @@ bottom: 0;
 const StyledInput = styled.input`
   caret-color: transparent;
   text-align: center;
+  align-items: center;
   font-size: 1rem;
   width: 2rem;
   height: 2rem;
@@ -100,7 +101,17 @@ export default function Answer({
 
     setChosenLetter("");
   }, [chosenLetter, activeIndex]);
+  const resetAnswer = () => {
+    setGuessedWordArray(answerArray.map(() => ""));
+    setChosenLetter("");
+    setActiveIndex(0);
+  };
 
+  // Split Answer in Array when new Answer received
+  useEffect(() => {
+    resetAnswer();
+    inputRef.current[0].focus();
+  }, [answer]);
   function handleLetterGuess(event, index) {
     if (event.target.value === "") {
       return;

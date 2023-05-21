@@ -40,7 +40,7 @@ top:10px;
 `
 const zoom = keyframes`
 0% {
-scale:1;
+scale:1.2;
 transform: translate(0,0);
 opacity: 1;
 }
@@ -97,7 +97,7 @@ const TitleScreen = styled(Image)`
   height: 100%;
   z-index: 115;
   object-fit: contain;
- 
+  scale:1.2;
   animation: ${zoom} 40s ease-in 1;
 `;
 const LoginScreen = styled.div`

@@ -8,110 +8,35 @@ import Link from "next/link";
 import ShowVerifyBurnWisdomPopup from "@/components/ShowVerifyBurnWisdomPopup";
 import RPGButton from "@/components/Button";
 import Loading from "@/components/Loading";
+import {
+  StyledForm,
+  StyleWrapper,
+  StyledLabel,
+  StyledInput,
+  StyledSelect,
+  ButtonWrapper,
+  StyledPopup,
+  StyledBook,
+  BookWrapper,
+  StyledBackToBookImage,
+  BackgroundImage, 
+} from "@/components/Styles/AddBookStyled.js";
 
-const StyledForm = styled.form`
-  margin-top: -2rem;
-  display: grid;
-  gap: 0.2rem;
-  flex-direction: column;
-  grid-template-columns: 50% 50%;
 
-  color: black;
-  justify-content: center;
-  align-items: center;
-  font-family: Georgia, "Times New Roman", Times, serif;
-`;
-const StyleWrapper = styled.div`
-  display: flex;
-  height: 100%;
-  width: 100%;
-`;
-const StyledLabel = styled.label`
-  text-align: right;
-`;
+
 const FormWrapper = styled.div`
   display: flex;
-`;
-const StyledInput = styled.input`
-  background-color: transparent;
-  border: none;
-  border-bottom: 2px solid;
-  height: 2rem;
-`;
-
-const StyledSelect = styled.select`
-  background-color: transparent;
-  font-size: 1rem;
-`;
-
-const ButtonWrapper = styled.div`
-  position: absolute;
-  justify-self: center;
-  align-self: center;
-  bottom: 30%;
-
-  scale: 0.7;
-`;
-
-const StyledPopup = styled.div`
-  position: absolute;
-  border: 2px solid white;
-  top: 30rem;
-  left: 0;
-  text-align: center;
-  width: 100%;
-`;
-
-const StyledBook = styled(Image)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  object-fit: contain;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-`;
-
-const BookWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  position: relative;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-const StyledBackToBookImage = styled(Image)`
-  position: absolute;
-  bottom: 0;
-  width: 40%;
-  height: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-`;
-
-const BackgroundImage = styled(Image)`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.7;
-  z-index: -3;
-  object-fit: cover;
 `;
 
 const BurnWisdom = styled(Image)`
   position: absolute;
-  top: 34rem;
-  right: 1rem;
+  bottom: 5%;
+  right: 10%;
   z-index: 3;
   filter: saturate(${(props) => props.saturation});
 `;
-const StyledOption = styled.option`
-  font-size: 1rem;
-`;
+
+
 async function sendRequest(url, { arg }) {
   // here we set the request method
   const response = await fetch(url, {
@@ -227,7 +152,7 @@ export default function EditWisdom({ library, currentBook, handleBurnWisdom }) {
       {popupActive && <StyledPopup>Wisdom Edited</StyledPopup>}
       <BurnWisdom
         width="80"
-        height="100"
+        height="120"
         alt="delete book"
         src="/assets/torch.png"
         onClick={() => setBurnActive(!burnActive)}

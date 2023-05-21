@@ -28,12 +28,24 @@ const BookPageStyle = styled.ul`
   }
 `;
 
+const BookPosition = styled.div`
+display: flex;
+position: absolute;
+width: 100%;
+height:100%;
+top:0;
+left: 0;
+right: 0;
+bottom: 0;
+
+`
+
 const WholeBookBack = styled.div`
 position:absolute;
 
 width:100%;
 height:100%;
-margin-top: -5rem;
+
 background-image: url("/assets/bookpage.png");
 background-repeat: no-repeat;
 background-size: cover;
@@ -44,10 +56,15 @@ opacity: 0.8;
 
 const StyledBottom = styled.div`
   display: flex;
+  position: absolute;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
+ 
+  background-color: rgba(0,0,0,0.7);
+ width: 100%;
+
+  bottom: 0;
 `;
 const BookTitle = styled.h1`
   position: relative;
@@ -61,17 +78,18 @@ const BookTitle = styled.h1`
 `;
 
 const BookPageContainer = styled.div`
-  height: calc(100vh - 8rem);
+  height: calc(100% - 3rem);
   margin-top: 3rem;
   overflow: scroll;
   overflow-x: hidden;
 `;
 
 const FeatherLink = styled(Link)`
-position:absolute;
- 
+position:relative;
+
   bottom: 0;
   justify-self: center;
+
   z-index:225;
 `;
 
@@ -124,6 +142,7 @@ export default function ViewBook({ library, currentBook }) {
 
   return (
     <>
+    <BookPosition>
     <WholeBookBack>
       <BookPageContainer>
         <BookPageImage>
@@ -186,6 +205,7 @@ export default function ViewBook({ library, currentBook }) {
         </p>
       </StyledBottom>
       </WholeBookBack>
+      </BookPosition>
       <AudioHandler level="library" />
     </>
   );

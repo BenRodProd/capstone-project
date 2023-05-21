@@ -5,7 +5,7 @@ import Inventory from "./Inventory";
 
 const StyledPouch = styled(Image)`
   position: relative;
-
+z-index:100;
   opacity: 0.7;
 `;
 

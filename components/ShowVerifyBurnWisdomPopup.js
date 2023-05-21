@@ -3,17 +3,18 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 
 const VerifyBox = styled.div`
-  position: absolute;
+  position: relative;
   z-index: 4;
-  top: 20rem;
+  transform: translateY(50%);
   left: 0;
   width: 100%;
-  height: 40%;
+  height: 50%;
   background-color: black;
   color: red;
   font-size: 2rem;
   border: 20px solid transparent;
   border-image: url("/assets/border.png") 30% stretch;
+  ;
 `;
 
 const StyledButtons = styled.button`
@@ -26,9 +27,7 @@ const ButtonWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  left: 80%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+justify-content:center;
 `;
 
 const VerifyWrapper = styled.div`

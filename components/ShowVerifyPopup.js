@@ -2,13 +2,14 @@ import styled from "styled-components";
 import Image from "next/image";
 import { useRouter } from "next/router";
 const VerifyBox = styled.div`
-  position: absolute;
+  position: relative;
   z-index: 20;
-  top: 20rem;
+  margin-top:50%;
   left: 0;
   width: 100%;
   height: 40%;
   background-color: black;
+  justify-content: center;
   color: red;
   font-size: 2rem;
   border: 20px solid transparent;
@@ -25,9 +26,8 @@ const ButtonWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  left: 80%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+
+  justify-content: center;
 `;
 
 const VerifyWrapper = styled.div`

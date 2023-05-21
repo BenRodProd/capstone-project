@@ -14,8 +14,10 @@ export const StyledForm = styled.form`
 `;
 export const StyleWrapper = styled.div`
   display: flex;
+  position:absolute;
   height: 100%;
   width: 100%;
+ 
 `;
 export const StyledLabel = styled.label`
   text-align: right;
@@ -62,10 +64,12 @@ export const StyledBook = styled(Image)`
 export const BookWrapper = styled.div`
   display: flex;
   width: 100%;
+  height: 100%;
   position: relative;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+ 
 `;
 export const StyledBackToBookImage = styled(Image)`
   position: absolute;
@@ -78,7 +82,7 @@ export const StyledBackToBookImage = styled(Image)`
 export const HealthProgressWrapper = styled.div`
   display: flex;
   position: absolute;
-  top: 65%;
+  top: 68%;
   flex-direction: column;
   width: 100%;
 

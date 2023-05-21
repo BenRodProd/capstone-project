@@ -5,11 +5,11 @@ const Box = styled.div`
   position: absolute;
   font-size: 0.6rem;
   align-items: center;
-  top: 28rem;
+  
   left: ${(props) => props.lefty}rem;
   width: 3rem;
   height: 3rem;
-  border: 10px solid transparent;
+  border: 14px solid transparent;
   border-image: url("/assets/border.png") 30% stretch;
   background-color: black;
   z-index: 5;

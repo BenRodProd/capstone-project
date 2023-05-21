@@ -17,7 +17,7 @@ const MediaQuery = styled.div`
 
 max-width: 600px;
 max-height:1200px;
-min-height: 90vh;
+min-height: 100vh;
  position:relative;
 
 
@@ -27,7 +27,7 @@ min-height: 90vh;
   overflow:hidden;
   border: 20px solid transparent;
   border-image: url("/assets/border.png") 30% stretch;
-
+  min-height: 90vh;
 }
 
 

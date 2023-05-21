@@ -34,7 +34,8 @@ const StyledBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-right: 2rem;
+  
+  height:100%;
 `;
 
 const StyledDescription = styled.span`

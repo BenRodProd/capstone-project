@@ -29,11 +29,16 @@ const EnemyBox = styled.div`
 const BackgroundAndEnemy = styled.div`
   position: relative;
   width: 100%;
+  height: 80%;
 `;
 
 const LevelBox = styled.div`
   display: flex;
+  position: relative;
   top: 0;
+z-index:100;
+  
+  margin-bottom: 1rem;
 `;
 
 const ScreenBox = styled.main`
@@ -45,11 +50,14 @@ const ScreenBox = styled.main`
   width: 100%;
 `;
 const AnswerBox = styled.div`
+position: relative;
+height: 100%;
   align-self: flex-end;
   justify-self: flex-end;
 
   width: 100%;
   margin-top: auto;
+  margin-bottom: 0;
 `;
 const DeathPopUp = styled.div`
   position: absolute;

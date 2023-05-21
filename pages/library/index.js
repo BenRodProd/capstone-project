@@ -66,16 +66,22 @@ export default function ViewLibrary({
     const element = document.documentElement;
   
     if (element.requestFullscreen) {
-      element.requestFullscreen();
+      if (!document.fullscreenElement) {
+        element.requestFullscreen();
+      } 
     } else if (element.mozRequestFullScreen) {
-      element.mozRequestFullScreen();
+      if (!document.mozFullScreenElement) {
+        element.mozRequestFullScreen();
+      } 
     } else if (element.webkitRequestFullscreen) {
-      element.webkitRequestFullscreen();
+      if (!document.webkitFullscreenElement) {
+        element.webkitRequestFullscreen();
+      } 
     } else if (element.msRequestFullscreen) {
-      element.msRequestFullscreen();
-    } else {
-      console.log("Fullscreen API is not supported");
-    }
+      if (!document.msFullscreenElement) {
+        element.msRequestFullscreen();
+      } 
+    } 
   }
   const [inputPopupActive, setInputPopupActive] = useState(false);
   const [burnActive, setBurnActive] = useState(false);

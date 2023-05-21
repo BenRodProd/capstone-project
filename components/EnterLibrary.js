@@ -5,19 +5,26 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 const StyledPopup = styled.div`
-  position: absolute;
+  position: relative;
   text-align: center;
-  padding-top: 30%;
+  
   width: 100%;
   font-size: 2rem;
   color: red;
   left: 0;
-  top: 15rem;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(50%);
   background-color: black;
   height: 300px;
   border: 2px solid white;
   z-index: 10;
 `;
+
+const StyledText = styled.h3`
+text-align: center;
+align-items:center;
+`
 
 const StyledImage = styled(Image)`
   position: absolute;
@@ -84,8 +91,10 @@ export default function LibraryNavigation({
           )}
           {popupActive ? (
             <StyledPopup>
+              <StyledText>
               Please choose an active Book or create one. The chosen Book may
               not be empty.
+              </StyledText>
             </StyledPopup>
           ) : null}
         </>

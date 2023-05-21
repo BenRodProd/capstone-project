@@ -10,7 +10,15 @@ const InputFieldLayout = styled.div`
   justify-content: center;
   align-self: flex-end;
   width: 100%;
+
 `;
+
+const AnswerWrapper = styled.div `
+position:absolute;
+height: 100%;
+width: 100%;
+bottom: 0;
+`
 
 const StyledInput = styled.input`
   caret-color: transparent;
@@ -127,6 +135,7 @@ export default function Answer({
   }
 
   return (
+    <AnswerWrapper>
     <InputFieldLayout>
       {answerArray.map((letter, index) => (
         <StyledInput
@@ -150,5 +159,6 @@ export default function Answer({
         wrongIndex={wrongIndex}
       />
     </InputFieldLayout>
+    </AnswerWrapper>
   );
 }

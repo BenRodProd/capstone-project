@@ -4,7 +4,7 @@ import { alphabet } from "@/library/alphabet";
 const StyledLetterChoice = styled.span`
   font-family: monospace;
   font-size: 1rem;
-  border: 10px solid transparent;
+  border: 12px solid transparent;
   border-image: url("/assets/border.png") 30% stretch;
   padding-left: 0.2rem;
   padding-right: 0.2rem;
@@ -17,6 +17,8 @@ const StyledLetterChoice = styled.span`
   text-align: center;
 `;
 
+
+
 const StyledLetterBox = styled.div`
   display: grid;
   align-items: center;
@@ -25,6 +27,7 @@ const StyledLetterBox = styled.div`
   width: 100%;
   place-self: center;
   cursor: default;
+  padding:auto;
 `;
 
 export default function ChooseLetter({
@@ -49,6 +52,7 @@ export default function ChooseLetter({
   choices.splice(randomIndex, 0, answerLetter);
 
   return (
+    
     <StyledLetterBox>
       {choices.map((element, index) => (
         <StyledLetterChoice
@@ -59,5 +63,6 @@ export default function ChooseLetter({
         </StyledLetterChoice>
       ))}
     </StyledLetterBox>
+    
   );
 }

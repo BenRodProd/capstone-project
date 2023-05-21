@@ -20,7 +20,7 @@ const StyledPopup = styled.div`
 `;
 
 const StyledImage = styled(Image)`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   object-fit: contain;

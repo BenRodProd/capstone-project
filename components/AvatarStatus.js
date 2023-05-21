@@ -17,7 +17,7 @@ const StyledStatusBox = styled.div`
 const StyledLegend = styled.span`
   position: absolute;
   top: -25%;
-  right: 10%;
+  right: 5%;
   text-shadow: #fc0 0 0 10px;
   color: cyan;
   z-index: 15;
@@ -37,6 +37,8 @@ const StyledFieldSet = styled.fieldset`
 `;
 const StyleWrapper = styled.div`
   scale: 0.8;
+  position:absolute;
+  right:0;
 `;
 export default function AvatarStatus({ health, armor, level }) {
   const [levelSize, setLevelSize] = useState("1.5rem");

@@ -15,6 +15,7 @@ const BookPageStyle = styled.ul`
   margin-left: 3rem;
   margin-right: 3rem;
 
+  
   li {
     position: relative;
     margin-top: 1rem;
@@ -26,11 +27,44 @@ const BookPageStyle = styled.ul`
     font-weight: bold;
   }
 `;
+
+const BookPosition = styled.div`
+display: flex;
+position: absolute;
+width: 100%;
+height:100%;
+top:0;
+left: 0;
+right: 0;
+bottom: 0;
+
+`
+
+const WholeBookBack = styled.div`
+position:absolute;
+
+width:100%;
+height:100%;
+
+background-image: url("/assets/bookpage.png");
+background-repeat: no-repeat;
+background-size: cover;
+opacity: 0.8;
+
+
+`
+
 const StyledBottom = styled.div`
   display: flex;
+  position: absolute;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+ 
+  background-color: rgba(0,0,0,0.7);
+ width: 100%;
+
+  bottom: 0;
 `;
 const BookTitle = styled.h1`
   position: relative;
@@ -44,15 +78,19 @@ const BookTitle = styled.h1`
 `;
 
 const BookPageContainer = styled.div`
-  height: calc(100vh - 8rem);
+  height: calc(100% - 3rem);
   margin-top: 3rem;
   overflow: scroll;
+  overflow-x: hidden;
 `;
 
 const FeatherLink = styled(Link)`
-  position: relative;
+position:relative;
+
   bottom: 0;
   justify-self: center;
+
+  z-index:225;
 `;
 
 const StyledWisdom = styled.li`
@@ -66,6 +104,7 @@ const StyledWisdom = styled.li`
 
 const StyledLink = styled(Link)`
   position: relative;
+  margin-bottom:0;
   cursor: pointer;
   z-index: 5;
   text-decoration: none;
@@ -74,20 +113,24 @@ const StyledLink = styled(Link)`
 
 const BookPageImage = styled.div`
   position: relative;
+  
 
-  height: 100%;
 
   &::before {
     content: "";
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background-image: url("/assets/bookpage.png");
 
-    background-size: cover;
+    background-image: url("/assets/bookpage.png");
+   
+    background-position: center;
+    overflow:hidden;
+    background-size: contain;
     opacity: 0.7;
+    z-index:-1;
   }
 `;
 
@@ -99,6 +142,8 @@ export default function ViewBook({ library, currentBook }) {
 
   return (
     <>
+    <BookPosition>
+    <WholeBookBack>
       <BookPageContainer>
         <BookPageImage>
           <BookTitle>
@@ -159,6 +204,8 @@ export default function ViewBook({ library, currentBook }) {
           in your book
         </p>
       </StyledBottom>
+      </WholeBookBack>
+      </BookPosition>
       <AudioHandler level="library" />
     </>
   );

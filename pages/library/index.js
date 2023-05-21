@@ -23,8 +23,8 @@ const ButtonWrapper = styled.div`
 const LibraryStyle = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 `;
 
 const StyledForm = styled.form`
@@ -34,18 +34,15 @@ const StyledForm = styled.form`
   text-align: center;
 `;
 
-const AddNewBookButton = styled.button`
-  position: absolute;
-  justify-self: center;
-  margin: 0;
-  bottom: 0;
-  width: 100%;
-  height: 5%;
-`;
-
 const AddNewBookTitleInput = styled.input`
   width: 100%;
 `;
+
+const BooksWrapper = styled.div`
+display:flex;
+position:absolute;
+top: calc(vh-25);
+`
 
 const BurnBook = styled(Image)`
   position: absolute;
@@ -134,7 +131,8 @@ export default function ViewLibrary({
               width="1080"
               alt="bookshelf"
             ></BookShelfImage>
-            {books.map((book, index) => (
+            <BooksWrapper>          
+               {books.map((book, index) => (
               <InsertBook
                 userData={userData}
                 burnActive={burnActive}
@@ -146,6 +144,8 @@ export default function ViewLibrary({
                 handleBurnBook={onBurnBook}
               ></InsertBook>
             ))}
+            </BooksWrapper>
+ 
             {inputPopupActive && (
               <ButtonWrapper>
                 <StyledForm onSubmit={handleNewBookSubmit}>

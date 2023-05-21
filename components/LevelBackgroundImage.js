@@ -5,9 +5,10 @@ const StyledBackground = styled(Image)`
   z-index: -2;
   top: 4rem;
   left: 0;
+  
   width: 100%;
-  height: 50vh;
-  object-fit: cover;
+  height: 30%;
+  object-fit: contain;
 `;
 
 const LevelName = styled.h1`
@@ -23,8 +24,8 @@ export default function LevelBackgroundImage({ level }) {
         priority
         src={level.img}
         alt="Level Image"
-        width="400"
-        height="400"
+        width="350"
+        height="350"
       />
     </>
   );

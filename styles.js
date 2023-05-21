@@ -11,7 +11,7 @@ export default createGlobalStyle`
   }
 
   body {
-    width: 100vw;
+    width:100vw;
     height:100vh;
  
     padding: 0;
@@ -20,7 +20,7 @@ export default createGlobalStyle`
   
     background-color: black;
     color: white;
-    
+   
   }
 
 .clickable {
@@ -39,4 +39,7 @@ export default createGlobalStyle`
   }
   
 }
+
+
+
 `;

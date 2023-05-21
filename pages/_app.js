@@ -12,6 +12,8 @@ import Image from "next/image";
 import AudioHandler from "@/components/AudioHandler";
 import RPGButton from "@/components/Button";
 import Loading from "@/components/Loading";
+import PopupHandler from "@/components/PopupHandler";
+import RegistrationForm from "@/components/RegistrationForm";
 
 const MediaQuery = styled.div`
 
@@ -132,6 +134,10 @@ export default function App({ Component, pageProps }) {
   const [currentBook, setCurrentBook] = useState("");
   const [firstLoad, setFirstLoad] = useState(true);
   const [titleActive, setTitleActive] = useState(false);
+  const [PopupActive, setPopupActive] = useState(false)
+  const [PopupText, setPopupText] = useState("")
+  const [registrationActive, setRegistrationActive] = useState(false)
+
 
   async function handleBurnBook(book) {
     const wisdomsToDelete = currentLibrary.filter((element) => {
@@ -211,8 +217,82 @@ export default function App({ Component, pageProps }) {
   }
   function handleOnClickSubmit(event) {
     event.preventDefault();
+   
+    const formData = new FormData(event.target);
+    const name = formData.get("name");
+    const password = formData.get("password");
+  
+    // Check if the entered username is in the database (userData)
+    const userExists = user && user.some((userData) => userData.name === name);
+    if (!userExists) {
+      console.log("Invalid username");
+      setRegistrationActive(true)
+      return ;
+    }
+  
+    // Check if the entered password is correct for the user
+    const userWithMatchingPassword = user.find(
+      (userData) => userData.name === name && userData.password === password
+    );
+    if (!userWithMatchingPassword) {
+      console.log("Invalid password");
+      setPopupActive(true)
+      setPopupText("INVALID PASSWORD")
+  
+      setTimeout(() => {
+        setPopupActive(false)
+      }, 1500);
+      return;
+    }
+
     setTitleActive(true);
     setFirstLoad(false);
+  }
+  async function handleRegistration(event) {
+    event.preventDefault();
+    console.log("click")
+    const formData = new FormData(event.target);
+    const name = formData.get("name");
+    const password = formData.get("password");
+    
+    try {
+      // Create a new user object
+      const newUser = {
+        name: name,
+        books: [],
+        sound: [],
+        subtitle: "",
+        currentBook: "",
+        password: password,
+      };
+  
+      // Make a POST request to the server to save the new user
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
+  
+      if (!response.ok) {
+        console.error(`Error: ${response.status}`);
+        return;
+      }
+  
+      console.log("User created successfully");
+  
+      // Proceed with the desired actions for a successful user creation
+      setTitleActive(true);
+      setFirstLoad(false);
+    } catch (error) {
+      console.error("Error creating user:", error.message);
+      // Handle the error appropriately
+    }
+  }
+  function onCancelRegistration() {
+
+setRegistrationActive(false)
   }
   return (
     <>
@@ -252,7 +332,8 @@ export default function App({ Component, pageProps }) {
               />
 
               <StyledForm onSubmit={handleOnClickSubmit}>
-                <StyledInput autoFocus type="text" placeholder="Name" />
+                <StyledInput name="name" autoFocus type="text" placeholder="Name" />
+                <StyledInput name="password" type="text" placeholder="Password" />
                 <RPGButton text="Submit"></RPGButton>
               </StyledForm>
               </ImageContainer>
@@ -260,6 +341,8 @@ export default function App({ Component, pageProps }) {
             <AudioHandler level="login" />
           </>
         )}
+        <PopupHandler  active={PopupActive} text={PopupText} ></PopupHandler>
+        {registrationActive && <RegistrationForm onCancelRegistration={onCancelRegistration} handleRegistration={handleRegistration}/>}
         {titleActive && (
           <>
             {titleHandler()}

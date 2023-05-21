@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Question from "@/components/Question";
+
 import Answer from "@/components/Answer";
 import AvatarStatus from "@/components/AvatarStatus";
 import { enemyLibrary } from "@/library/enemyLibrary";

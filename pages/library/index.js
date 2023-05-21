@@ -58,31 +58,52 @@ export default function ViewLibrary({
   setCurrentBook,
   handleBurnBook,
   loginActive,
+ 
+  userIndex
 }) {
-  if (!loginActive) {
+
+  if (!loginActive & window.innerWidth <= 700) {
     requestFullscreen()
   }
+  console.log(userIndex)
   function requestFullscreen() {
     const element = document.documentElement;
   
     if (element.requestFullscreen) {
       if (!document.fullscreenElement) {
-        element.requestFullscreen();
+        element.requestFullscreen()
+          .catch(error => {
+            // Handle the error or display a message to the user
+            console.error("Error requesting fullscreen:", error);
+          });
       } 
     } else if (element.mozRequestFullScreen) {
       if (!document.mozFullScreenElement) {
-        element.mozRequestFullScreen();
+        element.mozRequestFullScreen()
+          .catch(error => {
+            // Handle the error or display a message to the user
+            console.error("Error requesting fullscreen:", error);
+          });
       } 
     } else if (element.webkitRequestFullscreen) {
       if (!document.webkitFullscreenElement) {
-        element.webkitRequestFullscreen();
+        element.webkitRequestFullscreen()
+          .catch(error => {
+            // Handle the error or display a message to the user
+            console.error("Error requesting fullscreen:", error);
+          });
       } 
     } else if (element.msRequestFullscreen) {
       if (!document.msFullscreenElement) {
-        element.msRequestFullscreen();
+        element.msRequestFullscreen()
+          .catch(error => {
+            // Handle the error or display a message to the user
+            console.error("Error requesting fullscreen:", error);
+          });
       } 
     } 
   }
+  
   const [inputPopupActive, setInputPopupActive] = useState(false);
   const [burnActive, setBurnActive] = useState(false);
   const { data: userData, mutate } = useSWR("/api/users");
@@ -97,7 +118,7 @@ export default function ViewLibrary({
     setCurrentBook(bookTitle);
     router.push("/library/viewBook");
   }
-  const books = userData[0].books.map((element) => element.bookname);
+  const books = userData[userIndex].books.map((element) => element.bookname);
 
   if (burnActive) {
     torchColors = 1;
@@ -118,11 +139,11 @@ export default function ViewLibrary({
       gainedItems: 0,
     };
     const updatedUserData = {
-      ...userData[0],
-      books: [...userData[0].books, newBook],
+      ...userData[userIndex],
+      books: [...userData[userIndex].books, newBook],
       currentBook: bookTitle,
     };
-    const response = await fetch(`/api/users/${userData[0]._id}`, {
+    const response = await fetch(`/api/users/${userData[userIndex]._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

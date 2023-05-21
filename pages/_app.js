@@ -137,7 +137,7 @@ export default function App({ Component, pageProps }) {
   const [PopupActive, setPopupActive] = useState(false)
   const [PopupText, setPopupText] = useState("")
   const [registrationActive, setRegistrationActive] = useState(false)
-
+  const [activeUser, setActiveUser] = useState(0)
 
   async function handleBurnBook(book) {
     const wisdomsToDelete = currentLibrary.filter((element) => {
@@ -244,26 +244,34 @@ export default function App({ Component, pageProps }) {
       }, 1500);
       return;
     }
-
+    const UserIndex = user.findIndex(
+      (userdata) => userdata.name === name && userdata.password === password
+    )
+    setActiveUser(UserIndex)
     setTitleActive(true);
     setFirstLoad(false);
+    console.log(activeUser, user[user.findIndex(
+      (userdata) => userdata.name === name && userdata.password === password
+    )], user.findIndex(
+      (userdata) => userdata.name === name && userdata.password === password
+    ))
   }
   async function handleRegistration(event) {
     event.preventDefault();
     console.log("click")
     const formData = new FormData(event.target);
-    const name = formData.get("name");
-    const password = formData.get("password");
+    const newName = formData.get("name");
+    const newPassword = formData.get("password");
     
     try {
       // Create a new user object
       const newUser = {
-        name: name,
+        name: newName,
         books: [],
         sound: [],
-        subtitle: "",
-        currentBook: "",
-        password: password,
+        subtitle: "true",
+        currentBook: " ",
+        password: newPassword,
       };
   
       // Make a POST request to the server to save the new user
@@ -283,8 +291,16 @@ export default function App({ Component, pageProps }) {
       console.log("User created successfully");
   
       // Proceed with the desired actions for a successful user creation
+      console.log(user)
+
+      setActiveUser(user.findIndex(
+        (userdata) => userdata.name === newName && userdata.password === newPassword
+      ))
+      mutate("/api/users")
       setTitleActive(true);
       setFirstLoad(false);
+      setRegistrationActive(false)
+     console.log(activeUser)
     } catch (error) {
       console.error("Error creating user:", error.message);
       // Handle the error appropriately
@@ -311,6 +327,7 @@ setRegistrationActive(false)
         <GlobalStyle />
         <MediaQuery>
         <Component
+        userIndex={activeUser}
           userData={user}
           {...pageProps}
           library={currentLibrary}

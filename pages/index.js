@@ -102,6 +102,7 @@ export default function HomePage({
   currentBook,
   setCurrentBook,
 }) {
+ 
   const userBookIndex = userData[0].books.findIndex(
     (element) => element.bookname === currentBook
   );

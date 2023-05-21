@@ -63,12 +63,14 @@ const DeathPopUp = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  bottom:0;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 112%;
   background-color: black;
-  z-index: 3;
+  z-index: 103;
   text-align: center;
+ 
 `;
 const DeathWrapper = styled.div`
   display: flex;
@@ -78,9 +80,12 @@ const DeathWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 4;
+  z-index: 104;
+  background-color: black;
 `;
 const DeathBorder = styled.div`
+position:relative;
+z-index:105;
   border: 20px solid transparent;
   border-image: url("/assets/border.png") 30% stretch;
   background-color: rgba(0, 0, 0, 0.8);
@@ -90,10 +95,17 @@ const DeathImage = styled(Image)`
   object-fit: contain;
   width: 100%;
   height: 100%;
-  z-index: -2;
+  z-index: 105;
+  
 `;
+const DeathRestartButton = styled.div`
+position:relative;
+z-index:107;
+`
 const GameOverText = styled.h1`
+position:relative;
   text-shadow: #fc0 1px 0 10px;
+  z-index:106;
 `;
 export default function HomePage({
   library,
@@ -278,9 +290,12 @@ export default function HomePage({
                   alt="gameover"
                 />
                 <DeathBorder>
+
                   <GameOverText>GAME OVER</GameOverText>
                   <form onSubmit={handleRestart}>
+                    <DeathRestartButton>
                     <RPGButton text="Restart"></RPGButton>
+                    </DeathRestartButton>
                   </form>
                 </DeathBorder>
               </DeathWrapper>

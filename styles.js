@@ -6,7 +6,7 @@ export default createGlobalStyle`
   *::after {
   
     box-sizing: border-box;
-    
+    cursor: default;
     
   }
 

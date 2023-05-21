@@ -59,6 +59,24 @@ export default function ViewLibrary({
   handleBurnBook,
   loginActive,
 }) {
+  if (!loginActive) {
+    requestFullscreen()
+  }
+  function requestFullscreen() {
+    const element = document.documentElement;
+  
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+      element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+      element.msRequestFullscreen();
+    } else {
+      console.log("Fullscreen API is not supported");
+    }
+  }
   const [inputPopupActive, setInputPopupActive] = useState(false);
   const [burnActive, setBurnActive] = useState(false);
   const { data: userData, mutate } = useSWR("/api/users");

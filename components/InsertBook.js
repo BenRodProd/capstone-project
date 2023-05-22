@@ -98,6 +98,7 @@ export default function InsertBook({
 }) {
   async function saveCurrentBook(book) {
     const response = await fetch(`/api/users/${userData[userIndex]._id}`, {
+    
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -118,8 +119,11 @@ export default function InsertBook({
   const router = useRouter();
   function handleOnBookClick(book) {
     if (!burnActive) {
+
       setCurrentBook(book);
       saveCurrentBook(book);
+      console.log(book)
+      console.log(userData)
       router.push("/library/viewBook");
     } else {
       setPopUp(true);

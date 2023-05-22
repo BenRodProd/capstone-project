@@ -23,7 +23,10 @@ import {
   ItemImage,
   ItemPopup,
   ItemPopupHeader,
+  DoublePopup
 } from "@/components/Styles/AddBookStyled.js";
+
+
 
 async function sendRequest(url, { arg }) {
   const response = await fetch(url, {
@@ -46,6 +49,7 @@ export default function AddWisdom({
   const inputRef = useRef();
   const [popupActive, setPopupActive] = useState(false);
   const [ItemPopupActive, setItemPopupActive] = useState(false);
+  const [doublePopup, setDoublePopup] = useState(false);
   const [currentInventory, setCurrentInventory] = useState(
     userData[userIndex].books[
       userData[userIndex].books.findIndex((element) => element.bookname === currentBook)
@@ -58,7 +62,14 @@ export default function AddWisdom({
   const userBookIndex = userData[userIndex].books.findIndex(
     (element) => element.bookname === currentBook
   );
-
+  function checkIfWisdomExists(wisdomData) {
+    const exists = library.some(item => {
+      return item.answer.toLowerCase() === wisdomData.answer.toLowerCase() &&
+             item.question.toLowerCase() === wisdomData.question.toLowerCase();
+    });
+  
+    return exists;
+  }
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -68,6 +79,16 @@ export default function AddWisdom({
     for (const [key, value] of Object.entries(wisdomData)) {
       lowercaseWisdomData[key.toLowerCase()] = value.toLowerCase();
     }
+    const wisdomExists = await checkIfWisdomExists(lowercaseWisdomData);
+
+
+if (wisdomExists) {
+  console.log("wisdomExits",wisdomExists)
+  setDoublePopup(true)
+  setTimeout(() => {
+    setDoublePopup(false)
+  }, 1000);
+} else {
     trigger({
       ...lowercaseWisdomData,
       right: "0",
@@ -121,7 +142,7 @@ export default function AddWisdom({
     setTimeout(() => setPopupActive(false), 1500);
     event.target.reset();
     inputRef.current.focus();
-  }
+  }}
   async function saveItemToInventory(item) {
     if (item === "pouch") {
       const insertInInventory = "empty";
@@ -341,7 +362,7 @@ export default function AddWisdom({
           <ItemPopupHeader>20 Health Points!</ItemPopupHeader>
         </ItemPopup>
       )}
-
+      {doublePopup && <DoublePopup>Wisdom already exists</DoublePopup>}
       <Link href="/library/viewBook">
         <StyledBackToBookImage
           src="/assets/bookicon.png"

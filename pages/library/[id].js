@@ -165,6 +165,7 @@ export default function EditWisdom({ library, currentBook, handleBurnWisdom, use
           setBurnActive={setBurnActive}
         />
       ) : null}
+      
       <Link href="/library/viewBook">
         <StyledBackToBookImage
           src="/assets/bookicon.png"

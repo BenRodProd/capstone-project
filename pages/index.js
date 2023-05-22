@@ -113,7 +113,6 @@ export default function HomePage({
   userData,
   itemList,
   currentBook,
-  setCurrentBook,
   userIndex
 }) {
  
@@ -141,7 +140,7 @@ console.log(library, userData[userIndex].name, currentBook, library.filter(item 
   const [enemyHealth, setEnemyHealth] = useState(currentEnemy.health);
   const [damageDone, setDamageDone] = useState(false);
   const [currentCard, setCurrentCard] = useState(
-    library[Math.floor(Math.random() * library.length)]
+    currentLibrary[Math.floor(Math.random() * currentLibrary.length)]
   );
   const [damageDisplay, setDamageDisplay] = useState(null);
 
@@ -158,11 +157,11 @@ console.log(library, userData[userIndex].name, currentBook, library.filter(item 
   }, [currentEnemy]);
 
   function handleNextQuestion() {
-    let nextCardIndex = Math.floor(Math.random() * library.length);
-    while (currentCard.question === library[nextCardIndex].question) {
-      nextCardIndex = Math.floor(Math.random() * library.length);
+    let nextCardIndex = Math.floor(Math.random() * currentLibrary.length);
+    while (currentCard.question === currentLibrary[nextCardIndex].question) {
+      nextCardIndex = Math.floor(Math.random() * currentLibrary.length);
     }
-    setCurrentCard(library[nextCardIndex]);
+    setCurrentCard(currentLibrary[nextCardIndex]);
   }
 
   function handleRightAnswer(damage) {

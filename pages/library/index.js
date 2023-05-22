@@ -6,6 +6,7 @@ import styled from "styled-components";
 import InsertBook from "@/components/InsertBook";
 import AudioHandler from "@/components/AudioHandler";
 import RPGButton from "@/components/Button";
+import Loading from "@/components/Loading";
 
 const BookShelfImage = styled(Image)`
   width: 100%;
@@ -65,7 +66,7 @@ export default function ViewLibrary({
   if (!loginActive & window.innerWidth <= 700) {
     requestFullscreen()
   }
-  console.log(userIndex)
+  console.log("library.js", userIndex)
   function requestFullscreen() {
     const element = document.documentElement;
   
@@ -118,6 +119,10 @@ export default function ViewLibrary({
     setCurrentBook(bookTitle);
     router.push("/library/viewBook");
   }
+  if (!userData[userIndex]) {
+    return <></>;
+  }
+  console.log("library userdata", userData[userIndex])
   const books = userData[userIndex].books.map((element) => element.bookname);
 
   if (burnActive) {
@@ -162,9 +167,12 @@ export default function ViewLibrary({
     mutate();
   }
   if (!Array.isArray(userData)) {
-    return <div>loading</div>;
+    return <Loading/>;
   }
 console.log(userIndex,"IN LIBRARYINDEX")
+if (!userData) {
+  return <Loading/>
+}
   return (
     <>
       <LibraryStyle>

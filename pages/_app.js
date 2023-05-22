@@ -59,6 +59,22 @@ opacity: 1;
 }
 `;
 
+const DeveloperMessage = styled.div`
+position:absolute;
+background-color: black;
+width:100%;
+height: 10%;
+
+bottom: 0;
+right:0;
+background-color: rgba(0,0,0,0.6);
+z-index:2000;
+text-align: center;
+
+`
+
+
+
 const StyledForm = styled.form`
   position: absolute;
   display: flex;
@@ -138,7 +154,7 @@ export default function App({ Component, pageProps }) {
   const [PopupText, setPopupText] = useState("")
   const [registrationActive, setRegistrationActive] = useState(false)
   const [activeUser, setActiveUser] = useState(0)
-
+  const [userName, setUserName] = useState("")
   async function handleBurnBook(book) {
     const wisdomsToDelete = currentLibrary.filter((element) => {
       return element.book === book;
@@ -192,10 +208,14 @@ export default function App({ Component, pageProps }) {
     }
   }, []);
   useEffect(() => {
+
     if (Array.isArray(data)) {
       if (Array.isArray(user)) {
-        if(activeUser) {
-        
+        setActiveUser(user.findIndex(
+          (userdata) => userdata.name === userName
+        ))
+        if(activeUser >=0) {
+        console.log("changedData", data, user, activeUser)
         const firstSetCurrentLibrary = data.filter(
           (element) => element.owner === user[activeUser].name
         );
@@ -204,19 +224,23 @@ export default function App({ Component, pageProps }) {
       }
     }
   }
-  }, [data, user, activeUser]);
+
+  }, [data, user, activeUser, userName]);
+
   const insideLibrary = router.route.includes("/library");
-  if (isLoading  || !data || !user) {
+  if (isLoading  || !data || !user ) {
     return <Loading />;
   }
   if (error) {
     return <div>error</div>;
   }
+
   function titleHandler() {
     setTimeout(() => {
       setTitleActive(false);
     }, 16800);
   }
+
   function handleOnClickSubmit(event) {
     event.preventDefault();
    
@@ -252,11 +276,7 @@ export default function App({ Component, pageProps }) {
     setActiveUser(UserIndex)
     setTitleActive(true);
     setFirstLoad(false);
-    console.log(activeUser, user[user.findIndex(
-      (userdata) => userdata.name === name && userdata.password === password
-    )], user.findIndex(
-      (userdata) => userdata.name === name && userdata.password === password
-    ))
+   setUserName(name)
   }
   async function handleRegistration(event) {
     event.preventDefault();
@@ -292,17 +312,16 @@ export default function App({ Component, pageProps }) {
   
       console.log("User created successfully");
   
-      // Proceed with the desired actions for a successful user creation
-      console.log(user)
 
-      setActiveUser(user.findIndex(
-        (userdata) => userdata.name === newName && userdata.password === newPassword
-      ))
-      mutate("/api/users")
+      
+      await mutate("/api/users")
+      
       setTitleActive(true);
       setFirstLoad(false);
       setRegistrationActive(false)
-     console.log(activeUser)
+      setUserName(newName)
+      
+     console.log("activeuser in app.js",activeUser)
     } catch (error) {
       console.error("Error creating user:", error.message);
       // Handle the error appropriately
@@ -352,11 +371,12 @@ setRegistrationActive(false)
               />
 
               <StyledForm onSubmit={handleOnClickSubmit}>
-                <StyledInput name="name" autoFocus type="text" placeholder="Name" />
-                <StyledInput name="password" type="text" placeholder="Password" />
+                <StyledInput required name="name" autoFocus type="text" placeholder="Name" />
+                <StyledInput required name="password" type="text" placeholder="Password" />
                 <RPGButton text="Submit"></RPGButton>
               </StyledForm>
               </ImageContainer>
+              <DeveloperMessage>Name for testing: "Testor", Password:"test"</DeveloperMessage>
             </LoginScreen>
             <AudioHandler level="login" />
           </>
@@ -377,6 +397,7 @@ setRegistrationActive(false)
             <AudioHandler level="intro" />
           </>
         )}
+        
         <NavigationWrapper>
         <LibraryNavigation
           loginActive={firstLoad}

@@ -14,7 +14,7 @@ Used Tech:
 - Styled Components
 - CSS
 - CRUD
-- Agile
+- Agile / SCRUM
 - Kanban Board
 - Howler
 

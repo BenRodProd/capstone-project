@@ -114,25 +114,29 @@ export default function HomePage({
   itemList,
   currentBook,
   setCurrentBook,
+  userIndex
 }) {
  
-  const userBookIndex = userData[0].books.findIndex(
+  const userBookIndex = userData[userIndex].books.findIndex(
     (element) => element.bookname === currentBook
   );
+console.log(library, userData[userIndex].name, currentBook, library.filter(item => item.owner === userData[userIndex].name))
+  const [currentLibrary, setCurrentLibrary] = useState(library.filter(item => item.owner === userData[userIndex].name && item.book === currentBook));
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [currentEnemy, setCurrentEnemy] = useState(
     enemyLibrary[currentEnemyIndex]
   );
+  console.log(currentLibrary, userData)
   const [userHealth, setUserHealth] = useState(
-    userData[0].books[userBookIndex].health
+    userData[userIndex].books[userBookIndex].health
   );
   const [userXP, setUserXP] = useState(
-    Number(userData[0].books[userBookIndex].xp)
+    Number(userData[userIndex].books[userBookIndex].xp)
   );
   const [userArmor, setUserArmor] = useState(
-    userData[0].books[userBookIndex].armor
+    userData[userIndex].books[userBookIndex].armor
   );
   const [enemyHealth, setEnemyHealth] = useState(currentEnemy.health);
   const [damageDone, setDamageDone] = useState(false);
@@ -142,10 +146,10 @@ export default function HomePage({
   const [damageDisplay, setDamageDisplay] = useState(null);
 
   const [inventory, setInventory] = useState(
-    userData[0].books[userBookIndex].inventory
+    userData[userIndex].books[userBookIndex].inventory
   );
   const [inventorySlots, setInventorySlots] = useState(
-    userData[0].books[userBookIndex].inventorySlots
+    userData[userIndex].books[userBookIndex].inventorySlots
   );
   const [deadActive, setDeadActive] = useState(false);
 
@@ -211,15 +215,15 @@ export default function HomePage({
   function handleRestart(event) {
     event.preventDefault();
     setCurrentLevel(levelLibrary[0]);
-    setUserHealth(userData[0].books[userBookIndex].health);
-    setUserArmor(userData[0].books[userBookIndex].armor);
+    setUserHealth(userData[userIndex].books[userBookIndex].health);
+    setUserArmor(userData[userIndex].books[userBookIndex].armor);
     setCurrentEnemy(enemyLibrary[0]);
     handleNextQuestion();
     setDeadActive(false);
   }
 
   const userAvatarImage = `/assets/avatars/${
-    userData[0].books[0].avatar
+    userData[userIndex].books[0].avatar
   }${Math.floor(Number(userXP) / 500)}.png`;
   const userLevel = Math.floor(Number(userXP) / 500);
 

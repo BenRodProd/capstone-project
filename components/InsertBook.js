@@ -94,15 +94,16 @@ export default function InsertBook({
   setCurrentBook,
   handleBurnBook,
   userData,
+  userIndex
 }) {
   async function saveCurrentBook(book) {
-    const response = await fetch(`/api/users/${userData[0]._id}`, {
+    const response = await fetch(`/api/users/${userData[userIndex]._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        ...userData[0],
+        ...userData[userIndex],
         currentBook: book,
       }),
     });

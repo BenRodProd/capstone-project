@@ -43,15 +43,17 @@ export default function LibraryNavigation({
   userData,
   library,
   loginActive,
+  userIndex
 }) {
   const [popupActive, setPopupActive] = useState(false);
   const router = useRouter();
-
+  console.log(userData, currentBook, library,userData[userIndex], userIndex)
   function handleLeaveLibrary() {
     if (
       !currentBook ||
       currentBook === "" ||
-      userData[0].currentBook !== currentBook ||
+      !userData[userIndex] ||
+      userData[userIndex].currentBook !== currentBook ||
       !library
     ) {
       setPopupActive(true);

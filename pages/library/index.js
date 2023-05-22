@@ -164,7 +164,7 @@ export default function ViewLibrary({
   if (!Array.isArray(userData)) {
     return <div>loading</div>;
   }
-
+console.log(userIndex,"IN LIBRARYINDEX")
   return (
     <>
       <LibraryStyle>
@@ -187,6 +187,7 @@ export default function ViewLibrary({
                 bookName={book}
                 index={index}
                 handleBurnBook={onBurnBook}
+                userIndex={userIndex}
               ></InsertBook>
             ))}
             </BooksWrapper>

@@ -7,7 +7,7 @@ export default createGlobalStyle`
   
     box-sizing: border-box;
     cursor: default;
-    
+    user-select: none;
   }
 
   body {

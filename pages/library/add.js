@@ -41,20 +41,21 @@ export default function AddWisdom({
   currentBook,
   userData,
   itemList,
+  userIndex
 }) {
   const inputRef = useRef();
   const [popupActive, setPopupActive] = useState(false);
   const [ItemPopupActive, setItemPopupActive] = useState(false);
   const [currentInventory, setCurrentInventory] = useState(
-    userData[0].books[
-      userData[0].books.findIndex((element) => element.bookname === currentBook)
+    userData[userIndex].books[
+      userData[userIndex].books.findIndex((element) => element.bookname === currentBook)
     ].inventory
   );
   const [healthPopup, setHealthPopup] = useState(false);
   const [newItem, setNewItem] = useState();
 
   const { trigger } = useSWRMutation("/api/library", sendRequest);
-  const userBookIndex = userData[0].books.findIndex(
+  const userBookIndex = userData[userIndex].books.findIndex(
     (element) => element.bookname === currentBook
   );
 
@@ -70,16 +71,17 @@ export default function AddWisdom({
     trigger({
       ...lowercaseWisdomData,
       right: "0",
-      owner: "Testor",
+      owner: userData[userIndex].name,
       book: currentBook,
     });
-
-    const gainedItems = Number(userData[0].books[userBookIndex].gainedItems);
+    console.log(userData[userIndex].name)
+    console.log(wisdomData)
+    const gainedItems = Number(userData[userIndex].books[userBookIndex].gainedItems);
     giveMoreHealth();
     const wisdomsInBook = library.filter(
       (element) => element.book === currentBook
     ).length;
-    const itemsInInventory = userData[0].books[userBookIndex].inventory;
+    const itemsInInventory = userData[userIndex].books[userBookIndex].inventory;
 
     if (wisdomsInBook % 20 === 0 && gainedItems < wisdomsInBook / 20) {
       // Create a filtered list of items that are not "empty" and not part of itemsInInventory
@@ -124,23 +126,23 @@ export default function AddWisdom({
     if (item === "pouch") {
       const insertInInventory = "empty";
       const moreSlots =
-        Number(userData[0].books[userBookIndex].inventorySlots) + 1;
+        Number(userData[userIndex].books[userBookIndex].inventorySlots) + 1;
       const updatedUserData = {
-        ...userData[0],
+        ...userData[userIndex],
         books: [
-          ...userData[0].books.slice(0, userBookIndex),
+          ...userData[userIndex].books.slice(0, userBookIndex),
           {
-            ...userData[0].books[userBookIndex],
+            ...userData[userIndex].books[userBookIndex],
             inventory: [
-              ...userData[0].books[userBookIndex].inventory,
+              ...userData[userIndex].books[userBookIndex].inventory,
               insertInInventory,
             ],
             inventorySlots: moreSlots,
           },
-          ...userData[0].books.slice(userBookIndex + 1),
+          ...userData[userIndex].books.slice(userBookIndex + 1),
         ],
       };
-      const response = await fetch(`/api/users/${userData[0]._id}`, {
+      const response = await fetch(`/api/users/${userData[userIndex]._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -157,20 +159,20 @@ export default function AddWisdom({
 
       return;
     } else if (item === "health") {
-      const newHealth = Number(userData[0].books[userBookIndex].health) + 20;
+      const newHealth = Number(userData[userIndex].books[userBookIndex].health) + 20;
       const updatedUserData = {
-        ...userData[0],
+        ...userData[userIndex],
         books: [
-          ...userData[0].books.slice(0, userBookIndex),
+          ...userData[userIndex].books.slice(0, userBookIndex),
           {
-            ...userData[0].books[userBookIndex],
+            ...userData[userIndex].books[userBookIndex],
 
             health: newHealth,
           },
-          ...userData[0].books.slice(userBookIndex + 1),
+          ...userData[userIndex].books.slice(userBookIndex + 1),
         ],
       };
-      const response = await fetch(`/api/users/${userData[0]._id}`, {
+      const response = await fetch(`/api/users/${userData[userIndex]._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -188,21 +190,21 @@ export default function AddWisdom({
       return;
     } else {
       const updatedInventory = [
-        ...userData[0].books[userBookIndex].inventory,
+        ...userData[userIndex].books[userBookIndex].inventory,
         item,
       ];
       const updatedUserData = {
-        ...userData[0],
+        ...userData[userIndex],
         books: [
-          ...userData[0].books.slice(0, userBookIndex),
+          ...userData[userIndex].books.slice(0, userBookIndex),
           {
-            ...userData[0].books[userBookIndex],
+            ...userData[userIndex].books[userBookIndex],
             inventory: updatedInventory,
           },
-          ...userData[0].books.slice(userBookIndex + 1),
+          ...userData[userIndex].books.slice(userBookIndex + 1),
         ],
       };
-      const response = await fetch(`/api/users/${userData[0]._id}`, {
+      const response = await fetch(`/api/users/${userData[userIndex]._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -233,24 +235,24 @@ export default function AddWisdom({
     }
   }
   function getDataForHealth(points) {
-    const newHealth = Number(userData[0].books[userBookIndex].health) + points;
+    const newHealth = Number(userData[userIndex].books[userBookIndex].health) + points;
     return {
-      ...userData[0],
+      ...userData[userIndex],
       books: [
-        ...userData[0].books.slice(0, userBookIndex),
+        ...userData[userIndex].books.slice(0, userBookIndex),
         {
-          ...userData[0].books[userBookIndex],
+          ...userData[userIndex].books[userBookIndex],
 
           health: newHealth,
         },
-        ...userData[0].books.slice(userBookIndex + 1),
+        ...userData[userIndex].books.slice(userBookIndex + 1),
       ],
     };
   }
-  const userHealth = userData[0].books[userBookIndex].health;
+  const userHealth = userData[userIndex].books[userBookIndex].health;
   async function giveMoreHealth() {
     const data = getDataForHealth(1);
-    await save(data, userData[0]._id);
+    await save(data, userData[userIndex]._id);
     mutate("/api/users");
   }
   return (

@@ -152,21 +152,21 @@ export default function App({ Component, pageProps }) {
       })
     );
     mutate("/api/library");
-    const bookIndex = user[0].books.findIndex((item) => item.bookname === book);
+    const bookIndex = user[activeUser].books.findIndex((item) => item.bookname === book);
 
     if (bookIndex === -1) {
       console.error(`Error: Book not found.`);
       return;
     }
 
-    const response = await fetch(`/api/users/${user[0]._id}`, {
+    const response = await fetch(`/api/users/${user[activeUser]._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        ...user[0],
-        books: user[0].books.filter((item) => item.bookname !== book),
+        ...user[activeUser],
+        books: user[activeUser].books.filter((item) => item.bookname !== book),
         currentBook: "",
       }),
     });
@@ -194,17 +194,19 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     if (Array.isArray(data)) {
       if (Array.isArray(user)) {
-        const userData = user.filter((element) => element.name === "Testor");
+        if(activeUser) {
+        
         const firstSetCurrentLibrary = data.filter(
-          (element) => element.owner === userData[0].name
+          (element) => element.owner === user[activeUser].name
         );
-        setCurrentBook(userData[0].currentBook);
+        setCurrentBook(user[activeUser].currentBook);
         setCurrentLibrary(firstSetCurrentLibrary);
       }
     }
-  }, [data, user]);
+  }
+  }, [data, user, activeUser]);
   const insideLibrary = router.route.includes("/library");
-  if (isLoading || !currentLibrary || !user) {
+  if (isLoading  || !data || !user) {
     return <Loading />;
   }
   if (error) {
@@ -310,6 +312,7 @@ export default function App({ Component, pageProps }) {
 
 setRegistrationActive(false)
   }
+  console.log(activeUser)
   return (
     <>
       <SWRConfig
@@ -381,6 +384,7 @@ setRegistrationActive(false)
           currentBook={currentBook}
           insideLibrary={insideLibrary}
           library={currentLibrary}
+          userIndex={activeUser}
         />
         </NavigationWrapper>
          </MediaQuery>

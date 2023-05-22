@@ -101,17 +101,19 @@ export default function Answer({
 
     setChosenLetter("");
   }, [chosenLetter, activeIndex]);
-  const resetAnswer = () => {
+
+ 
+  useEffect(() => {
     setGuessedWordArray(answerArray.map(() => ""));
     setChosenLetter("");
     setActiveIndex(0);
-  };
+  }, [answer]);
 
-  // Split Answer in Array when new Answer received
   useEffect(() => {
-    resetAnswer();
     inputRef.current[0].focus();
   }, [answer]);
+
+  
   function handleLetterGuess(event, index) {
     if (event.target.value === "") {
       return;

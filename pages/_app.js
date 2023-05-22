@@ -376,7 +376,7 @@ setRegistrationActive(false)
                 <RPGButton text="Submit"></RPGButton>
               </StyledForm>
               </ImageContainer>
-              <DeveloperMessage>Name for testing: `&quot;`Testor`&quot;`, Password:`&quot;`test`&quot;`</DeveloperMessage>
+              <DeveloperMessage>Name for testing: &quot;Testor&quot;, Password: &quot;test&quot;</DeveloperMessage>
             </LoginScreen>
             <AudioHandler level="login" />
           </>

@@ -23,6 +23,17 @@ export const StyledLabel = styled.label`
   text-align: right;
 `;
 
+export const DoublePopup = styled.div `
+ position: absolute;
+  border: 2px solid white;
+  background-color: black;
+  top: 70%;
+  left: 0;
+  text-align: center;
+  width: 100%;
+
+`
+
 export const StyledInput = styled.input`
   background-color: transparent;
   border: none;
@@ -45,7 +56,8 @@ export const ButtonWrapper = styled.div`
 export const StyledPopup = styled.div`
   position: absolute;
   border: 2px solid white;
-  top: 30rem;
+  background-color: black;
+  top: 70%;
   left: 0;
   text-align: center;
   width: 100%;

@@ -51,7 +51,7 @@ async function sendRequest(url, { arg }) {
   }
 }
 
-export default function EditWisdom({ library, currentBook, handleBurnWisdom }) {
+export default function EditWisdom({ library, currentBook, handleBurnWisdom, userData, userIndex }) {
   const router = useRouter();
   const { id } = router.query;
 
@@ -74,7 +74,7 @@ export default function EditWisdom({ library, currentBook, handleBurnWisdom }) {
       _id: wisdom._id,
       book: currentBook,
       right: wisdom.right,
-      owner: "Testor",
+      owner: userData[userIndex].name,
     });
     mutate("/api/library");
     setPopupActive(true);
@@ -165,6 +165,7 @@ export default function EditWisdom({ library, currentBook, handleBurnWisdom }) {
           setBurnActive={setBurnActive}
         />
       ) : null}
+      
       <Link href="/library/viewBook">
         <StyledBackToBookImage
           src="/assets/bookicon.png"

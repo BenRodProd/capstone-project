@@ -8,6 +8,7 @@ const userSchema = new Schema({
   sound: { type: Array, required: true },
   subtitle: { type: String, required: true },
   currentBook: { type: String, required: true },
+  password: {type: String, required: true },
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);

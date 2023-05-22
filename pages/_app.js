@@ -12,6 +12,8 @@ import Image from "next/image";
 import AudioHandler from "@/components/AudioHandler";
 import RPGButton from "@/components/Button";
 import Loading from "@/components/Loading";
+import PopupHandler from "@/components/PopupHandler";
+import RegistrationForm from "@/components/RegistrationForm";
 
 const MediaQuery = styled.div`
 
@@ -40,7 +42,7 @@ top:10px;
 `
 const zoom = keyframes`
 0% {
-scale:1;
+scale:1.2;
 transform: translate(0,0);
 opacity: 1;
 }
@@ -56,6 +58,22 @@ opacity: 1;
   opacity: 0.0;
 }
 `;
+
+const DeveloperMessage = styled.div`
+position:absolute;
+background-color: black;
+width:100%;
+height: 10%;
+
+bottom: 0;
+right:0;
+background-color: rgba(0,0,0,0.6);
+z-index:2000;
+text-align: center;
+
+`
+
+
 
 const StyledForm = styled.form`
   position: absolute;
@@ -97,7 +115,7 @@ const TitleScreen = styled(Image)`
   height: 100%;
   z-index: 115;
   object-fit: contain;
- 
+  scale:1.2;
   animation: ${zoom} 40s ease-in 1;
 `;
 const LoginScreen = styled.div`
@@ -132,7 +150,11 @@ export default function App({ Component, pageProps }) {
   const [currentBook, setCurrentBook] = useState("");
   const [firstLoad, setFirstLoad] = useState(true);
   const [titleActive, setTitleActive] = useState(false);
-
+  const [PopupActive, setPopupActive] = useState(false)
+  const [PopupText, setPopupText] = useState("")
+  const [registrationActive, setRegistrationActive] = useState(false)
+  const [activeUser, setActiveUser] = useState(0)
+  const [userName, setUserName] = useState("")
   async function handleBurnBook(book) {
     const wisdomsToDelete = currentLibrary.filter((element) => {
       return element.book === book;
@@ -146,21 +168,21 @@ export default function App({ Component, pageProps }) {
       })
     );
     mutate("/api/library");
-    const bookIndex = user[0].books.findIndex((item) => item.bookname === book);
+    const bookIndex = user[activeUser].books.findIndex((item) => item.bookname === book);
 
     if (bookIndex === -1) {
       console.error(`Error: Book not found.`);
       return;
     }
 
-    const response = await fetch(`/api/users/${user[0]._id}`, {
+    const response = await fetch(`/api/users/${user[activeUser]._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        ...user[0],
-        books: user[0].books.filter((item) => item.bookname !== book),
+        ...user[activeUser],
+        books: user[activeUser].books.filter((item) => item.bookname !== book),
         currentBook: "",
       }),
     });
@@ -186,34 +208,130 @@ export default function App({ Component, pageProps }) {
     }
   }, []);
   useEffect(() => {
+
     if (Array.isArray(data)) {
       if (Array.isArray(user)) {
-        const userData = user.filter((element) => element.name === "Testor");
+        setActiveUser(user.findIndex(
+          (userdata) => userdata.name === userName
+        ))
+        if(activeUser >=0) {
+        console.log("changedData", data, user, activeUser)
         const firstSetCurrentLibrary = data.filter(
-          (element) => element.owner === userData[0].name
+          (element) => element.owner === user[activeUser].name
         );
-        setCurrentBook(userData[0].currentBook);
+        setCurrentBook(user[activeUser].currentBook);
         setCurrentLibrary(firstSetCurrentLibrary);
       }
     }
-  }, [data, user]);
+  }
+
+  }, [data, user, activeUser, userName]);
+
   const insideLibrary = router.route.includes("/library");
-  if (isLoading || !currentLibrary || !user) {
+  if (isLoading  || !data || !user ) {
     return <Loading />;
   }
   if (error) {
     return <div>error</div>;
   }
+
   function titleHandler() {
     setTimeout(() => {
       setTitleActive(false);
     }, 16800);
   }
+
   function handleOnClickSubmit(event) {
     event.preventDefault();
+   
+    const formData = new FormData(event.target);
+    const name = formData.get("name");
+    const password = formData.get("password");
+  
+    // Check if the entered username is in the database (userData)
+    const userExists = user && user.some((userData) => userData.name === name);
+    if (!userExists) {
+      console.log("Invalid username");
+      setRegistrationActive(true)
+      return ;
+    }
+  
+    // Check if the entered password is correct for the user
+    const userWithMatchingPassword = user.find(
+      (userData) => userData.name === name && userData.password === password
+    );
+    if (!userWithMatchingPassword) {
+      console.log("Invalid password");
+      setPopupActive(true)
+      setPopupText("INVALID PASSWORD")
+  
+      setTimeout(() => {
+        setPopupActive(false)
+      }, 1500);
+      return;
+    }
+    const UserIndex = user.findIndex(
+      (userdata) => userdata.name === name && userdata.password === password
+    )
+    setActiveUser(UserIndex)
     setTitleActive(true);
     setFirstLoad(false);
+   setUserName(name)
   }
+  async function handleRegistration(event) {
+    event.preventDefault();
+    console.log("click")
+    const formData = new FormData(event.target);
+    const newName = formData.get("name");
+    const newPassword = formData.get("password");
+    
+    try {
+      // Create a new user object
+      const newUser = {
+        name: newName,
+        books: [],
+        sound: [],
+        subtitle: "true",
+        currentBook: " ",
+        password: newPassword,
+      };
+  
+      // Make a POST request to the server to save the new user
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
+  
+      if (!response.ok) {
+        console.error(`Error: ${response.status}`);
+        return;
+      }
+  
+      console.log("User created successfully");
+  
+
+      
+      await mutate("/api/users")
+      
+      setTitleActive(true);
+      setFirstLoad(false);
+      setRegistrationActive(false)
+      setUserName(newName)
+      
+     console.log("activeuser in app.js",activeUser)
+    } catch (error) {
+      console.error("Error creating user:", error.message);
+      // Handle the error appropriately
+    }
+  }
+  function onCancelRegistration() {
+
+setRegistrationActive(false)
+  }
+  console.log(activeUser)
   return (
     <>
       <SWRConfig
@@ -231,6 +349,7 @@ export default function App({ Component, pageProps }) {
         <GlobalStyle />
         <MediaQuery>
         <Component
+        userIndex={activeUser}
           userData={user}
           {...pageProps}
           library={currentLibrary}
@@ -252,14 +371,18 @@ export default function App({ Component, pageProps }) {
               />
 
               <StyledForm onSubmit={handleOnClickSubmit}>
-                <StyledInput autoFocus type="text" placeholder="Name" />
+                <StyledInput required name="name" autoFocus type="text" placeholder="Name" />
+                <StyledInput required name="password" type="text" placeholder="Password" />
                 <RPGButton text="Submit"></RPGButton>
               </StyledForm>
               </ImageContainer>
+              <DeveloperMessage>Name for testing: &quot;Testor&quot;, Password: &quot;test&quot;</DeveloperMessage>
             </LoginScreen>
             <AudioHandler level="login" />
           </>
         )}
+        <PopupHandler  active={PopupActive} text={PopupText} ></PopupHandler>
+        {registrationActive && <RegistrationForm onCancelRegistration={onCancelRegistration} handleRegistration={handleRegistration}/>}
         {titleActive && (
           <>
             {titleHandler()}
@@ -274,6 +397,7 @@ export default function App({ Component, pageProps }) {
             <AudioHandler level="intro" />
           </>
         )}
+        
         <NavigationWrapper>
         <LibraryNavigation
           loginActive={firstLoad}
@@ -281,6 +405,7 @@ export default function App({ Component, pageProps }) {
           currentBook={currentBook}
           insideLibrary={insideLibrary}
           library={currentLibrary}
+          userIndex={activeUser}
         />
         </NavigationWrapper>
          </MediaQuery>

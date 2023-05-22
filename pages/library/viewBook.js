@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
 import AudioHandler from "@/components/AudioHandler";
+import Loading from "@/components/Loading";
 
 const BookPageStyle = styled.ul`
   position: relative;
@@ -135,6 +136,10 @@ const BookPageImage = styled.div`
 `;
 
 export default function ViewBook({ library, currentBook }) {
+  console.log("viewbook", library, currentBook)
+  if(!library) {
+    return <Loading />
+  }
   const categories = library
     .filter((entry) => entry.book === currentBook)
     .map((wisdom) => wisdom.category)

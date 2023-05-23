@@ -36,7 +36,7 @@ margin-top: 5rem;
 `
 
 export default function RegistrationForm({handleRegistration, onCancelRegistration}) {
-console.log("form")
+
     return <>
     <RegistrationWrapper>
         <ItemWrapper>

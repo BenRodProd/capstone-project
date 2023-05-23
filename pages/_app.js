@@ -215,7 +215,7 @@ export default function App({ Component, pageProps }) {
           (userdata) => userdata.name === userName
         ))
         if(activeUser >=0) {
-        console.log("changedData", data, user, activeUser)
+   
         const firstSetCurrentLibrary = data.filter(
           (element) => element.owner === user[activeUser].name
         );
@@ -251,7 +251,7 @@ export default function App({ Component, pageProps }) {
     // Check if the entered username is in the database (userData)
     const userExists = user && user.some((userData) => userData.name === name);
     if (!userExists) {
-      console.log("Invalid username");
+  
       setRegistrationActive(true)
       return ;
     }
@@ -261,7 +261,7 @@ export default function App({ Component, pageProps }) {
       (userData) => userData.name === name && userData.password === password
     );
     if (!userWithMatchingPassword) {
-      console.log("Invalid password");
+
       setPopupActive(true)
       setPopupText("INVALID PASSWORD")
   
@@ -280,7 +280,7 @@ export default function App({ Component, pageProps }) {
   }
   async function handleRegistration(event) {
     event.preventDefault();
-    console.log("click")
+
     const formData = new FormData(event.target);
     const newName = formData.get("name");
     const newPassword = formData.get("password");
@@ -309,11 +309,7 @@ export default function App({ Component, pageProps }) {
         console.error(`Error: ${response.status}`);
         return;
       }
-  
-      console.log("User created successfully");
-  
 
-      
       await mutate("/api/users")
       
       setTitleActive(true);
@@ -321,7 +317,7 @@ export default function App({ Component, pageProps }) {
       setRegistrationActive(false)
       setUserName(newName)
       
-     console.log("activeuser in app.js",activeUser)
+   
     } catch (error) {
       console.error("Error creating user:", error.message);
       // Handle the error appropriately
@@ -331,7 +327,7 @@ export default function App({ Component, pageProps }) {
 
 setRegistrationActive(false)
   }
-  console.log(activeUser)
+
   return (
     <>
       <SWRConfig

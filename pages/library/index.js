@@ -66,7 +66,7 @@ export default function ViewLibrary({
   if (!loginActive & window.innerWidth <= 700) {
     requestFullscreen()
   }
-  console.log("library.js", userIndex)
+
   function requestFullscreen() {
     const element = document.documentElement;
   
@@ -122,7 +122,7 @@ export default function ViewLibrary({
   if (!userData[userIndex]) {
     return <></>;
   }
-  console.log("library userdata", userData[userIndex])
+
   const books = userData[userIndex].books.map((element) => element.bookname);
 
   if (burnActive) {
@@ -169,7 +169,7 @@ export default function ViewLibrary({
   if (!Array.isArray(userData)) {
     return <Loading/>;
   }
-console.log(userIndex,"IN LIBRARYINDEX")
+
 if (!userData) {
   return <Loading/>
 }

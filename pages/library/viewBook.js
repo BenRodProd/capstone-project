@@ -136,7 +136,7 @@ const BookPageImage = styled.div`
 `;
 
 export default function ViewBook({ library, currentBook }) {
-  console.log("viewbook", library, currentBook)
+
   if(!library) {
     return <Loading />
   }

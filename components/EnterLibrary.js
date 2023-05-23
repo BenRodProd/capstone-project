@@ -47,7 +47,7 @@ export default function LibraryNavigation({
 }) {
   const [popupActive, setPopupActive] = useState(false);
   const router = useRouter();
-  console.log(userData, currentBook, library,userData[userIndex], userIndex)
+
   function handleLeaveLibrary() {
     if (
       !currentBook ||

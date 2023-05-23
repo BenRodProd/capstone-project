@@ -119,7 +119,6 @@ export default function HomePage({
   const userBookIndex = userData[userIndex].books.findIndex(
     (element) => element.bookname === currentBook
   );
-console.log(library, userData[userIndex].name, currentBook, library.filter(item => item.owner === userData[userIndex].name))
   const [currentLibrary, setCurrentLibrary] = useState(library.filter(item => item.owner === userData[userIndex].name && item.book === currentBook));
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
@@ -127,7 +126,7 @@ console.log(library, userData[userIndex].name, currentBook, library.filter(item 
   const [currentEnemy, setCurrentEnemy] = useState(
     enemyLibrary[currentEnemyIndex]
   );
-  console.log(currentLibrary, userData)
+
   const [userHealth, setUserHealth] = useState(
     userData[userIndex].books[userBookIndex].health
   );

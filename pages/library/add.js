@@ -83,7 +83,7 @@ export default function AddWisdom({
 
 
 if (wisdomExists) {
-  console.log("wisdomExits",wisdomExists)
+
   setDoublePopup(true)
   setTimeout(() => {
     setDoublePopup(false)
@@ -95,8 +95,7 @@ if (wisdomExists) {
       owner: userData[userIndex].name,
       book: currentBook,
     });
-    console.log(userData[userIndex].name)
-    console.log(wisdomData)
+
     const gainedItems = Number(userData[userIndex].books[userBookIndex].gainedItems);
     giveMoreHealth();
     const wisdomsInBook = library.filter(

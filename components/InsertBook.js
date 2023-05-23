@@ -122,8 +122,7 @@ export default function InsertBook({
 
       setCurrentBook(book);
       saveCurrentBook(book);
-      console.log(book)
-      console.log(userData)
+
       router.push("/library/viewBook");
     } else {
       setPopUp(true);

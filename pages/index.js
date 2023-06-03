@@ -16,6 +16,8 @@ import AudioHandler from "@/components/AudioHandler";
 import styled from "styled-components";
 import { fightSound, hurtSound } from "@/components/soundHandler";
 import RPGButton from "@/components/Button";
+import { storyLibrary } from "@/library/storyLibrary";
+
 
 const EnemyBox = styled.div`
   display: flex;
@@ -103,6 +105,31 @@ const DeathRestartButton = styled.div`
 position:relative;
 z-index:107;
 `
+
+const StoryPopup = styled.div`
+display: flex;
+flex-direction: column;
+left:0;
+top:0;
+position: absolute;
+width: 100%;
+height: 112%;
+text-align: center;
+align-items: center;
+justify-content: center;
+
+background-color: rgba(0, 0, 0, 0.95);
+border: 20px solid transparent;
+  border-image: url("/assets/border.png") 30% stretch;
+z-index:150;
+padding: 2rem;
+font-size: larger;
+`
+const StoryText = styled.p`
+color: yellow;
+text-align: center;
+`
+
 const GameOverText = styled.h1`
 position:relative;
   text-shadow: #fc0 1px 0 10px;
@@ -150,10 +177,22 @@ export default function HomePage({
     userData[userIndex].books[userBookIndex].inventorySlots
   );
   const [deadActive, setDeadActive] = useState(false);
+  const [storyPopup, setStoryPopup] = useState(false);
+const [currentStoryText, setCurrentStoryText] = useState(storyLibrary[""]);
 
   useEffect(() => {
     setEnemyHealth(currentEnemy.health);
   }, [currentEnemy]);
+
+useEffect(() => {
+  const levelAndStage = currentLevel.level.toString()+ currentLevel.stage.toString()
+  const story = storyLibrary.find((item) => item.hasOwnProperty(levelAndStage))
+  
+  
+  setCurrentStoryText(story[levelAndStage].text)
+  setStoryPopup(true)
+ 
+}, [currentLevel])
 
   function handleNextQuestion() {
     let nextCardIndex = Math.floor(Math.random() * currentLibrary.length);
@@ -305,6 +344,14 @@ export default function HomePage({
             </DeathPopUp>
           </>
         )}
+        {storyPopup && 
+        <>
+        <StoryPopup>
+          <StoryText>{currentStoryText}</StoryText>
+          <button type ="button" onClick = {() => setStoryPopup(false)}>SKIP</button>
+        </StoryPopup>
+      </>  
+      }
       </ScreenBox>
       <AudioHandler level={currentLevel} />
     </>

@@ -78,6 +78,18 @@ const BookTitle = styled.h1`
   z-index: 1;
 `;
 
+const BookAuthor = styled.h1`
+  position: relative;
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+  font-family: "Franklin Gothic Medium";
+  color: black;
+  font-size: 3.0rem;
+  text-align: center;
+  font-style: italic;
+  z-index: 1;
+`;
+
 const BookPageContainer = styled.div`
   height: calc(100% - 3rem);
   margin-top: 3rem;
@@ -156,7 +168,7 @@ export default function ViewBook({ library, currentBook }) {
             {currentBook}
             <div className="seperator">_________</div>
           </BookTitle>
-
+          <BookAuthor>Author: {library[0].owner}</BookAuthor>
           {categories.map((cat, index) => {
             return (
               <BookPageStyle key={cat}>
@@ -181,6 +193,8 @@ export default function ViewBook({ library, currentBook }) {
 
                           <h2>Answer:</h2>
                           <p>{wisdom.answer}</p>
+
+                          {wisdom.right <=5 ?<p>You have answered this {wisdom.right} times right</p> : <p>You have learned this!</p>}
                         </div>
                       </StyledLink>
 

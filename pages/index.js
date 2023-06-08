@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Question from "@/components/Question";
-
+import useSWRMutation from "swr/mutation";
+import { mutate } from "swr";
 import Answer from "@/components/Answer";
 import AvatarStatus from "@/components/AvatarStatus";
 import { enemyLibrary } from "@/library/enemyLibrary";
@@ -135,6 +136,21 @@ position:relative;
   text-shadow: #fc0 1px 0 10px;
   z-index:106;
 `;
+
+async function sendRequest(url, { arg }) {
+  // here we set the request method
+  const response = await fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(arg),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    console.error(`Error: ${response.status}`);
+  }
+}
+
 export default function HomePage({
   library,
   userData,
@@ -178,8 +194,9 @@ export default function HomePage({
   );
   const [deadActive, setDeadActive] = useState(false);
   const [storyPopup, setStoryPopup] = useState(false);
+  const [id, setId] = useState(currentCard._id)
 const [currentStoryText, setCurrentStoryText] = useState(storyLibrary[""]);
-
+const { trigger } = useSWRMutation(`/api/library/${id}`, sendRequest);
   useEffect(() => {
     setEnemyHealth(currentEnemy.health);
   }, [currentEnemy]);
@@ -193,14 +210,29 @@ useEffect(() => {
   setStoryPopup(true)
  
 }, [currentLevel])
-
+useEffect (() => {
+  setId(currentCard._id)
+}, [currentCard])
   function handleNextQuestion() {
     let nextCardIndex = Math.floor(Math.random() * currentLibrary.length);
     while (currentCard.question === currentLibrary[nextCardIndex].question) {
       nextCardIndex = Math.floor(Math.random() * currentLibrary.length);
     }
     setCurrentCard(currentLibrary[nextCardIndex]);
+    saveRightAnswer()
   }
+
+async function saveRightAnswer() {
+  const newRight = Number(currentCard.right)+1
+  await trigger({
+    ...currentCard,
+    _id:currentCard._id,
+    book: currentCard.book,
+    right: newRight,
+    owner: userData[userIndex].name,
+  });
+  mutate("/api/library");
+}
 
   function handleRightAnswer(damage) {
     fightSound();
@@ -258,7 +290,7 @@ useEffect(() => {
     handleNextQuestion();
     setDeadActive(false);
   }
-
+console.log(currentCard)
   const userAvatarImage = `/assets/avatars/${
     userData[userIndex].books[0].avatar
   }${Math.floor(Number(userXP) / 500)}.png`;

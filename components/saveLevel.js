@@ -17,7 +17,7 @@ export default async function saveLevel  (userIndex, userBookIndex, level) {
       }
   
       const data = await response.json();
-      console.log(data); // User updated successfully
+      
     } catch (error) {
       console.error(error);
     }

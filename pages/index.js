@@ -147,7 +147,7 @@ async function sendRequest(url, { arg }) {
     },
   });
   if (!response.ok) {
-    console.error(`Error: ${response.status}`);
+    //console.error(`Error: ${response.status}`);
   }
 }
 
@@ -165,6 +165,7 @@ export default function HomePage({
   const [currentLibrary, setCurrentLibrary] = useState(library.filter(item => item.owner === userData[userIndex].name && item.book === currentBook));
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
+  const [currentStage, setCurrentStage] = useState(1);
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [currentEnemy, setCurrentEnemy] = useState(
     enemyLibrary[currentEnemyIndex]
@@ -182,8 +183,9 @@ export default function HomePage({
   const [enemyHealth, setEnemyHealth] = useState(currentEnemy.health);
   const [damageDone, setDamageDone] = useState(false);
   const [currentCard, setCurrentCard] = useState(
-    currentLibrary[Math.floor(Math.random() * currentLibrary.length)]
+    currentLibrary[0]
   );
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [damageDisplay, setDamageDisplay] = useState(null);
 
   const [inventory, setInventory] = useState(
@@ -198,7 +200,11 @@ export default function HomePage({
 const [currentStoryText, setCurrentStoryText] = useState(storyLibrary[""]);
 const { trigger } = useSWRMutation(`/api/library/${id}`, sendRequest);
   useEffect(() => {
-    setEnemyHealth(currentEnemy.health);
+ 
+    setEnemyHealth(((currentLibrary[currentCardIndex].answer.length*10)+(currentLibrary[currentCardIndex+1].answer.length*10))-10);
+   
+   
+ 
   }, [currentEnemy]);
 
 useEffect(() => {
@@ -214,31 +220,32 @@ useEffect (() => {
   setId(currentCard._id)
 }, [currentCard])
   function handleNextQuestion() {
-    let nextCardIndex = Math.floor(Math.random() * currentLibrary.length);
-    while (currentCard.question === currentLibrary[nextCardIndex].question) {
-      nextCardIndex = Math.floor(Math.random() * currentLibrary.length);
+    saveRightAnswer()
+    let nextCardIndex = currentCardIndex+1;
+    if(!currentLibrary[nextCardIndex]) {
+      // ################ No Card anymore #############
+      nextCardIndex = 0
     }
     setCurrentCard(currentLibrary[nextCardIndex]);
-    saveRightAnswer()
+    setCurrentCardIndex(nextCardIndex);
+    
   }
 
 async function saveRightAnswer() {
   const newRight = Number(currentCard.right)+1
   await trigger({
-    ...currentCard,
-    _id:currentCard._id,
-    book: currentCard.book,
+ 
     right: newRight,
-    owner: userData[userIndex].name,
+  
   });
-  mutate("/api/library");
+  await mutate("/api/library");
 }
 
   function handleRightAnswer(damage) {
     fightSound();
     if (enemyHealth > damage) {
       setEnemyHealth((prevEnemyHealth) => prevEnemyHealth - damage);
-      setDamageDisplay({ x: "9rem", y: "15rem", color: "red", damage: damage });
+      setDamageDisplay({ x: "50%", y: "55%", color: "red", damage: damage });
       setDamageDone(true);
       setTimeout(() => {
         setDamageDone(false);
@@ -272,7 +279,7 @@ async function saveRightAnswer() {
     } else {
       setUserHealth((prevUserHealth) => prevUserHealth - damage);
     }
-    setDamageDisplay({ x: "3rem", y: "29rem", color: "red", damage: damage });
+    setDamageDisplay({ x: "3rem", y: "80%", color: "red", damage: damage });
     setDamageDone(true);
     setTimeout(() => {
       setDamageDone(false);
@@ -290,7 +297,7 @@ async function saveRightAnswer() {
     handleNextQuestion();
     setDeadActive(false);
   }
-console.log(currentCard)
+
   const userAvatarImage = `/assets/avatars/${
     userData[userIndex].books[0].avatar
   }${Math.floor(Number(userXP) / 500)}.png`;

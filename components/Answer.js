@@ -84,10 +84,10 @@ export default function Answer({
     if (answerArray.join("") === guessedWordArray.join("")) {
       setTimeout(() => {
         handleNextQuestion();
-        setGuessedWordArray(answerArray.map(() => ""));
-        inputRef.current[0].focus();
-        setChosenLetter("");
-        setActiveIndex(0);
+        //setGuessedWordArray(answerArray.map(() => ""));
+        //inputRef.current[0].focus();
+        //setChosenLetter("");
+        //setActiveIndex(0);
       }, 800);
     }
   }, [guessedWordArray, answerArray, handleNextQuestion]);
@@ -113,39 +113,46 @@ export default function Answer({
     inputRef.current[0].focus();
   }, [answer]);
 
-  
+  function handleChooseLetter(letter) {
+    setChosenLetter(letter);
+  }
   function handleLetterGuess(event, index) {
     if (event.target.value === "") {
       return;
     }
     const letter = event.target.value;
-    const newGuessedWordArray = [...guessedWordArray];
-
-    newGuessedWordArray[index] = letter;
-
-    setGuessedWordArray(newGuessedWordArray);
-
-    // ############ right letter ################
+    
+    setGuessedWordArray((prevGuessedWordArray) => {
+      const newGuessedWordArray = [...prevGuessedWordArray];
+      newGuessedWordArray[index] = letter;
+      return newGuessedWordArray;
+    });
+  
     if (letter === answerArray[index].toLowerCase()) {
       handleRightAnswer(10);
       if (index < answerArray.length - 1) {
-        inputRef.current[index + 1].focus();
-        setActiveIndex((prev) => prev + 1);
         setChosenLetter("");
+        setActiveIndex((prevActiveIndex) => prevActiveIndex + 1);
+        setTimeout(() => {
+          inputRef.current[index + 1].focus();
+        }, 0);
       }
     } else {
-      // ############# wrong letter ###############
       handleWrongAnswer(10);
       setWrongIndex(index);
       vibrate();
       setTimeout(() => {
         setWrongIndex(-1);
       }, 800);
-
-      newGuessedWordArray[index] = "";
-      setGuessedWordArray(newGuessedWordArray);
+  
+      setGuessedWordArray((prevGuessedWordArray) => {
+        const newGuessedWordArray = [...prevGuessedWordArray];
+        newGuessedWordArray[index] = "";
+        return newGuessedWordArray;
+      });
     }
   }
+  
 
   return (
     <AnswerWrapper>
@@ -165,11 +172,11 @@ export default function Answer({
         ></StyledInput>
       ))}
       <ChooseLetter
-        chosenLetter={chosenLetter}
-        setChosenLetter={setChosenLetter}
+       
+        setChosenLetter={handleChooseLetter}
         activeIndex={activeIndex}
         answerArray={answerArray}
-        wrongIndex={wrongIndex}
+        
       />
     </InputFieldLayout>
     </AnswerWrapper>

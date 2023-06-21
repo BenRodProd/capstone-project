@@ -219,10 +219,12 @@ useEffect(() => {
 useEffect (() => {
   setId(currentCard._id)
 }, [currentCard])
+
+
   function handleNextQuestion() {
     saveRightAnswer()
     let nextCardIndex = currentCardIndex+1;
-    if(!currentLibrary[nextCardIndex]) {
+    if(!currentLibrary[nextCardIndex].answer || !currentLibrary[nextCardIndex+1].answer) {
       // ################ No Card anymore #############
       nextCardIndex = 0
     }

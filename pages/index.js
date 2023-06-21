@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Question from "@/components/Question";
-
+import useSWRMutation from "swr/mutation";
+import { mutate } from "swr";
 import Answer from "@/components/Answer";
 import AvatarStatus from "@/components/AvatarStatus";
 import { enemyLibrary } from "@/library/enemyLibrary";
@@ -16,6 +17,8 @@ import AudioHandler from "@/components/AudioHandler";
 import styled from "styled-components";
 import { fightSound, hurtSound } from "@/components/soundHandler";
 import RPGButton from "@/components/Button";
+import { storyLibrary } from "@/library/storyLibrary";
+
 
 const EnemyBox = styled.div`
   display: flex;
@@ -103,11 +106,51 @@ const DeathRestartButton = styled.div`
 position:relative;
 z-index:107;
 `
+
+const StoryPopup = styled.div`
+display: flex;
+flex-direction: column;
+left:0;
+top:0;
+position: absolute;
+width: 100%;
+height: 112%;
+text-align: center;
+align-items: center;
+justify-content: center;
+
+background-color: rgba(0, 0, 0, 0.95);
+border: 20px solid transparent;
+  border-image: url("/assets/border.png") 30% stretch;
+z-index:150;
+padding: 2rem;
+font-size: larger;
+`
+const StoryText = styled.p`
+color: yellow;
+text-align: center;
+`
+
 const GameOverText = styled.h1`
 position:relative;
   text-shadow: #fc0 1px 0 10px;
   z-index:106;
 `;
+
+async function sendRequest(url, { arg }) {
+  // here we set the request method
+  const response = await fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(arg),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    //console.error(`Error: ${response.status}`);
+  }
+}
+
 export default function HomePage({
   library,
   userData,
@@ -122,6 +165,7 @@ export default function HomePage({
   const [currentLibrary, setCurrentLibrary] = useState(library.filter(item => item.owner === userData[userIndex].name && item.book === currentBook));
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(levelLibrary[0]);
+  const [currentStage, setCurrentStage] = useState(1);
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [currentEnemy, setCurrentEnemy] = useState(
     enemyLibrary[currentEnemyIndex]
@@ -139,8 +183,9 @@ export default function HomePage({
   const [enemyHealth, setEnemyHealth] = useState(currentEnemy.health);
   const [damageDone, setDamageDone] = useState(false);
   const [currentCard, setCurrentCard] = useState(
-    currentLibrary[Math.floor(Math.random() * currentLibrary.length)]
+    currentLibrary[0]
   );
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [damageDisplay, setDamageDisplay] = useState(null);
 
   const [inventory, setInventory] = useState(
@@ -150,24 +195,57 @@ export default function HomePage({
     userData[userIndex].books[userBookIndex].inventorySlots
   );
   const [deadActive, setDeadActive] = useState(false);
-
+  const [storyPopup, setStoryPopup] = useState(false);
+  const [id, setId] = useState(currentCard._id)
+const [currentStoryText, setCurrentStoryText] = useState(storyLibrary[""]);
+const { trigger } = useSWRMutation(`/api/library/${id}`, sendRequest);
   useEffect(() => {
-    setEnemyHealth(currentEnemy.health);
+ 
+    setEnemyHealth(((currentLibrary[currentCardIndex].answer.length*10)+(currentLibrary[currentCardIndex+1].answer.length*10))-10);
+   
+   
+ 
   }, [currentEnemy]);
 
+useEffect(() => {
+  const levelAndStage = currentLevel.level.toString()+ currentLevel.stage.toString()
+  const story = storyLibrary.find((item) => item.hasOwnProperty(levelAndStage))
+  
+  
+  setCurrentStoryText(story[levelAndStage].text)
+  setStoryPopup(true)
+ 
+}, [currentLevel])
+useEffect (() => {
+  setId(currentCard._id)
+}, [currentCard])
   function handleNextQuestion() {
-    let nextCardIndex = Math.floor(Math.random() * currentLibrary.length);
-    while (currentCard.question === currentLibrary[nextCardIndex].question) {
-      nextCardIndex = Math.floor(Math.random() * currentLibrary.length);
+    saveRightAnswer()
+    let nextCardIndex = currentCardIndex+1;
+    if(!currentLibrary[nextCardIndex]) {
+      // ################ No Card anymore #############
+      nextCardIndex = 0
     }
     setCurrentCard(currentLibrary[nextCardIndex]);
+    setCurrentCardIndex(nextCardIndex);
+    
   }
+
+async function saveRightAnswer() {
+  const newRight = Number(currentCard.right)+1
+  await trigger({
+ 
+    right: newRight,
+  
+  });
+  await mutate("/api/library");
+}
 
   function handleRightAnswer(damage) {
     fightSound();
     if (enemyHealth > damage) {
       setEnemyHealth((prevEnemyHealth) => prevEnemyHealth - damage);
-      setDamageDisplay({ x: "9rem", y: "15rem", color: "red", damage: damage });
+      setDamageDisplay({ x: "50%", y: "55%", color: "red", damage: damage });
       setDamageDone(true);
       setTimeout(() => {
         setDamageDone(false);
@@ -201,7 +279,7 @@ export default function HomePage({
     } else {
       setUserHealth((prevUserHealth) => prevUserHealth - damage);
     }
-    setDamageDisplay({ x: "3rem", y: "29rem", color: "red", damage: damage });
+    setDamageDisplay({ x: "3rem", y: "80%", color: "red", damage: damage });
     setDamageDone(true);
     setTimeout(() => {
       setDamageDone(false);
@@ -305,6 +383,14 @@ export default function HomePage({
             </DeathPopUp>
           </>
         )}
+        {storyPopup && 
+        <>
+        <StoryPopup>
+          <StoryText>{currentStoryText}</StoryText>
+          <button type ="button" onClick = {() => setStoryPopup(false)}>SKIP</button>
+        </StoryPopup>
+      </>  
+      }
       </ScreenBox>
       <AudioHandler level={currentLevel} />
     </>

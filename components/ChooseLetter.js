@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { alphabet } from "@/library/alphabet";
 
 const StyledLetterChoice = styled.span`
+display:flex;
   font-family: monospace;
   font-size: 1rem;
   border: 12px solid transparent;
